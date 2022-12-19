@@ -60,7 +60,7 @@ const wagmiClient = createClient({
   webSocketProvider,
 });
 
-function App({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }: AppProps) {
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider appInfo={demoAppInfo} chains={chains}>
@@ -70,4 +70,4 @@ function App({ Component, pageProps }: AppProps) {
   );
 }
 
-export default App;
+export default MyApp;
