@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import Header from './header/Header';
+import Footer from './footer/Footer';
 
 type LayoutProps = {
     children?: React.ReactNode;
@@ -13,10 +14,11 @@ const Layout = ({ children }: LayoutProps) => {
                 <link rel="icon" href="/favicon.ico" key="favicon" />
             </Head>
             <main className='w-full'>
-                <Header></Header>
-                <div className={'pt-[72px] pb-[62px] px-[42px] lg:px-[52px] bg-primary'}>
+                <Header />
+                <div className='container flex h-screen'>
                     {children}
                 </div>
+                <Footer />
             </main>
         </>
     )
