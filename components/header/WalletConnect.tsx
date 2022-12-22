@@ -33,7 +33,7 @@ export default function WalletConnect() {
                             {(() => {
                             if (!mounted || !account || !chain) {
                                 return (
-                                <button onClick={openConnectModal} type="button">
+                                <button className="uppercase text-sm py-3 px-8 bg-gray-500 hover:bg-gray-600 text-white" onClick={openConnectModal} type="button">
                                     Connect Wallet
                                 </button>
                                 );
