@@ -15,8 +15,10 @@ const Layout = ({ children }: LayoutProps) => {
             </Head>
             <main className='w-full'>
                 <Header />
-                <div className='container flex h-screen'>
-                    {children}
+                <div className='container mx-auto py-8'>
+                    <div className='grid grid-cols-2 gap-8'>
+                        {children}
+                    </div>
                 </div>
                 <Footer />
             </main>
