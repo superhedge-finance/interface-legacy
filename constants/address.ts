@@ -1,5 +1,5 @@
 import { ChainId } from "./chain";
 
 export const SHFactory = {
-    [ChainId.GOERLI]: '0xC8187F7713e99B3Dd169C6818d297B1014Be9876',
+    [ChainId.GOERLI]: '0x5662A56F45C8744e3703AdE354209d5526C4F9C5',
 }
