@@ -6,5 +6,5 @@ export interface IProduct {
     underlying: string;
     status: number;
     maxCapacity: BigNumber;
-    currentCapacity: BigNumber;
+    currentCapacity: string;
 }
