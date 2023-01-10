@@ -1,4 +1,4 @@
-import {Fragment, useEffect, useState} from "react";
+import {Fragment, useEffect, useMemo, useState} from "react";
 import {useConnectModal} from "@rainbow-me/rainbowkit";
 import {useAccount, useSigner} from "wagmi";
 import Image from "next/image";
@@ -7,8 +7,9 @@ import {PrimaryButton} from "../basic";
 import {ethers} from "ethers";
 import ProductABI from "../../constants/abis/SHProduct.json";
 import ERC20ABI from "../../constants/abis/ERC20.json";
+import {DEPOSIT_STATUS, WITHDRAW_STATUS} from "../../types/enums";
 
-const pricePerLot = 2000;
+const pricePerLot = 1000;
 
 export const ActionArea = ({ productAddress }: {productAddress: string}) => {
     const {address} = useAccount()
@@ -18,6 +19,12 @@ export const ActionArea = ({ productAddress }: {productAddress: string}) => {
     const [tab, setTab] = useState(0);
     const [lots, setLots] = useState(1);
     const [isOpen, setIsOpen] = useState(false)
+    const [status, setStatus] = useState(0)
+    const [principalBalance, setPrincipalBalance] = useState(0)
+    const [optionBalance, setOptionBalance] = useState(0)
+    const [couponBalance, setCouponBalance] = useState(0)
+    const [depositStatus, setDepositStatus] = useState(DEPOSIT_STATUS.NONE)
+    const [withdrawStatus, setWithdrawStatus] = useState(WITHDRAW_STATUS.NONE)
     const [productInstance, setProductInstance] = useState<ethers.Contract | undefined>(undefined)
     const [currencyInstance, setCurrencyInstance] = useState<ethers.Contract | undefined>(undefined)
 
@@ -27,38 +34,97 @@ export const ActionArea = ({ productAddress }: {productAddress: string}) => {
         }
     }
 
-    const onDeposit = () => {
-        setIsOpen(true)
-    }
-
     const onApprove = async () => {
         try {
             if (currencyInstance && productInstance) {
                 const decimal = await currencyInstance.decimals()
                 const tx = await currencyInstance.approve(productAddress, ethers.utils.parseUnits((pricePerLot * lots).toString(), decimal))
+                setDepositStatus(DEPOSIT_STATUS.APPROVING)
                 await tx.wait()
+                setDepositStatus(DEPOSIT_STATUS.DEPOSIT)
                 const depositTx = await productInstance.deposit(ethers.utils.parseUnits((pricePerLot * lots).toString(), decimal))
                 await depositTx.wait()
             }
         } catch (e) {
             console.log(`Error while approving: ${e}`)
+        } finally {
+            setDepositStatus(DEPOSIT_STATUS.NONE)
+            setIsOpen(false)
         }
     }
 
-    const onWithdraw = () => {
+    const onWithdraw = async () => {
+        if (productInstance) {
+            try {
+                if (status === 1) {
+                    if (principalBalance > 0) {
+                        const tx = await productInstance.withdrawPrincipal();
+                        await tx.wait()
+                    }
+                    if (optionBalance > 0) {
+                        const tx1 = await productInstance.withdrawOption();
+                        await tx1.wait()
+                    }
+                    if (couponBalance > 0) {
+                        const tx2 = await productInstance.withdrawCoupon();
+                        await tx2.wait()
+                    }
+                    setWithdrawStatus(WITHDRAW_STATUS.DONE)
+                } else if (status === 2) {
+                    if (optionBalance > 0) {
+                        const tx1 = await productInstance.withdrawOption();
+                        await tx1.wait()
+                    }
+                    if (couponBalance > 0) {
+                        const tx2 = await productInstance.withdrawCoupon();
+                        await tx2.wait()
+                    }
+                    setWithdrawStatus(WITHDRAW_STATUS.DONE)
+                } else {
+                    setWithdrawStatus(WITHDRAW_STATUS.NONE)
+                }
+            } catch (e) {
+                setWithdrawStatus(WITHDRAW_STATUS.NONE)
+            }
+        }
     }
+
+    const lotsCount = useMemo(() => {
+        return (principalBalance + optionBalance + couponBalance) / pricePerLot
+    }, [principalBalance, optionBalance, couponBalance])
+
+    const withdrawableBalance = useMemo(() => {
+        if (status === 1) {
+            return principalBalance + optionBalance + couponBalance
+        } else if (status === 2) {
+            return optionBalance + couponBalance
+        }
+        return 0
+    }, [status, principalBalance, optionBalance, couponBalance])
 
     useEffect(() => {
         (async () => {
-            if (signer && productAddress) {
-                const _productInstance = new ethers.Contract(productAddress, ProductABI, signer)
-                setProductInstance(_productInstance)
-                const _currency = await _productInstance.currency()
-                const _currencyInstance = new ethers.Contract(_currency, ERC20ABI, signer)
-                setCurrencyInstance(_currencyInstance)
+            if (signer && productAddress && address) {
+                try {
+                    const _productInstance = new ethers.Contract(productAddress, ProductABI, signer)
+                    setProductInstance(_productInstance)
+                    const _status = await _productInstance.status()
+                    setStatus(_status)
+                    const _currency = await _productInstance.currency()
+                    const _currencyInstance = new ethers.Contract(_currency, ERC20ABI, signer)
+                    setCurrencyInstance(_currencyInstance)
+                    const _couponBalance = await _productInstance.couponBalance(address)
+                    setCouponBalance(Number(ethers.utils.formatUnits(_couponBalance, 6)))
+                    const _optionBalance = await _productInstance.optionBalance(address)
+                    setOptionBalance(Number(ethers.utils.formatUnits(_optionBalance, 6)))
+                    const _principalBalance = await _productInstance.principalBalance(address)
+                    setPrincipalBalance(Number(ethers.utils.formatUnits(_principalBalance, 6)))
+                } catch (e) {
+                    console.error(e)
+                }
             }
         })()
-    }, [productAddress, signer])
+    }, [productAddress, signer, address])
 
     return (
         <>
@@ -86,7 +152,7 @@ export const ActionArea = ({ productAddress }: {productAddress: string}) => {
                 }
 
                 {
-                    address &&
+                    (address && tab === 0) &&
                     <>
                         <div className={'bg-[#EBEBEB] rounded-[6px] p-5 flex flex-col items-center mt-10'}>
                             <div className={'flex items-center'}>
@@ -149,16 +215,49 @@ export const ActionArea = ({ productAddress }: {productAddress: string}) => {
 
                         <div className={'mt-7'}>
                             <PrimaryButton
-                                label={tab === 0 ? `DEPOSIT ${(pricePerLot * lots).toLocaleString()} USDC` : 'WITHDRAW'}
-                                onClick={tab === 0 ? onDeposit : onWithdraw}/>
-                        </div>
-
-                        <div className={'mt-7 flex items-center justify-center'}>
-                            <span className={'text-[#677079]'}>Contract:</span>
-                            <span>{productAddress.slice(0, 10) + '...' + productAddress.slice(-10)}</span>
+                                label={`DEPOSIT ${(pricePerLot * lots).toLocaleString()} USDC`}
+                                onClick={() => setIsOpen(true)}/>
                         </div>
                     </>
                 }
+
+                {
+                    address && tab === 1 &&
+                    <>
+                        <div className={'text-[#677079] text-[16px] leading-[16px] text-center mt-[33px]'}>Withdraw info</div>
+
+                        <div className={'bg-[#0000000a] p-5 rounded-[6px] flex flex-col items-center mt-[17px]'}>
+                            <span className={'text-[#677079] text-[16px] leading-[16px]'}>Total Balance</span>
+                            <span className={'text-[#161717] text-[22px] leading-[22px] mt-3'}>{(principalBalance + optionBalance + couponBalance).toLocaleString()} USDC ({lotsCount} lot)</span>
+                        </div>
+
+                        <div className={'bg-[#0000000a] p-5 rounded-[6px] flex flex-col items-center mt-[17px]'}>
+                            <span className={'text-[#677079] text-[16px] leading-[16px]'}>Withdrawable Balance</span>
+                            <span className={'text-[#161717] text-[22px] leading-[22px] mt-3'}>{withdrawableBalance.toLocaleString()} USDC</span>
+                        </div>
+
+                        <div className={'font-light text-[14px] leading-[20px] text-[#677079] mt-[44px]'}>
+                            Your Deposit is opened, so you can initiate withdraw all amount right now
+                        </div>
+
+                        <div className={'mt-7'}>
+                            <PrimaryButton
+                                label={`INITIATE WITHDRAW`}
+                                onClick={() => setWithdrawStatus(WITHDRAW_STATUS.INITIATE)}/>
+                        </div>
+                    </>
+                }
+                {
+                    address &&
+                        <div className={'mt-7 flex items-center justify-center'}>
+                            <span className={'text-[#677079]'}>Contract:</span>
+                            <span className={'mr-2'}>{productAddress.slice(0, 10) + '...' + productAddress.slice(-10)}</span>
+                            <a href={`https://goerli.etherscan.io/address/${productAddress}`} target={'_blank'} rel="noreferrer">
+                                <Image src={'/icons/external.svg'} alt={'external'} width={20} height={20} />
+                            </a>
+                        </div>
+                }
+
                 {
                     !address &&
                     <div className={'flex justify-center'}>
@@ -196,8 +295,12 @@ export const ActionArea = ({ productAddress }: {productAddress: string}) => {
                                     <Dialog.Title
                                         className="text-[32px] font-medium leading-[40px] text-[#161717] text-center"
                                     >
-                                        Before depositing approve
-                                        smart contract, please
+                                        {
+                                            depositStatus <= DEPOSIT_STATUS.APPROVING ?
+                                                'Before depositing approve smart contract, please'
+                                                :
+                                                'Deposit USDC'
+                                        }
                                     </Dialog.Title>
                                     <div className="mt-7 flex flex-col items-center">
                                         <p className="text-sm text-gray-500">
@@ -218,10 +321,97 @@ export const ActionArea = ({ productAddress }: {productAddress: string}) => {
                                             type="button"
                                             className="flex flex-1 items-center justify-center rounded-md border border-transparent bg-[#292929] px-4 py-2 text-sm font-medium text-white rounded-[8px] h-full"
                                             onClick={onApprove}
+                                            disabled={depositStatus === DEPOSIT_STATUS.APPROVING}
                                         >
-                                            APPROVE
+                                            {depositStatus >= DEPOSIT_STATUS.APPROVING ? 'APPROVE...' : 'APPROVE'}
                                         </button>
                                     </div>
+                                </Dialog.Panel>
+                            </Transition.Child>
+                        </div>
+                    </div>
+                </Dialog>
+            </Transition>
+
+            <Transition appear show={withdrawStatus !== WITHDRAW_STATUS.NONE} as={Fragment}>
+                <Dialog as="div" className="relative z-10" onClose={() => setWithdrawStatus(WITHDRAW_STATUS.NONE)}>
+                    <Transition.Child
+                        as={Fragment}
+                        enter="ease-out duration-300"
+                        enterFrom="opacity-0"
+                        enterTo="opacity-100"
+                        leave="ease-in duration-200"
+                        leaveFrom="opacity-100"
+                        leaveTo="opacity-0"
+                    >
+                        <div className="fixed inset-0 bg-black bg-opacity-25" />
+                    </Transition.Child>
+
+                    <div className="fixed inset-0 overflow-y-auto">
+                        <div className="flex min-h-full items-center justify-center p-4 text-center">
+                            <Transition.Child
+                                as={Fragment}
+                                enter="ease-out duration-300"
+                                enterFrom="opacity-0 scale-95"
+                                enterTo="opacity-100 scale-100"
+                                leave="ease-in duration-200"
+                                leaveFrom="opacity-100 scale-100"
+                                leaveTo="opacity-0 scale-95"
+                            >
+                                <Dialog.Panel className="w-full max-w-[800px] transform overflow-hidden rounded-2xl bg-white py-[60px] px-[80px] text-left align-middle shadow-xl transition-all">
+                                    <Dialog.Title
+                                        className="text-[32px] font-medium leading-[40px] text-[#161717] text-center"
+                                    >
+                                        {
+                                            withdrawStatus === WITHDRAW_STATUS.DONE ?
+                                                'You successfully withdrawed your Deposit'
+                                                :
+                                                'Are you sure you want to initiate Withdraw now?'
+                                        }
+                                    </Dialog.Title>
+
+                                    {
+                                        withdrawStatus === WITHDRAW_STATUS.DONE &&
+                                        <div className="mt-7 flex flex-col items-center">
+                                            The money will come to your wallet soon.
+                                            Usually it takes 1-3 days.
+                                        </div>
+                                    }
+
+                                    <div className="mt-7 flex flex-col items-center">
+                                        <p className="text-sm text-gray-500">
+                                            Total amount to Withdraw
+                                        </p>
+                                        <p>{withdrawableBalance.toLocaleString()} USDC</p>
+                                    </div>
+
+                                    {
+                                        withdrawStatus === WITHDRAW_STATUS.DONE ?
+                                            <button
+                                                type="button"
+                                                className="h-[50px] mt-8 flex flex-1 w-full items-center justify-center rounded-md border border-transparent bg-[#292929] px-4 py-2 text-sm font-medium text-white rounded-[8px] h-full"
+                                                onClick={() => setWithdrawStatus(WITHDRAW_STATUS.NONE)}
+                                            >
+                                                CONTINUE
+                                            </button>
+                                            :
+                                            <div className="mt-8 flex items-center justify-between space-x-8 h-[50px]">
+                                                <button
+                                                    type="button"
+                                                    className="flex flex-1 items-center justify-center rounded-md border border-[#4B4B4B] border-[1px] px-4 py-2 text-sm font-medium text-black rounded-[8px] h-full"
+                                                    onClick={() => setWithdrawStatus(WITHDRAW_STATUS.NONE)}
+                                                >
+                                                    NO
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    className="flex flex-1 items-center justify-center rounded-md border border-transparent bg-[#292929] px-4 py-2 text-sm font-medium text-white rounded-[8px] h-full"
+                                                    onClick={onWithdraw}
+                                                >
+                                                    YES
+                                                </button>
+                                            </div>
+                                    }
                                 </Dialog.Panel>
                             </Transition.Child>
                         </div>

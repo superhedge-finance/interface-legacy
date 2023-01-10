@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react'
 import { Tab } from '@headlessui/react'
 import Product from './Product'
 import useContract from '../hooks/useContract'
+import {Loading} from "./basic";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
 
 export default function Tabs() {
-  const { products } = useContract()
+  const { products, isLoading: isProductLoading } = useContract()
   const [categories, setCategories] = useState({
     "All": [],
     "ETH/USDC": [],
@@ -59,7 +60,11 @@ export default function Tabs() {
         </Tab.Group>
       </div>
       <div className={'grid grid-cols-2 gap-8 mt-5'}>
-        {products.map((product, idx) => (
+        {
+          isProductLoading &&
+            <Loading />
+        }
+        {!isProductLoading && products.map((product, idx) => (
             <Product key={idx} product={product} />
         ))}
       </div>

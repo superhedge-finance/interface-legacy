@@ -1,3 +1,4 @@
+import Image from "next/image";
 
 export const PrimaryButton = ({ label, onClick }: { label: string, onClick?: () => void }) => {
     return (
@@ -5,4 +6,10 @@ export const PrimaryButton = ({ label, onClick }: { label: string, onClick?: () 
             {label}
         </button>
     );
+}
+
+export const Loading = () => {
+    return (
+        <Image src={'/icons/loading.gif'} alt={'loading'} width={100} height={100} />
+    )
 }

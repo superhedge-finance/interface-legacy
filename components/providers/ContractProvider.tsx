@@ -20,34 +20,45 @@ export const ContractProvider = ({
         chainId: ChainId.GOERLI,
     })
 
+    const [isLoading, setIsLoading] = useState(false)
     const [shFactory, setShFactory] = useState<ethers.Contract | undefined>(undefined)
     const [products, setProducts] = useState<IProduct[]>([])
 
     useEffect(() => {
         (async () => {
             if (provider) {
-                const _shFactory = new ethers.Contract(SHFactory[ChainId.GOERLI], FactoryABI, provider)
-                setShFactory(_shFactory)
-                const productNames = ProductNames[ChainId.GOERLI]
-                const _products: IProduct[] = []
-                for (const name of productNames) {
-                    const productAddress = await _shFactory.getProduct(name)
-                    const _productInstance = new ethers.Contract(productAddress, ProductABI, provider)
-                    const _productStatus = await _productInstance.status()
+                setIsLoading(true)
+                try {
+                    const _shFactory = new ethers.Contract(SHFactory[ChainId.GOERLI], FactoryABI, provider)
+                    setShFactory(_shFactory)
+                    const productNames = ProductNames[ChainId.GOERLI]
+                    const _products: IProduct[] = []
+                    for (const name of productNames) {
+                        const productAddress = await _shFactory.getProduct(name)
+                        if (productAddress !== ethers.constants.AddressZero) {
+                            const _productInstance = new ethers.Contract(productAddress, ProductABI, provider)
+                            const _productStatus = await _productInstance.status()
 
-                    if (_productStatus > 0) {
-                        const _product: IProduct = {
-                            name,
-                            address: productAddress,
-                            underlying: await _productInstance.underlying(),
-                            status: _productStatus,
-                            maxCapacity: await _productInstance.maxCapacity(),
-                            currentCapacity: await _productInstance.currentCapacity()
+                            if (_productStatus > 0) {
+                                const currentCapacity = await _productInstance.currentCapacity()
+                                const _product: IProduct = {
+                                    name,
+                                    address: productAddress,
+                                    underlying: await _productInstance.underlying(),
+                                    status: _productStatus,
+                                    maxCapacity: await _productInstance.maxCapacity(),
+                                    currentCapacity: ethers.utils.formatUnits(currentCapacity, 6),
+                                }
+                                _products.push(_product)
+                            }
                         }
-                        _products.push(_product)
                     }
+                    setProducts(_products)
+                } catch (e) {
+                    console.error(e)
+                } finally {
+                    setIsLoading(false)
                 }
-                setProducts(_products)
             }
             setShFactory(undefined)
         })()
@@ -58,6 +69,7 @@ export const ContractProvider = ({
             value={{
                 factoryInstsance: shFactory,
                 products,
+                isLoading,
             }}
         >
             {children}

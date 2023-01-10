@@ -52,6 +52,7 @@ export default function WalletConnect() {
                                 <button
                                     onClick={openChainModal}
                                     style={{ display: 'flex', alignItems: 'center' }}
+                                    className={'text-white'}
                                     type="button"
                                 >
                                     {chain.hasIcon && (
@@ -78,7 +79,7 @@ export default function WalletConnect() {
                                     {chain.name}
                                 </button>
 
-                                <button onClick={openAccountModal} type="button">
+                                <button onClick={openAccountModal} type="button" className={'text-white'}>
                                     {account.displayName}
                                     {account.displayBalance
                                     ? ` (${account.displayBalance})`

@@ -4,9 +4,9 @@ import { useRouter } from 'next/router';
 export default function NavMenu() {
     return (
         <div className="hidden w-full md:block md:w-auto" id="navbar-default">
-            <ul className="uppercase flex flex-col p-4 mt-4 bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-base md:font-medium md:bg-white dark:bg-gray-800">
+            <ul className="uppercase flex flex-col p-4 mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-base md:font-medium bg-transparent">
                 <li>
-                    <Link href='/' className="block py-2 pl-3 pr-4 text-gray-500 bg-blue-700 rounded md:bg-transparent md:text-gray-800 md:p-0 dark:text-white" aria-current="page">
+                    <Link href='/' className="block py-2 pl-3 pr-4 rounded md:p-0 text-white" aria-current="page">
                         Products
                     </Link>
                 </li>
