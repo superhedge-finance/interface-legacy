@@ -1,10 +1,8 @@
-import Layout from '../components/Layout';
-import Product from '../components/Product';
 import Tabs from '../components/Tabs';
 
 const Home = () => {
   return (
-    <Layout>
+    <div>
       <div className='flex'>
         <Tabs />
       </div>
@@ -34,7 +32,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-    </Layout>
+    </div>
   );
 };
 

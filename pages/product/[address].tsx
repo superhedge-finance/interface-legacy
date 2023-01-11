@@ -1,15 +1,14 @@
 import {NextPage} from "next";
 import {useRouter} from "next/router";
-import Layout from "../../components/Layout";
 import {ActionArea} from "../../components/product/ActionArea";
 import Image from "next/image";
-import Link from "next/link";
 import {IProduct} from "../../types/interface";
 import {useEffect, useState} from "react";
 import {ethers} from "ethers";
 import ProductABI from "../../constants/abis/SHProduct.json";
 import {ChainId} from "../../constants/chain";
 import {useProvider} from "wagmi";
+import {SkeletonCard} from "../../components/basic";
 
 const status = [
     'Accepting',
@@ -33,35 +32,48 @@ const ProductDetail: NextPage = () => {
     const router = useRouter()
     const {address} = router.query
 
+    const [isLoading, setIsLoading] = useState(false)
     const [product, setProduct] = useState<IProduct | undefined>(undefined)
 
     useEffect(() => {
         (async () => {
             if (address && provider && typeof address === "string") {
-                const _productInstance = new ethers.Contract(address, ProductABI, provider)
-                const _productStatus = await _productInstance.status()
+                setIsLoading(true)
+                try {
+                    const _productInstance = new ethers.Contract(address, ProductABI, provider)
+                    const _productStatus = await _productInstance.status()
 
-                if (_productStatus > 0) {
-                    const _product: IProduct = {
-                        name: await _productInstance.name(),
-                        address: address,
-                        underlying: await _productInstance.underlying(),
-                        status: _productStatus,
-                        maxCapacity: await _productInstance.maxCapacity(),
-                        currentCapacity: await _productInstance.currentCapacity()
+                    if (_productStatus > 0) {
+                        const currentCapacity = await _productInstance.currentCapacity()
+                        const _product: IProduct = {
+                            name: await _productInstance.name(),
+                            address: address,
+                            underlying: await _productInstance.underlying(),
+                            status: _productStatus,
+                            maxCapacity: await _productInstance.maxCapacity(),
+                            currentCapacity: ethers.utils.formatUnits(currentCapacity, 6),
+                        }
+                        setProduct(_product)
                     }
-                    setProduct(_product)
+                } catch (e) {
+                    console.error(e)
+                } finally {
+                    setIsLoading(false)
                 }
             }
         })()
     }, [address, provider])
 
     return (
-        <Layout>
+        <div>
             <div className={'grid grid-cols-2 gap-12 px-12'}>
                 <div>
                     {
-                        product &&
+                        isLoading &&
+                        <SkeletonCard />
+                    }
+                    {
+                        !isLoading && product &&
                         <div className="flex flex-col p-6">
                             <div>
                                 <span className='inline-block text-white text-sm bg-[#68AC6F] p-2 rounded-lg'>{status[product.status]}</span>
@@ -76,7 +88,7 @@ const ProductDetail: NextPage = () => {
                                                alt='Product Logo'
                                                width={60} height={60}/>
                                     </div>
-                                    <div className='ml-3'>
+                                    <div className='flex flex-col justify-around ml-3'>
                                         <h5 className="text-[44px] text-black">{product.underlying}</h5>
                                         <span className='text-[20px] font-light text-gray-700'>{product.name}</span>
                                     </div>
@@ -90,7 +102,7 @@ const ProductDetail: NextPage = () => {
                                 <div className="flex justify-between my-1">
                                     <span className="text-sm text-gray-700">Amount deposited</span>
                                     <span
-                                        className="text-sm text-gray-700">USDC {product.currentCapacity.toString()}</span>
+                                        className="text-sm text-gray-700">USDC {Number(product.currentCapacity).toLocaleString()}</span>
                                 </div>
                                 <div className="w-full bg-[#00000014] rounded my-1">
                                     <div className="bg-gray-600 h-2 rounded" style={{
@@ -101,7 +113,7 @@ const ProductDetail: NextPage = () => {
                                 <div className="flex justify-between mb-2">
                                     <span className="text-sm text-gray-700">Max</span>
                                     <span
-                                        className="text-sm text-gray-700">USDC {product.maxCapacity.toString()}</span>
+                                        className="text-sm text-gray-700">USDC {Number(product.maxCapacity.toString()).toLocaleString()}</span>
                                 </div>
                             </div>
 
@@ -124,7 +136,7 @@ const ProductDetail: NextPage = () => {
                 </div>
                 <ActionArea productAddress={product ? product.address : ''} />
             </div>
-        </Layout>
+        </div>
     )
 }
 
