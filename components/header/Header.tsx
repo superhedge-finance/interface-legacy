@@ -1,14 +1,15 @@
 import NavMenu from './NavMenu';
 import WalletConnect from './WalletConnect';
+import Link from "next/link";
 
 const Header = () => {
     return (
-        <header>
-            <nav className="bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded-br-[16px] rounded-bl-[16px] dark:bg-gray-900">
+        <header className={'bg-[#F7F7F7]'}>
+            <nav className="px-2 sm:px-4 py-2.5 rounded-br-[16px] rounded-bl-[16px] bg-[#161717]">
                 <div className="container flex flex-wrap items-center justify-between mx-auto">
-                    <a href="https://superhedge.com/" className="flex items-center" target="_blank" rel="noreferrer">
-                        <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Superhedge</span>
-                    </a>
+                    <Link href="/" className="flex items-center pt-1.5">
+                        <img src={'/icons/logo.svg'} alt={'logo'} />
+                    </Link>
                     <NavMenu />
                     <WalletConnect />
                 </div>

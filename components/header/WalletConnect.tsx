@@ -33,7 +33,7 @@ export default function WalletConnect() {
                             {(() => {
                             if (!mounted || !account || !chain) {
                                 return (
-                                <button className="uppercase text-sm py-3 px-8 bg-gray-500 hover:bg-gray-600 text-white" onClick={openConnectModal} type="button">
+                                <button className="uppercase text-[#161717] text-[14px] font-semibold leading-[14px] bg-white py-[18px] px-8 rounded-[8px]" onClick={openConnectModal} type="button">
                                     Connect Wallet
                                 </button>
                                 );
@@ -49,42 +49,42 @@ export default function WalletConnect() {
 
                             return (
                                 <div style={{ display: 'flex', gap: 12 }}>
-                                <button
-                                    onClick={openChainModal}
-                                    style={{ display: 'flex', alignItems: 'center' }}
-                                    className={'text-white'}
-                                    type="button"
-                                >
-                                    {chain.hasIcon && (
-                                    <div
-                                        style={{
-                                        background: chain.iconBackground,
-                                        width: 12,
-                                        height: 12,
-                                        borderRadius: 999,
-                                        overflow: 'hidden',
-                                        marginRight: 4,
-                                        }}
+                                    {/*<button
+                                        onClick={openChainModal}
+                                        style={{ display: 'flex', alignItems: 'center' }}
+                                        className={'text-white'}
+                                        type="button"
                                     >
-                                        {chain.iconUrl && (
-                                        <Image
-                                            alt={chain.name ?? 'Chain icon'}
-                                            src={chain.iconUrl}
-                                            width={12}
-                                            height={12}
-                                        />
+                                        {chain.hasIcon && (
+                                        <div
+                                            style={{
+                                            background: chain.iconBackground,
+                                            width: 12,
+                                            height: 12,
+                                            borderRadius: 999,
+                                            overflow: 'hidden',
+                                            marginRight: 4,
+                                            }}
+                                        >
+                                            {chain.iconUrl && (
+                                            <Image
+                                                alt={chain.name ?? 'Chain icon'}
+                                                src={chain.iconUrl}
+                                                width={12}
+                                                height={12}
+                                            />
+                                            )}
+                                        </div>
                                         )}
-                                    </div>
-                                    )}
-                                    {chain.name}
-                                </button>
+                                        {chain.name}
+                                    </button>*/}
 
-                                <button onClick={openAccountModal} type="button" className={'text-white'}>
-                                    {account.displayName}
-                                    {account.displayBalance
-                                    ? ` (${account.displayBalance})`
-                                    : ''}
-                                </button>
+                                    <button onClick={openAccountModal} type="button" className={'text-[#F8F6F5] uppercase text-[14px] leading-[14px] h-[50px] font-semibold bg-[#161717] border-[1px] border-[#CFD1D3] rounded-[8px] py-[15px] px-8'}>
+                                        {account.displayName}
+                                        {account.displayBalance
+                                        ? ` (${account.displayBalance})`
+                                        : ''}
+                                    </button>
                                 </div>
                             );
                             })()}

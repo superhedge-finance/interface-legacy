@@ -14,6 +14,7 @@ import { mainnet, goerli, polygon } from 'wagmi/chains';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 import {ContractProvider} from "./providers/ContractProvider";
+import Layout from "./Layout";
 
 const { chains, provider, webSocketProvider } = configureChains(
     [
@@ -69,7 +70,7 @@ function App({ children }: AppProps) {
             <WagmiConfig client={wagmiClient}>
                 <RainbowKitProvider appInfo={demoAppInfo} chains={chains}>
                     <ContractProvider>
-                        <div>{children}</div>
+                        <Layout>{children}</Layout>
                     </ContractProvider>
                 </RainbowKitProvider>
             </WagmiConfig>

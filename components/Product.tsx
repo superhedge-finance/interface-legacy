@@ -22,7 +22,7 @@ export default function Product({product}: { product: IProduct }) {
                     <Image src='/ethereum.svg' className='rounded-full absolute left-[40px]' alt='Product Logo'
                            width={60} height={60}/>
                 </div>
-                <div className='ml-3'>
+                <div className='flex flex-col justify-around ml-3'>
                     <h5 className="text-xl tracking-tight text-black">{product.underlying}</h5>
                     <span className='text-sm text-gray-700'>{product.name}</span>
                 </div>

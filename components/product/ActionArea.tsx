@@ -89,6 +89,8 @@ export const ActionArea = ({ productAddress }: {productAddress: string}) => {
         }
     }
 
+    const onRequestWithdraw = async () => {}
+
     const lotsCount = useMemo(() => {
         return (principalBalance + optionBalance + couponBalance) / pricePerLot
     }, [principalBalance, optionBalance, couponBalance])
@@ -237,13 +239,18 @@ export const ActionArea = ({ productAddress }: {productAddress: string}) => {
                         </div>
 
                         <div className={'font-light text-[14px] leading-[20px] text-[#677079] mt-[44px]'}>
-                            Your Deposit is opened, so you can initiate withdraw all amount right now
+                            Your Deposit is locked, so you can initiate only Profit Withdraw right now or request withdraw All Amount at Maturity Date
                         </div>
 
                         <div className={'mt-7'}>
                             <PrimaryButton
                                 label={`INITIATE WITHDRAW`}
-                                onClick={() => setWithdrawStatus(WITHDRAW_STATUS.INITIATE)}/>
+                                onClick={() => setWithdrawStatus(WITHDRAW_STATUS.INITIATE)}
+                            />
+
+                            <button className='bg-white border-[1px] border-[#292929] w-full text-black rounded-[8px] py-[18px] px-[28px] mt-4' onClick={onRequestWithdraw}>
+                                {'REQUEST WITHDRAW'}
+                            </button>
                         </div>
                     </>
                 }
