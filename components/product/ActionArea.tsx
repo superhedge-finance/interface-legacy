@@ -1,5 +1,6 @@
 import {Fragment, useEffect, useMemo, useState} from "react";
 import {useConnectModal} from "@rainbow-me/rainbowkit";
+import { RadioGroup } from '@headlessui/react'
 import {useAccount, useSigner} from "wagmi";
 import Image from "next/image";
 import {Dialog, Transition} from "@headlessui/react";
@@ -11,9 +12,9 @@ import {DEPOSIT_STATUS, WITHDRAW_STATUS} from "../../types/enums";
 
 const pricePerLot = 1000;
 
-export const ActionArea = ({ productAddress }: {productAddress: string}) => {
+export const ActionArea = ({productAddress}: { productAddress: string }) => {
     const {address} = useAccount()
-    const { data: signer } = useSigner()
+    const {data: signer} = useSigner()
     const {openConnectModal} = useConnectModal()
 
     const [tab, setTab] = useState(0);
@@ -27,6 +28,8 @@ export const ActionArea = ({ productAddress }: {productAddress: string}) => {
     const [withdrawStatus, setWithdrawStatus] = useState(WITHDRAW_STATUS.NONE)
     const [productInstance, setProductInstance] = useState<ethers.Contract | undefined>(undefined)
     const [currencyInstance, setCurrencyInstance] = useState<ethers.Contract | undefined>(undefined)
+    const [maxLots, setMaxLots] = useState(0)
+    const [profit, setProfit] = useState(1)
 
     const onConnect = () => {
         if (!address && openConnectModal) {
@@ -89,7 +92,8 @@ export const ActionArea = ({ productAddress }: {productAddress: string}) => {
         }
     }
 
-    const onRequestWithdraw = async () => {}
+    const onRequestWithdraw = async () => {
+    }
 
     const lotsCount = useMemo(() => {
         return (principalBalance + optionBalance + couponBalance) / pricePerLot
@@ -103,6 +107,17 @@ export const ActionArea = ({ productAddress }: {productAddress: string}) => {
         }
         return 0
     }, [status, principalBalance, optionBalance, couponBalance])
+
+    const depositButtonLabel = useMemo(() => {
+        if (principalBalance > 0) {
+            if (profit === 1) {
+                return `TOP-UP ON ${(pricePerLot * lots - (optionBalance + couponBalance)).toLocaleString()} USDC`
+            } else if (profit === 2) {
+                return `TOP-UP ON ${(pricePerLot * lots).toLocaleString()} USDC`
+            }
+        }
+        return `DEPOSIT ${(pricePerLot * lots).toLocaleString()} USDC`
+    }, [principalBalance, optionBalance, couponBalance, profit])
 
     useEffect(() => {
         (async () => {
@@ -121,6 +136,10 @@ export const ActionArea = ({ productAddress }: {productAddress: string}) => {
                     setOptionBalance(Number(ethers.utils.formatUnits(_optionBalance, 6)))
                     const _principalBalance = await _productInstance.principalBalance(address)
                     setPrincipalBalance(Number(ethers.utils.formatUnits(_principalBalance, 6)))
+
+                    const currentCapacity = await _productInstance.currentCapacity()
+                    const maxCapacity = await _productInstance.maxCapacity()
+                    setMaxLots(maxCapacity.toNumber() - Number(ethers.utils.formatUnits(currentCapacity, 6)))
                 } catch (e) {
                     console.error(e)
                 }
@@ -157,13 +176,44 @@ export const ActionArea = ({ productAddress }: {productAddress: string}) => {
                     (address && tab === 0) &&
                     <>
                         <div className={'bg-[#EBEBEB] rounded-[6px] p-5 flex flex-col items-center mt-10'}>
-                            <div className={'flex items-center'}>
-                                <span className={'text-[#677079] text-[16px] font-light'}>Current Deposit</span>
-                            </div>
-                            <div
-                                className={'flex items-center mt-2 py-[10px] text-[12px] px-3 rounded-[6px] bg-[#E89D45] justify-center text-white'}>
-                                You have no Deposit
-                            </div>
+                            {
+                                principalBalance === 0 ?
+                                    <>
+                                        <div className={'flex items-center'}>
+                                            <span
+                                                className={'text-[#677079] text-[16px] font-light'}>Current Deposit</span>
+                                        </div>
+                                        <div
+                                            className={'flex items-center mt-2 py-[10px] text-[12px] px-3 rounded-[6px] bg-[#E89D45] justify-center text-white'}>
+                                            You have no Deposit
+                                        </div>
+                                    </>
+                                    :
+                                    <div className={'flex flex-col items-center space-y-2'}>
+                                        <span className={'text-[16px] leading-[16px] font-light text-grey-70'}>You can Top-up with Profit</span>
+                                        <span
+                                            className={'text-[22px] leading-[22px] font-medium text-black text-center'}>{(optionBalance + couponBalance).toLocaleString()} USDC</span>
+                                    
+                                        <RadioGroup className={'flex items-center justify-between space-x-3 mt-6'} value={profit} onChange={setProfit}>
+                                            <RadioGroup.Option className={'flex items-center cursor-pointer space-x-2'} value={1}>
+                                                {({ checked }) => (
+                                                    <>
+                                                        <div className={`w-4 h-4 rounded-full ${checked ? 'bg-[#EBEBEB] border-4 border-black' : 'border-[1px] border-black'}`} />
+                                                        <span className="text-[16px] leading-[16px] font-medium text-[#494D51]">Include profit</span>
+                                                    </>
+                                                )}
+                                            </RadioGroup.Option>
+                                            <RadioGroup.Option className={'flex items-center cursor-pointer space-x-2'} value={2}>
+                                                {({ checked }) => (
+                                                    <>
+                                                        <div className={`w-4 h-4 rounded-full ${checked ? 'bg-[#EBEBEB] border-4 border-black' : 'border-[1px] border-black'}`} />
+                                                        <span className="text-[16px] leading-[16px] font-medium text-[#494D51]">Top-up without Profit</span>
+                                                    </>
+                                                )}
+                                            </RadioGroup.Option>
+                                        </RadioGroup>
+                                    </div>
+                            }
                         </div>
 
                         <div className={'mt-8 text-[#494D51] text-[16px]'}>
@@ -191,7 +241,8 @@ export const ActionArea = ({ productAddress }: {productAddress: string}) => {
 
                         <div className={'mt-5 grid grid-cols-5 gap-2'}>
                             <div
-                                className={'bg-[#FBFBFB] cursor-pointer flex flex-1 items-center justify-center text-center rounded-[6px] py-2 px-3 text-[12px] leading-[12px]'}>
+                                className={'bg-[#FBFBFB] cursor-pointer flex flex-1 items-center justify-center text-center rounded-[6px] py-2 px-3 text-[12px] leading-[12px]'}
+                                onClick={() => setLots(1)}>
                                 MIN
                             </div>
                             <div
@@ -210,14 +261,15 @@ export const ActionArea = ({ productAddress }: {productAddress: string}) => {
                                 100 LOTS
                             </div>
                             <div
-                                className={'bg-[#FBFBFB] cursor-pointer flex flex-1 items-center justify-center text-center rounded-[6px] py-2 px-3 text-[12px] leading-[12px]'}>
+                                className={'bg-[#FBFBFB] cursor-pointer flex flex-1 items-center justify-center text-center rounded-[6px] py-2 px-3 text-[12px] leading-[12px]'}
+                                onClick={() => setLots(maxLots)}>
                                 MAX
                             </div>
                         </div>
 
                         <div className={'mt-7'}>
                             <PrimaryButton
-                                label={`DEPOSIT ${(pricePerLot * lots).toLocaleString()} USDC`}
+                                label={depositButtonLabel}
                                 onClick={() => setIsOpen(true)}/>
                         </div>
                     </>
@@ -226,20 +278,25 @@ export const ActionArea = ({ productAddress }: {productAddress: string}) => {
                 {
                     address && tab === 1 &&
                     <>
-                        <div className={'text-[#677079] text-[16px] leading-[16px] text-center mt-[33px]'}>Withdraw info</div>
+                        <div className={'text-[#677079] text-[16px] leading-[16px] text-center mt-[33px]'}>Withdraw
+                            info
+                        </div>
 
                         <div className={'bg-[#0000000a] p-5 rounded-[6px] flex flex-col items-center mt-[17px]'}>
                             <span className={'text-[#677079] text-[16px] leading-[16px]'}>Total Balance</span>
-                            <span className={'text-[#161717] text-[22px] leading-[22px] mt-3'}>{(principalBalance + optionBalance + couponBalance).toLocaleString()} USDC ({lotsCount} lot)</span>
+                            <span
+                                className={'text-[#161717] text-[22px] leading-[22px] mt-3'}>{(principalBalance + optionBalance + couponBalance).toLocaleString()} USDC ({lotsCount} lot)</span>
                         </div>
 
                         <div className={'bg-[#0000000a] p-5 rounded-[6px] flex flex-col items-center mt-[17px]'}>
                             <span className={'text-[#677079] text-[16px] leading-[16px]'}>Withdrawable Balance</span>
-                            <span className={'text-[#161717] text-[22px] leading-[22px] mt-3'}>{withdrawableBalance.toLocaleString()} USDC</span>
+                            <span
+                                className={'text-[#161717] text-[22px] leading-[22px] mt-3'}>{withdrawableBalance.toLocaleString()} USDC</span>
                         </div>
 
                         <div className={'font-light text-[14px] leading-[20px] text-[#677079] mt-[44px]'}>
-                            Your Deposit is locked, so you can initiate only Profit Withdraw right now or request withdraw All Amount at Maturity Date
+                            Your Deposit is locked, so you can initiate only Profit Withdraw right now or request
+                            withdraw All Amount at Maturity Date
                         </div>
 
                         <div className={'mt-7'}>
@@ -248,7 +305,9 @@ export const ActionArea = ({ productAddress }: {productAddress: string}) => {
                                 onClick={() => setWithdrawStatus(WITHDRAW_STATUS.INITIATE)}
                             />
 
-                            <button className='bg-white border-[1px] border-[#292929] w-full text-black rounded-[8px] py-[18px] px-[28px] mt-4' onClick={onRequestWithdraw}>
+                            <button
+                                className='bg-white border-[1px] border-[#292929] w-full text-black rounded-[8px] py-[18px] px-[28px] mt-4'
+                                onClick={onRequestWithdraw}>
                                 {'REQUEST WITHDRAW'}
                             </button>
                         </div>
@@ -256,13 +315,15 @@ export const ActionArea = ({ productAddress }: {productAddress: string}) => {
                 }
                 {
                     address &&
-                        <div className={'mt-7 flex items-center justify-center'}>
-                            <span className={'text-[#677079]'}>Contract:</span>
-                            <span className={'mr-2'}>{productAddress.slice(0, 10) + '...' + productAddress.slice(-10)}</span>
-                            <a href={`https://goerli.etherscan.io/address/${productAddress}`} target={'_blank'} rel="noreferrer">
-                                <Image src={'/icons/external.svg'} alt={'external'} width={20} height={20} />
-                            </a>
-                        </div>
+                    <div className={'mt-7 flex items-center justify-center'}>
+                        <span className={'text-[#677079]'}>Contract:&nbsp;</span>
+                        <span
+                            className={'mr-2'}>{productAddress.slice(0, 10) + '...' + productAddress.slice(-10)}</span>
+                        <a href={`https://goerli.etherscan.io/address/${productAddress}`} target={'_blank'}
+                           rel="noreferrer">
+                            <Image src={'/icons/external.svg'} alt={'external'} width={20} height={20}/>
+                        </a>
+                    </div>
                 }
 
                 {
@@ -284,7 +345,7 @@ export const ActionArea = ({ productAddress }: {productAddress: string}) => {
                         leaveFrom="opacity-100"
                         leaveTo="opacity-0"
                     >
-                        <div className="fixed inset-0 bg-black bg-opacity-25" />
+                        <div className="fixed inset-0 bg-black bg-opacity-25"/>
                     </Transition.Child>
 
                     <div className="fixed inset-0 overflow-y-auto">
@@ -298,7 +359,8 @@ export const ActionArea = ({ productAddress }: {productAddress: string}) => {
                                 leaveFrom="opacity-100 scale-100"
                                 leaveTo="opacity-0 scale-95"
                             >
-                                <Dialog.Panel className="w-full max-w-[800px] transform overflow-hidden rounded-2xl bg-white py-[60px] px-[80px] text-left align-middle shadow-xl transition-all">
+                                <Dialog.Panel
+                                    className="w-full max-w-[800px] transform overflow-hidden rounded-2xl bg-white py-[60px] px-[80px] text-left align-middle shadow-xl transition-all">
                                     <Dialog.Title
                                         className="text-[32px] font-medium leading-[40px] text-[#161717] text-center"
                                     >
@@ -330,7 +392,19 @@ export const ActionArea = ({ productAddress }: {productAddress: string}) => {
                                             onClick={onApprove}
                                             disabled={depositStatus === DEPOSIT_STATUS.APPROVING}
                                         >
-                                            {depositStatus >= DEPOSIT_STATUS.APPROVING ? 'APPROVE...' : 'APPROVE'}
+                                            {
+                                                depositStatus >= DEPOSIT_STATUS.APPROVING &&
+                                                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                                                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                    <circle className="opacity-25" cx="12" cy="12" r="10"
+                                                            stroke="currentColor" strokeWidth="4"></circle>
+                                                    <path className="opacity-75" fill="currentColor"
+                                                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                </svg>
+                                            }
+                                            {
+                                                depositStatus === DEPOSIT_STATUS.DEPOSIT ? 'DEPOSIT' : 'APPROVE'
+                                            }
                                         </button>
                                     </div>
                                 </Dialog.Panel>
@@ -351,7 +425,7 @@ export const ActionArea = ({ productAddress }: {productAddress: string}) => {
                         leaveFrom="opacity-100"
                         leaveTo="opacity-0"
                     >
-                        <div className="fixed inset-0 bg-black bg-opacity-25" />
+                        <div className="fixed inset-0 bg-black bg-opacity-25"/>
                     </Transition.Child>
 
                     <div className="fixed inset-0 overflow-y-auto">
@@ -365,7 +439,8 @@ export const ActionArea = ({ productAddress }: {productAddress: string}) => {
                                 leaveFrom="opacity-100 scale-100"
                                 leaveTo="opacity-0 scale-95"
                             >
-                                <Dialog.Panel className="w-full max-w-[800px] transform overflow-hidden rounded-2xl bg-white py-[60px] px-[80px] text-left align-middle shadow-xl transition-all">
+                                <Dialog.Panel
+                                    className="w-full max-w-[800px] transform overflow-hidden rounded-2xl bg-white py-[60px] px-[80px] text-left align-middle shadow-xl transition-all">
                                     <Dialog.Title
                                         className="text-[32px] font-medium leading-[40px] text-[#161717] text-center"
                                     >
