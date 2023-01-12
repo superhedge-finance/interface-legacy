@@ -7,7 +7,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'black': {
+        'blacknew': {
           '100': '#161717'
         },
         'grey': {
@@ -17,7 +17,7 @@ module.exports = {
           '40': '#AFB7BE',
           '30': '#D6D7D8',
         },
-        'white': {
+        'whitenew': {
           '100': '#F8F8F8',
         },
         'accent': '#11CB79',
