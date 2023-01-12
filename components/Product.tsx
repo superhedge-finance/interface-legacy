@@ -3,9 +3,11 @@ import {IProduct} from '../types/interface';
 import Link from "next/link";
 
 const status = [
-    'Accepting',
+    'Pending',
+    'Indicative',
+    'Indicative',
     'Active',
-    'Funds Locked'
+    'Active'
 ]
 
 export default function Product({product}: { product: IProduct }) {

@@ -11,11 +11,12 @@ import {useProvider} from "wagmi";
 import {SkeletonCard} from "../../components/basic";
 
 const status = [
-    'Accepting',
+    'Pending',
+    'Indicative',
+    'Indicative',
     'Active',
-    'Funds Locked'
+    'Active'
 ]
-const ethPrice = 1400
 
 const RecapCard = ({ label, value }: { label: string, value: string }) => {
     return (
@@ -137,10 +138,10 @@ const ProductDetail: NextPage = () => {
                                 <RecapCard label={'Principal Protection'} value={'100%'} />
                             </div>
                             <div className={'flex items-center justify-between space-x-2 mt-2'}>
-                                <RecapCard label={'Strike 1 price'} value={`${(product.issuanceCycle.strikePrice1 / ethPrice * 100).toFixed(2)}%`} />
-                                <RecapCard label={'Strike 2 price'} value={`${(product.issuanceCycle.strikePrice2 / ethPrice * 100).toFixed(2)}%`} />
-                                <RecapCard label={'Strike 3 price'} value={`${(product.issuanceCycle.strikePrice3 / ethPrice * 100).toFixed(2)}%`} />
-                                <RecapCard label={'Strike 4 price'} value={`${(product.issuanceCycle.strikePrice4 / ethPrice * 100).toFixed(2)}%`} />
+                                <RecapCard label={'Strike 1 price'} value={`${(product.issuanceCycle.strikePrice1)}`} />
+                                <RecapCard label={'Strike 2 price'} value={`${(product.issuanceCycle.strikePrice2)}`} />
+                                <RecapCard label={'Strike 3 price'} value={`${(product.issuanceCycle.strikePrice3)}`} />
+                                <RecapCard label={'Strike 4 price'} value={`${(product.issuanceCycle.strikePrice4)}`} />
                             </div>
                         </div>
                     }
