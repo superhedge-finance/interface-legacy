@@ -117,7 +117,7 @@ export const ActionArea = ({productAddress}: { productAddress: string }) => {
             }
         }
         return `DEPOSIT ${(pricePerLot * lots).toLocaleString()} USDC`
-    }, [principalBalance, optionBalance, couponBalance, profit])
+    }, [principalBalance, lots, profit, optionBalance, couponBalance])
 
     useEffect(() => {
         (async () => {
@@ -167,7 +167,7 @@ export const ActionArea = ({productAddress}: { productAddress: string }) => {
                 {
                     !address &&
                     <div
-                        className={'text-[#161717] text-[18px] leading-[24px] px-10 flex items-center justify-between text-center'}>
+                        className={'text-[#161717] text-[18px] leading-[24px] px-10 text-center'}>
                         Please Connect your Wallet to have access to our Products.
                     </div>
                 }
@@ -193,7 +193,7 @@ export const ActionArea = ({productAddress}: { productAddress: string }) => {
                                         <span className={'text-[16px] leading-[16px] font-light text-grey-70'}>You can Top-up with Profit</span>
                                         <span
                                             className={'text-[22px] leading-[22px] font-medium text-black text-center'}>{(optionBalance + couponBalance).toLocaleString()} USDC</span>
-                                    
+
                                         <RadioGroup className={'flex items-center justify-between space-x-3 mt-6'} value={profit} onChange={setProfit}>
                                             <RadioGroup.Option className={'flex items-center cursor-pointer space-x-2'} value={1}>
                                                 {({ checked }) => (
@@ -316,7 +316,7 @@ export const ActionArea = ({productAddress}: { productAddress: string }) => {
                 {
                     address &&
                     <div className={'mt-7 flex items-center justify-center'}>
-                        <span className={'text-[#677079]'}>Contract:&nbsp;</span>
+                        <span className={'text-[#677079]'}>Contract:</span>
                         <span
                             className={'mr-2'}>{productAddress.slice(0, 10) + '...' + productAddress.slice(-10)}</span>
                         <a href={`https://goerli.etherscan.io/address/${productAddress}`} target={'_blank'}

@@ -41,6 +41,8 @@ export const ContractProvider = ({
 
                             if (_productStatus > 0) {
                                 const currentCapacity = await _productInstance.currentCapacity()
+                                const issuanceCycle = await _productInstance.issuanceCycle()
+
                                 const _product: IProduct = {
                                     name,
                                     address: productAddress,
@@ -48,6 +50,14 @@ export const ContractProvider = ({
                                     status: _productStatus,
                                     maxCapacity: await _productInstance.maxCapacity(),
                                     currentCapacity: ethers.utils.formatUnits(currentCapacity, 6),
+                                    issuanceCycle: {
+                                        coupon: issuanceCycle.coupon.toNumber(),
+                                        strikePrice1: issuanceCycle.strikePrice1.toNumber(),
+                                        strikePrice2: issuanceCycle.strikePrice2.toNumber(),
+                                        strikePrice3: issuanceCycle.strikePrice3.toNumber(),
+                                        strikePrice4: issuanceCycle.strikePrice4.toNumber(),
+                                        url: issuanceCycle.url,
+                                    }
                                 }
                                 _products.push(_product)
                             }

@@ -15,6 +15,7 @@ const status = [
     'Active',
     'Funds Locked'
 ]
+const ethPrice = 1400
 
 const RecapCard = ({ label, value }: { label: string, value: string }) => {
     return (
@@ -45,6 +46,8 @@ const ProductDetail: NextPage = () => {
 
                     if (_productStatus > 0) {
                         const currentCapacity = await _productInstance.currentCapacity()
+                        const issuanceCycle = await _productInstance.issuanceCycle()
+
                         const _product: IProduct = {
                             name: await _productInstance.name(),
                             address: address,
@@ -52,6 +55,14 @@ const ProductDetail: NextPage = () => {
                             status: _productStatus,
                             maxCapacity: await _productInstance.maxCapacity(),
                             currentCapacity: ethers.utils.formatUnits(currentCapacity, 6),
+                            issuanceCycle: {
+                                coupon: issuanceCycle.coupon.toNumber(),
+                                strikePrice1: issuanceCycle.strikePrice1.toNumber(),
+                                strikePrice2: issuanceCycle.strikePrice2.toNumber(),
+                                strikePrice3: issuanceCycle.strikePrice3.toNumber(),
+                                strikePrice4: issuanceCycle.strikePrice4.toNumber(),
+                                url: issuanceCycle.url,
+                            }
                         }
                         setProduct(_product)
                     }
@@ -122,14 +133,14 @@ const ProductDetail: NextPage = () => {
                             </div>
                             <div className={'flex items-center justify-between space-x-2 mt-5'}>
                                 <RecapCard label={'Investment Duration'} value={'30D'} />
-                                <RecapCard label={'Coupon'} value={'0.10% / WEEK'} />
+                                <RecapCard label={'Coupon'} value={`${product.issuanceCycle.coupon / 100}% / WEEK`} />
                                 <RecapCard label={'Principal Protection'} value={'100%'} />
                             </div>
                             <div className={'flex items-center justify-between space-x-2 mt-2'}>
-                                <RecapCard label={'Strike 1 price'} value={'125%'} />
-                                <RecapCard label={'Strike 2 price'} value={'145%'} />
-                                <RecapCard label={'Strike 3 price'} value={'135%'} />
-                                <RecapCard label={'Strike 4 price'} value={'155%'} />
+                                <RecapCard label={'Strike 1 price'} value={`${(product.issuanceCycle.strikePrice1 / ethPrice * 100).toFixed(2)}%`} />
+                                <RecapCard label={'Strike 2 price'} value={`${(product.issuanceCycle.strikePrice2 / ethPrice * 100).toFixed(2)}%`} />
+                                <RecapCard label={'Strike 3 price'} value={`${(product.issuanceCycle.strikePrice3 / ethPrice * 100).toFixed(2)}%`} />
+                                <RecapCard label={'Strike 4 price'} value={`${(product.issuanceCycle.strikePrice4 / ethPrice * 100).toFixed(2)}%`} />
                             </div>
                         </div>
                     }
