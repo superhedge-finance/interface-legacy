@@ -31,7 +31,7 @@ export default function Product({product}: { product: IProduct }) {
                 <div className={'flex flex-col flex-1'}>
                     <div className="flex justify-between my-1">
                         <span className="text-sm text-gray-700">Amount deposited</span>
-                        <span className="text-sm text-gray-700">USDC {product.currentCapacity.toString()}</span>
+                        <span className="text-sm text-gray-700">USDC {Number(product.currentCapacity).toLocaleString()}</span>
                     </div>
                     <div className="w-full bg-[#00000014] rounded my-1">
                         <div className="bg-gray-600 h-2 rounded" style={{
@@ -41,7 +41,7 @@ export default function Product({product}: { product: IProduct }) {
                     </div>
                     <div className="flex justify-between mb-2">
                         <span className="text-sm text-gray-700">Max</span>
-                        <span className="text-sm text-gray-700">USDC {product.maxCapacity.toString()}</span>
+                        <span className="text-sm text-gray-700">USDC {Number(product.maxCapacity.toString()).toLocaleString()}</span>
                     </div>
                 </div>
                 <div className={'flex flex-col items-center'}>
