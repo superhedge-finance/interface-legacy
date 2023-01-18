@@ -118,7 +118,7 @@ const ProductDetail: NextPage = () => {
                                 </div>
                                 <div className="w-full bg-[#00000014] rounded my-1">
                                     <div className="bg-gray-600 h-2 rounded" style={{
-                                        width: '65%',
+                                        width: Number(product.currentCapacity) / Number(product.maxCapacity) * 100 + '%',
                                         background: 'linear-gradient(267.56deg, #11CB79 14.55%, #11A692 68.45%, #002366 136.67%)'
                                     }}></div>
                                 </div>
