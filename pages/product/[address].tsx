@@ -9,6 +9,7 @@ import ProductABI from "../../constants/abis/SHProduct.json";
 import {ChainId} from "../../constants/chain";
 import {useProvider} from "wagmi";
 import {SkeletonCard} from "../../components/basic";
+import {getProduct} from "../../service/api";
 
 const status = [
     'Pending',
@@ -27,7 +28,7 @@ const RecapCard = ({ label, value }: { label: string, value: string }) => {
     )
 }
 
-const ProductDetail: NextPage = () => {
+const ProductDetail = () => {
     const provider = useProvider({
         chainId: ChainId.GOERLI,
     })
@@ -37,7 +38,7 @@ const ProductDetail: NextPage = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [product, setProduct] = useState<IProduct | undefined>(undefined)
 
-    useEffect(() => {
+    /*useEffect(() => {
         (async () => {
             if (address && provider && typeof address === "string") {
                 setIsLoading(true)
@@ -74,7 +75,17 @@ const ProductDetail: NextPage = () => {
                 }
             }
         })()
-    }, [address, provider])
+    }, [address, provider])*/
+
+    useEffect(() => {
+        return () => {
+            setIsLoading(true)
+            getProduct(address as string).then((product) => {
+                setProduct(product)
+            }).finally(() => setIsLoading(false))
+        };
+    }, [address]);
+
 
     return (
         <div>
