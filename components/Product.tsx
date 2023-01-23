@@ -69,7 +69,7 @@ export default function Product({product}: { product: IProduct }) {
             </div>
             <Link href={`/product/${product.address}`}>
                 <div className="py-3 px-5 text-base font-medium rounded-lg text-white focus:outline-none bg-black hover:bg-gray-600 focus:z-10 focus:ring-4 focus:ring-gray-200 flex items-center justify-center cursor-pointer mt-8">
-                    DEPOSIT
+                    Info
                 </div>
             </Link>
         </div>

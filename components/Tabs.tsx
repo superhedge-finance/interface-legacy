@@ -1,15 +1,17 @@
 import { useEffect, useState } from 'react'
 import { Tab } from '@headlessui/react'
 import Product from './Product'
-import useContract from '../hooks/useContract'
-import {Loading, SkeletonCard} from "./basic";
+import {SkeletonCard} from "./basic";
+import {getProducts} from "../service/api";
+import {IProduct} from "../types/interface";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
 
 export default function Tabs() {
-  const { products, isLoading: isProductLoading } = useContract()
+  const [products, setProducts] = useState<IProduct[]>([])
+  const [isProductLoading, setIsProductLoading] = useState(false)
   const [categories, setCategories] = useState({
     "All": [],
     "ETH/USDC": [],
@@ -34,6 +36,16 @@ export default function Tabs() {
       setCategories(_categories)
     }
   }, [products])
+
+  useEffect(() => {
+    return () => {
+      setIsProductLoading(true)
+      getProducts().then((products) => {
+        setProducts(products)
+      }).finally(() => setIsProductLoading(false))
+    };
+  }, []);
+
 
   return (
     <div className="w-full mr-8 px-2 sm:px-0">

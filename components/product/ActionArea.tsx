@@ -270,7 +270,9 @@ export const ActionArea = ({productAddress}: { productAddress: string }) => {
                         <div className={'mt-7'}>
                             <PrimaryButton
                                 label={depositButtonLabel}
-                                onClick={() => setIsOpen(true)}/>
+                                disabled={status !== 1}
+                                onClick={() => setIsOpen(true)}
+                            />
                         </div>
                     </>
                 }
@@ -295,8 +297,10 @@ export const ActionArea = ({productAddress}: { productAddress: string }) => {
                         </div>
 
                         <div className={'font-light text-[14px] leading-[20px] text-[#677079] mt-[44px]'}>
-                            Your Deposit is locked, so you can initiate only Profit Withdraw right now or request
-                            withdraw All Amount at Maturity Date
+                            {
+                                status !== 1 ? 'Your Deposit is locked, so you can initiate only Profit Withdraw right now or request\n' +
+                                    'withdraw All Amount at Maturity Date.' : 'Vault is unlocked. You may deposits or withdraw funds at this time.'
+                            }
                         </div>
 
                         <div className={'mt-7'}>

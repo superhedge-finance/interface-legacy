@@ -1,8 +1,8 @@
 import Image from "next/image";
 
-export const PrimaryButton = ({ label, onClick }: { label: string, onClick?: () => void }) => {
+export const PrimaryButton = ({ label, disabled = false, onClick }: { label: string, disabled?: boolean, onClick?: () => void }) => {
     return (
-        <button className='bg-[#292929] w-full text-white rounded-[8px] py-[18px] px-[28px]' onClick={onClick}>
+        <button className={`bg-[#292929] w-full text-white rounded-[8px] py-[18px] px-[28px] ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`} onClick={!disabled ? onClick : undefined}>
             {label}
         </button>
     );
