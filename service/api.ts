@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = process.env.NEXT_API_BASE_URL || 'http://192.168.8.111:4000/api';
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://192.168.8.111:4000/api';
 
 export const getProducts = async () => {
     try {
