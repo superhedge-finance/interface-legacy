@@ -55,7 +55,7 @@
             {
                 "indexed": false,
                 "internalType": "uint256",
-                "name": "maxSupply",
+                "name": "maxCapacity",
                 "type": "uint256"
             }
         ],
