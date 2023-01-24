@@ -45,7 +45,7 @@ export const ActionArea = ({productAddress}: { productAddress: string }) => {
                 setDepositStatus(DEPOSIT_STATUS.APPROVING)
                 await tx.wait()
                 setDepositStatus(DEPOSIT_STATUS.DEPOSIT)
-                const depositTx = await productInstance.deposit(ethers.utils.parseUnits((pricePerLot * lots).toString(), decimal))
+                const depositTx = await productInstance.deposit(ethers.utils.parseUnits((pricePerLot * lots).toString(), decimal), false);
                 await depositTx.wait()
             }
         } catch (e) {
