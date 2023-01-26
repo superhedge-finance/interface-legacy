@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react'
+import {useEffect, useMemo, useState} from 'react'
 import { Tab } from '@headlessui/react'
 import Product from './Product'
 import {SkeletonCard} from "./basic";
-import {getProducts} from "../service/api";
+import {getProducts} from "../service";
 import {IProduct} from "../types/interface";
 
 function classNames(...classes: string[]) {
@@ -12,38 +12,31 @@ function classNames(...classes: string[]) {
 export default function Tabs() {
   const [products, setProducts] = useState<IProduct[]>([])
   const [isProductLoading, setIsProductLoading] = useState(false)
-  const [categories, setCategories] = useState({
-    "All": [],
-    "ETH/USDC": [],
-    "BTC/USDC": [],
-  })
+  const [category, setCategory] = useState('All')
+
+  const categories = useMemo(() => {
+    return ['All'].concat(products.map((product) => product.underlying))
+  }, [products]);
+
+  const filteredProducts = useMemo(() => {
+    return products.filter((product) => {
+      if (category === 'All') return true
+      return product.underlying === category
+    })
+  }, [products, category])
 
   useEffect(() => {
-    if (products.length > 0) {
-      const _categories: any = {
-        "All": [],
-        "ETH/USDC": [],
-        "BTC/USDC": [],
+    (async () => {
+      try {
+        setIsProductLoading(true)
+        const _products = await getProducts()
+        setProducts(_products)
+      } catch (e) {
+        console.error(e)
+      } finally {
+        setIsProductLoading(false)
       }
-      products.forEach((product) => {
-        _categories["All"].push(product)
-        if (product.name === "ETH/USDC") {
-          _categories["ETH/USDC"].push(product)
-        } else if (product.name === "BTC/USDC") {
-          _categories["BTC/USDC"].push(product)
-        }
-      })
-      setCategories(_categories)
-    }
-  }, [products])
-
-  useEffect(() => {
-    return () => {
-      setIsProductLoading(true)
-      getProducts().then((products) => {
-        setProducts(products)
-      }).finally(() => setIsProductLoading(false))
-    };
+    })()
   }, []);
 
 
@@ -52,18 +45,19 @@ export default function Tabs() {
       <div className="max-w-md">
         <Tab.Group>
           <Tab.List className="flex space-x-1 rounded-xl bg-blue-900/20 p-1">
-            {Object.keys(categories).map((category) => (
+            {categories.map((category, index) => (
               <Tab
-                key={category}
+                key={index}
                 className={({ selected }) =>
                   classNames(
                     'w-full rounded-lg py-2.5 text-sm font-medium leading-5 text-blue-700',
-                    'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
+                    'focus:outline-none',
                     selected
                       ? 'bg-white shadow'
                       : 'text-blue-100 hover:bg-white/[0.12] hover:text-white'
                   )
                 }
+                onClick={() => setCategory(category)}
               >
                 {category}
               </Tab>
@@ -78,7 +72,7 @@ export default function Tabs() {
               <SkeletonCard />
             </div>
         }
-        {!isProductLoading && products.map((product, idx) => (
+        {!isProductLoading && filteredProducts.map((product, idx) => (
             <Product key={idx} product={product} />
         ))}
       </div>

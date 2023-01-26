@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import {IProduct} from '../types/interface';
 import Link from "next/link";
+import {useMemo} from "react";
+import {ethers} from "ethers";
 
 const status = [
     'Pending',
@@ -11,8 +13,10 @@ const status = [
 ]
 
 export default function Product({product}: { product: IProduct }) {
-    const progressPercent = Number(product.currentCapacity) / Number(product.maxCapacity) * 100;
-    
+    const capacity = useMemo(() => {
+        return Number(ethers.utils.formatUnits(product.currentCapacity, 6))
+    }, [product]);
+
     return (
         <div className="flex flex-col p-6 bg-white border border-gray-200 rounded shadow-md hover:border-gray-300">
             <div>
@@ -35,11 +39,11 @@ export default function Product({product}: { product: IProduct }) {
                 <div className={'flex flex-col flex-1'}>
                     <div className="flex justify-between my-1">
                         <span className="text-sm text-gray-700">Amount deposited</span>
-                        <span className="text-sm text-gray-700">USDC {Number(product.currentCapacity).toLocaleString()}</span>
+                        <span className="text-sm text-gray-700">USDC {capacity.toLocaleString()}</span>
                     </div>
                     <div className="w-full bg-[#00000014] rounded my-1">
                         <div className="bg-gray-600 h-2 rounded" style={{
-                            width: progressPercent + '%',
+                            width: capacity / Number(product.maxCapacity) * 100 + '%',
                             background: 'linear-gradient(267.56deg, #11CB79 14.55%, #11A692 68.45%, #002366 136.67%)'
                         }}></div>
                     </div>

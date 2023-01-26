@@ -9,14 +9,13 @@ import {
     trustWallet,
     ledgerWallet,
 } from '@rainbow-me/rainbowkit/wallets';
-import { configureChains, createClient, WagmiConfig } from 'wagmi';
-import { mainnet, goerli, polygon } from 'wagmi/chains';
-import { alchemyProvider } from 'wagmi/providers/alchemy';
-import { publicProvider } from 'wagmi/providers/public';
-import {ContractProvider} from "./providers/ContractProvider";
+import {configureChains, createClient, WagmiConfig} from 'wagmi';
+import {mainnet, goerli, polygon} from 'wagmi/chains';
+import {alchemyProvider} from 'wagmi/providers/alchemy';
+import {publicProvider} from 'wagmi/providers/public';
 import Layout from "./Layout";
 
-const { chains, provider, webSocketProvider } = configureChains(
+const {chains, provider, webSocketProvider} = configureChains(
     [
         mainnet,
         polygon,
@@ -25,14 +24,14 @@ const { chains, provider, webSocketProvider } = configureChains(
             : []),
     ],
     [
-        alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY_MAINNET || '' }),
-        alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY_POLYGON || '' }),
-        alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY_GOERLI || '' }),
+        alchemyProvider({apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY_MAINNET || ''}),
+        alchemyProvider({apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY_POLYGON || ''}),
+        alchemyProvider({apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY_GOERLI || ''}),
         publicProvider(),
     ]
 );
 
-const { wallets } = getDefaultWallets({
+const {wallets} = getDefaultWallets({
     appName: 'Superhedge demo',
     chains,
 });
@@ -46,9 +45,9 @@ const connectors = connectorsForWallets([
     {
         groupName: 'Other',
         wallets: [
-            argentWallet({ chains }),
-            trustWallet({ chains }),
-            ledgerWallet({ chains }),
+            argentWallet({chains}),
+            trustWallet({chains}),
+            ledgerWallet({chains}),
         ],
     },
 ]);
@@ -64,14 +63,12 @@ type AppProps = {
     children?: React.ReactNode
 }
 
-function App({ children }: AppProps) {
+function App({children}: AppProps) {
     return (
         <React.StrictMode>
             <WagmiConfig client={wagmiClient}>
                 <RainbowKitProvider appInfo={demoAppInfo} chains={chains}>
-                    <ContractProvider>
-                        <Layout>{children}</Layout>
-                    </ContractProvider>
+                    <Layout>{children}</Layout>
                 </RainbowKitProvider>
             </WagmiConfig>
         </React.StrictMode>

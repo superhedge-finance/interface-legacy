@@ -41,15 +41,19 @@ export const ActionArea = ({productAddress}: { productAddress: string }) => {
         try {
             if (currencyInstance && productInstance) {
                 const decimal = await currencyInstance.decimals()
-                const tx = await currencyInstance.approve(productAddress, ethers.utils.parseUnits((pricePerLot * lots).toString(), decimal))
-                setDepositStatus(DEPOSIT_STATUS.APPROVING)
-                await tx.wait()
+                const requestBalance = ethers.utils.parseUnits((pricePerLot * lots).toString(), decimal)
+                const currentAllowance = await currencyInstance.allowance(address, productAddress)
+                if (currentAllowance.lt(requestBalance)) {
+                    const tx = await currencyInstance.approve(productAddress, requestBalance)
+                    setDepositStatus(DEPOSIT_STATUS.APPROVING)
+                    await tx.wait()
+                }
                 setDepositStatus(DEPOSIT_STATUS.DEPOSIT)
-                const depositTx = await productInstance.deposit(ethers.utils.parseUnits((pricePerLot * lots).toString(), decimal), false);
+                const depositTx = await productInstance.deposit(ethers.utils.parseUnits((pricePerLot * lots).toString(), decimal), principalBalance > 0 && profit === 1)
                 await depositTx.wait()
             }
         } catch (e) {
-            console.log(`Error while approving: ${e}`)
+            console.log(`Error while approve and deposit: ${e}`)
         } finally {
             setDepositStatus(DEPOSIT_STATUS.NONE)
             setIsOpen(false)
