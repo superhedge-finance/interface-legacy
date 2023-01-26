@@ -3,13 +3,13 @@ import {useRouter} from "next/router";
 import {ActionArea} from "../../components/product/ActionArea";
 import Image from "next/image";
 import {IProduct} from "../../types/interface";
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {ethers} from "ethers";
 import ProductABI from "../../constants/abis/SHProduct.json";
 import {ChainId} from "../../constants/chain";
 import {useProvider} from "wagmi";
 import {SkeletonCard} from "../../components/basic";
-import {getProduct} from "../../service/api";
+import {getProduct} from "../../service";
 
 const status = [
     'Pending',
@@ -77,6 +77,13 @@ const ProductDetail = () => {
         })()
     }, [address, provider])*/
 
+    const capacity = useMemo(() => {
+        if (product) {
+            return Number(ethers.utils.formatUnits(product.currentCapacity, 6))
+        }
+        return 0
+    }, [product]);
+
     useEffect(() => {
         return () => {
             setIsLoading(true)
@@ -85,7 +92,6 @@ const ProductDetail = () => {
             }).finally(() => setIsLoading(false))
         };
     }, [address]);
-
 
     return (
         <div>
@@ -125,11 +131,11 @@ const ProductDetail = () => {
                                 <div className="flex justify-between my-1">
                                     <span className="text-sm text-gray-700">Amount deposited</span>
                                     <span
-                                        className="text-sm text-gray-700">USDC {Number(product.currentCapacity).toLocaleString()}</span>
+                                        className="text-sm text-gray-700">USDC {capacity.toLocaleString()}</span>
                                 </div>
                                 <div className="w-full bg-[#00000014] rounded my-1">
                                     <div className="bg-gray-600 h-2 rounded" style={{
-                                        width: Number(product.currentCapacity) / Number(product.maxCapacity) * 100 + '%',
+                                        width: capacity / Number(product.maxCapacity) * 100 + '%',
                                         background: 'linear-gradient(267.56deg, #11CB79 14.55%, #11A692 68.45%, #002366 136.67%)'
                                     }}></div>
                                 </div>
