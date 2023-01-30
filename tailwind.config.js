@@ -25,13 +25,13 @@ module.exports = {
         warning: '#E89D45',
         success: '#70B877',
         indicative: '#4BA6A0',
-        live: '#68AC6F',
+        active: '#68AC6F',
         callSpread: '#7991DA',
         putSpread: '#95B221',
         butterFly: '#8B78CB'
       },
       backgroundImage: {
-        'primary-gradient': 'linear-gradient(267.79deg, #11CB79 42.5%, #11A692 67.51%, #002366 99.18%), #161717',
+        'primary-gradient': 'linear-gradient(267.79deg, #11CB79 42.5%, #11A692 67.51%, #002366 99.18%)',
         'main-gradient': 'linear-gradient(270.15deg, #11CB79 -4.2%, #11A692 41.69%, #002366 99.8%)',
         'diamond-gradient': 'radial-gradient(197.31% 198.01% at 47.44% -82.95%, rgba(17, 203, 121, 0.16) 0%, rgba(17, 203, 121, 0) 100%)',
         'diamond2-gradient': 'radial-gradient(189.77% 193.68% at 46.79% -80%, rgba(17, 203, 121, 0.16) 0%, rgba(17, 203, 121, 0) 100%)'

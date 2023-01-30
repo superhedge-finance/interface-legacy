@@ -10,6 +10,7 @@ import {ChainId} from "../../constants/chain";
 import {useProvider} from "wagmi";
 import {SkeletonCard} from "../../components/basic";
 import {getProduct} from "../../service";
+import {ProductSpreads, ProductStatus} from "../../types";
 
 const status = [
     'Pending',
@@ -38,51 +39,37 @@ const ProductDetail = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [product, setProduct] = useState<IProduct | undefined>(undefined)
 
-    /*useEffect(() => {
-        (async () => {
-            if (address && provider && typeof address === "string") {
-                setIsLoading(true)
-                try {
-                    const _productInstance = new ethers.Contract(address, ProductABI, provider)
-                    const _productStatus = await _productInstance.status()
-
-                    if (_productStatus > 0) {
-                        const currentCapacity = await _productInstance.currentCapacity()
-                        const issuanceCycle = await _productInstance.issuanceCycle()
-
-                        const _product: IProduct = {
-                            name: await _productInstance.name(),
-                            address: address,
-                            underlying: await _productInstance.underlying(),
-                            status: _productStatus,
-                            maxCapacity: await _productInstance.maxCapacity(),
-                            currentCapacity: ethers.utils.formatUnits(currentCapacity, 6),
-                            issuanceCycle: {
-                                coupon: issuanceCycle.coupon.toNumber(),
-                                strikePrice1: issuanceCycle.strikePrice1.toNumber(),
-                                strikePrice2: issuanceCycle.strikePrice2.toNumber(),
-                                strikePrice3: issuanceCycle.strikePrice3.toNumber(),
-                                strikePrice4: issuanceCycle.strikePrice4.toNumber(),
-                                url: issuanceCycle.url,
-                            }
-                        }
-                        setProduct(_product)
-                    }
-                } catch (e) {
-                    console.error(e)
-                } finally {
-                    setIsLoading(false)
-                }
-            }
-        })()
-    }, [address, provider])*/
-
     const capacity = useMemo(() => {
         if (product) {
             return Number(ethers.utils.formatUnits(product.currentCapacity, 6))
         }
         return 0
     }, [product]);
+
+    const currency1 = useMemo(() => {
+        if (product) {
+            return '/currency/' + product.underlying.split('/')[1] + '.svg'
+        }
+        return '/currency/usdc.svg'
+    }, [product]);
+
+    const currency2 = useMemo(() => {
+        if (product) {
+            return '/currency/' + product.underlying.split('/')[0] + '.svg'
+        }
+        return '/currency/eth.svg'
+    }, [product]);
+
+    const categoryIndex = useMemo(() => {
+        if (product && product.name.toLowerCase().includes('bullish')) {
+            return 0
+        } else if (product && product.name.toLowerCase().includes('bearish')) {
+            return 1
+        } else if (product && product.name.toLowerCase().includes('range')) {
+            return 2
+        }
+        return -1
+    }, [product])
 
     useEffect(() => {
         return () => {
@@ -105,15 +92,19 @@ const ProductDetail = () => {
                         !isLoading && product &&
                         <div className="flex flex-col p-6">
                             <div>
-                                <span className='inline-block text-white text-sm bg-[#68AC6F] p-2 rounded-lg'>{status[product.status]}</span>
-                                <span className='inline-block text-white text-sm bg-[#7991DA] ml-3 p-2 rounded-lg'>Call-spread</span>
+                                <span
+                                    className={`inline-block text-white text-sm py-2 px-3 rounded-lg ${ProductStatus[product.status].className}`}>{ProductStatus[product.status].label}</span>
+                                {
+                                    categoryIndex >= 0 &&
+                                    <span className={`inline-block text-white text-sm ml-3 px-4 py-2 rounded-lg ${ProductSpreads[categoryIndex].className}`}>{ProductSpreads[categoryIndex].label}</span>
+                                }
                             </div>
                             <div className={'flex justify-between items-end my-5'}>
                                 <div className='flex flex-row'>
                                     <div className={'relative flex items-center mr-[40px]'}>
-                                        <Image src='/usdc.svg' className='rounded-full' alt='Product Logo' width={60}
+                                        <Image src={currency1} className='rounded-full' alt='Product Logo' width={60}
                                                height={60}/>
-                                        <Image src='/ethereum.svg' className='rounded-full absolute left-[40px]'
+                                        <Image src={currency2} className='rounded-full absolute left-[40px]'
                                                alt='Product Logo'
                                                width={60} height={60}/>
                                     </div>
