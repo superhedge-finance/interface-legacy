@@ -30,14 +30,18 @@ export default function Product({product}: { product: IProduct }) {
     }, [product]);
 
     return (
-        <div className="flex flex-col p-6 bg-white border border-gray-200 rounded shadow-md hover:border-gray-300">
-            <div>
-                <span
-                    className={`inline-block text-white text-sm py-2 px-3 rounded-lg ${ProductStatus[product.status].className}`}>{ProductStatus[product.status].label}</span>
-                {
-                    categoryIndex >= 0 &&
-                    <span className={`inline-block text-white text-sm ml-3 px-4 py-2 rounded-lg ${ProductSpreads[categoryIndex].className}`}>{ProductSpreads[categoryIndex].label}</span>
-                }
+        <div className="flex flex-col py-11 px-12 rounded-[16px] bg-white">
+            <div className={'flex justify-between'}>
+                <div className={'inline-block'}>
+                    <span
+                    className={`text-white text-sm py-2 px-3 rounded-lg ${ProductStatus[product.status].className}`}>{ProductStatus[product.status].label}</span>
+                    {
+                        categoryIndex >= 0 &&
+                        <span
+                            className={`text-white text-sm ml-3 px-4 py-2 rounded-lg ${ProductSpreads[categoryIndex].className}`}>{ProductSpreads[categoryIndex].label}</span>
+                    }
+                </div>
+                <Image src={'/icons/social_logo.svg'} alt={'social logo'} width={80} height={72} />
             </div>
             <div className='my-5 flex flex-row'>
                 <div className={'relative flex items-center mr-[40px]'}>

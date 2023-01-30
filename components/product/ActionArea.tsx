@@ -113,6 +113,9 @@ export const ActionArea = ({productAddress}: { productAddress: string }) => {
     }, [status, principalBalance, optionBalance, couponBalance])
 
     const depositButtonLabel = useMemo(() => {
+        if (status !== 1) {
+            return 'Please await unlock to deposit'
+        }
         if (principalBalance > 0) {
             if (profit === 1) {
                 return `TOP-UP ON ${(pricePerLot * lots - (optionBalance + couponBalance)).toLocaleString()} USDC`
@@ -121,7 +124,7 @@ export const ActionArea = ({productAddress}: { productAddress: string }) => {
             }
         }
         return `DEPOSIT ${(pricePerLot * lots).toLocaleString()} USDC`
-    }, [principalBalance, lots, profit, optionBalance, couponBalance])
+    }, [principalBalance, status, lots, profit, optionBalance, couponBalance])
 
     useEffect(() => {
         (async () => {
