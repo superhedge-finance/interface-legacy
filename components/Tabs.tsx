@@ -15,7 +15,7 @@ export default function Tabs() {
   const [category, setCategory] = useState('All')
 
   const categories = useMemo(() => {
-    return ['All'].concat(products.map((product) => product.underlying))
+    return ['All'].concat(products.map((product) => product.underlying).filter((v, i, a) => a.indexOf(v) === i))
   }, [products]);
 
   const filteredProducts = useMemo(() => {
