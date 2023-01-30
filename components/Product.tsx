@@ -45,8 +45,8 @@ export default function Product({product}: { product: IProduct }) {
             </div>
             <div className='my-5 flex flex-row'>
                 <div className={'relative flex items-center mr-[40px]'}>
-                    <Image src={currency1} className='rounded-full' alt='Product Logo' width={60} height={60}/>
-                    <Image src={currency2} className='rounded-full absolute left-[40px]' alt='Product Logo'
+                    <Image src={currency1.toLowerCase()} className='rounded-full' alt='Product Logo' width={60} height={60}/>
+                    <Image src={currency2.toLowerCase()} className='rounded-full absolute left-[40px]' alt='Product Logo'
                            width={60} height={60}/>
                 </div>
                 <div className='flex flex-col justify-around ml-3'>
