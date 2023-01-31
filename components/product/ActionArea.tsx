@@ -316,11 +316,14 @@ export const ActionArea = ({productAddress}: { productAddress: string }) => {
                                 onClick={() => setWithdrawStatus(WITHDRAW_STATUS.INITIATE)}
                             />
 
-                            <button
-                                className='bg-white border-[1px] border-[#292929] w-full text-black rounded-[8px] py-[18px] px-[28px] mt-4'
-                                onClick={onRequestWithdraw}>
-                                {'REQUEST WITHDRAW'}
-                            </button>
+                            {
+                                (status === 3 || status === 4) &&
+                                    <button
+                                        className='bg-white border-[1px] border-[#292929] w-full text-black rounded-[8px] py-[18px] px-[28px] mt-4'
+                                        onClick={onRequestWithdraw}>
+                                        {'REQUEST WITHDRAW'}
+                                    </button>
+                            }
                         </div>
                     </>
                 }
