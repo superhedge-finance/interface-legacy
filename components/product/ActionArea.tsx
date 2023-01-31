@@ -118,7 +118,10 @@ export const ActionArea = ({productAddress}: { productAddress: string }) => {
         }
         if (principalBalance > 0) {
             if (profit === 1) {
-                return `TOP-UP ON ${(pricePerLot * lots - (optionBalance + couponBalance)).toLocaleString()} USDC`
+                if (pricePerLot * lots > (optionBalance + couponBalance)) {
+                    return `TOP-UP ON ${(pricePerLot * lots - (optionBalance + couponBalance)).toLocaleString()} USDC`
+                }
+                return `TOP-UP ON 0 USDC`
             } else if (profit === 2) {
                 return `TOP-UP ON ${(pricePerLot * lots).toLocaleString()} USDC`
             }
