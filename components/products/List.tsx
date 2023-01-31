@@ -5,10 +5,7 @@ import {SkeletonCard} from "../basic";
 import {getProducts} from "../../service";
 import {IProduct} from "../../types/interface";
 import {ProductCategoryList} from "../../types";
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ')
-}
+import {classNames} from "../../styles/helper";
 
 export default function ProductList() {
   const [products, setProducts] = useState<IProduct[]>([])

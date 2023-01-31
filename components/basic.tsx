@@ -1,6 +1,6 @@
-export const PrimaryButton = ({ label, disabled = false, onClick }: { label: string, disabled?: boolean, onClick?: () => void }) => {
+export const PrimaryButton = ({ label, disabled = false, className, onClick }: { label: string, disabled?: boolean, className?: string, onClick?: () => void }) => {
     return (
-        <button className={`bg-[#292929] w-full text-white rounded-[8px] py-[18px] px-[28px] ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`} onClick={!disabled ? onClick : undefined}>
+        <button className={`bg-[#292929] w-full text-white rounded-[8px] py-[18px] px-[28px] ${className ?? ''} ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`} onClick={!disabled ? onClick : undefined}>
             {label}
         </button>
     );
