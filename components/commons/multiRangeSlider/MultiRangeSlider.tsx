@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState, useRef } from "react";
 import classnames from "classnames";
 import PropTypes from "prop-types";
 
-const MultiRangeSlider = ({ min, max, onChange }: { min: number, max: number, onChange: ({min, max}: {min: number, max: number}) => void}) => {
+const MultiRangeSlider = ({ min, max, step, leftDesc, rightDesc, unit, onChange }: { min: number, max: number, step: number, leftDesc: string, rightDesc: string, unit?: string, onChange: ({min, max}: {min: number, max: number}) => void}) => {
     const [minVal, setMinVal] = useState(min);
     const [maxVal, setMaxVal] = useState(max);
     const minValRef = useRef(null);
@@ -43,8 +43,8 @@ const MultiRangeSlider = ({ min, max, onChange }: { min: number, max: number, on
 
     // Get min and max values when their state changes
     useEffect(() => {
-        onChange({ min: minVal, max: maxVal });
-    }, [minVal, maxVal, onChange]);
+        onChange({ min: minVal / step, max: maxVal / step });
+    }, [minVal, maxVal, step, onChange]);
 
     return (
         <div className="range-container">
@@ -80,8 +80,10 @@ const MultiRangeSlider = ({ min, max, onChange }: { min: number, max: number, on
             <div className="slider">
                 <div className="slider__track" />
                 <div ref={range} className="slider__range" />
-                <div className="slider__left-value">{minVal}</div>
-                <div className="slider__right-value">{maxVal}</div>
+                <div className="slider__left-value">{minVal / step}{unit}</div>
+                <div className="slider__right-value">{maxVal / step}{unit}</div>
+                <div className="slider__bottom_left-value">{leftDesc}</div>
+                <div className="slider__bottom_right-value">{rightDesc}</div>
             </div>
         </div>
     );

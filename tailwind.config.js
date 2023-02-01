@@ -15,7 +15,7 @@ module.exports = {
         'blacknew': {
           '100': '#161717'
         },
-        'grey': {
+        grey: {
           '80': '#494D51',
           '70': '#677079',
           '60': '#828A93',
@@ -25,7 +25,7 @@ module.exports = {
         'whitenew': {
           '100': '#F8F8F8',
         },
-        'accent': '#11CB79',
+        accent: '#11CB79',
         error: '#EB6565',
         warning: '#E89D45',
         success: '#70B877',
