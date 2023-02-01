@@ -1,15 +1,12 @@
-import {NextPage} from "next";
-import {useRouter} from "next/router";
-import {ActionArea} from "../../components/product/ActionArea";
-import Image from "next/image";
-import {IProduct} from "../../types/interface";
 import {useEffect, useMemo, useState} from "react";
+import {useRouter} from "next/router";
+import Image from "next/image";
 import {ethers} from "ethers";
-import ProductABI from "../../constants/abis/SHProduct.json";
-import {ChainId} from "../../constants/chain";
-import {useProvider} from "wagmi";
-import {SkeletonCard} from "../../components/basic";
+import {ActionArea} from "../../components/product/ActionArea";
+import {ParaLight16, SkeletonCard, SubtitleLight12, TitleH3} from "../../components/basic";
+import {ReturnsChart} from "../../components/product/ReturnsChart";
 import {getProduct} from "../../service";
+import {IProduct} from "../../types/interface";
 import {ProductSpreads, ProductStatus} from "../../types";
 
 const status = [
@@ -30,9 +27,6 @@ const RecapCard = ({ label, value }: { label: string, value: string }) => {
 }
 
 const ProductDetail = () => {
-    const provider = useProvider({
-        chainId: ChainId.GOERLI,
-    })
     const router = useRouter()
     const {address} = router.query
 
@@ -82,7 +76,7 @@ const ProductDetail = () => {
 
     return (
         <div>
-            <div className={'grid grid-cols-2 gap-12 px-12'}>
+            <div className={'grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-12 px-0 md:px-12'}>
                 <div>
                     {
                         isLoading &&
@@ -115,7 +109,7 @@ const ProductDetail = () => {
                                 </div>
                                 <div className={'flex flex-col items-center'}>
                                     <span className="d-block mb-1 text-sm font-normal text-gray-700 dark:text-gray-400">Estimated APY</span>
-                                    <h3 className="font-medium leading-tight text-3xl text-black">7-15%</h3>
+                                    <span className="font-medium leading-tight text-3xl text-transparent bg-primary-gradient bg-clip-text">7-15%</span>
                                 </div>
                             </div>
                             <div className={'flex flex-col flex-1'}>
@@ -137,19 +131,76 @@ const ProductDetail = () => {
                                 </div>
                             </div>
 
-                            <div className={'text-[32px] text-[#161717] leading-[40px] mt-10'}>
-                                Product Recap
+                            <div className={'flex flex-col mt-[80px]'}>
+                                <TitleH3>Product Recap</TitleH3>
+                                <div className={'flex items-center justify-between space-x-2 mt-5'}>
+                                    <RecapCard label={'Investment Duration'} value={'30D'} />
+                                    <RecapCard label={'Coupon'} value={`${product.issuanceCycle.coupon / 100}% / WEEK`} />
+                                    <RecapCard label={'Principal Protection'} value={'100%'} />
+                                </div>
+                                <div className={'flex items-center justify-between space-x-2 mt-2'}>
+                                    <RecapCard label={'Strike 1 price'} value={`${(product.issuanceCycle.strikePrice1)}`} />
+                                    <RecapCard label={'Strike 2 price'} value={`${(product.issuanceCycle.strikePrice2)}`} />
+                                    <RecapCard label={'Strike 3 price'} value={`${(product.issuanceCycle.strikePrice3)}`} />
+                                    <RecapCard label={'Strike 4 price'} value={`${(product.issuanceCycle.strikePrice4)}`} />
+                                </div>
                             </div>
-                            <div className={'flex items-center justify-between space-x-2 mt-5'}>
-                                <RecapCard label={'Investment Duration'} value={'30D'} />
-                                <RecapCard label={'Coupon'} value={`${product.issuanceCycle.coupon / 100}% / WEEK`} />
-                                <RecapCard label={'Principal Protection'} value={'100%'} />
+
+                            <div className={'mt-[80px]'}>
+                                <TitleH3>Product Returns</TitleH3>
+                                <ReturnsChart />
                             </div>
-                            <div className={'flex items-center justify-between space-x-2 mt-2'}>
-                                <RecapCard label={'Strike 1 price'} value={`${(product.issuanceCycle.strikePrice1)}`} />
-                                <RecapCard label={'Strike 2 price'} value={`${(product.issuanceCycle.strikePrice2)}`} />
-                                <RecapCard label={'Strike 3 price'} value={`${(product.issuanceCycle.strikePrice3)}`} />
-                                <RecapCard label={'Strike 4 price'} value={`${(product.issuanceCycle.strikePrice4)}`} />
+
+                            <div className={'mt-[80px] flex flex-col space-y-5'}>
+                                <TitleH3>Vault Strategy</TitleH3>
+                                <img src={'/products/vault_strategy.png'} alt={'vault strategy'} width={'100%'} />
+                                <ParaLight16>The vault earns yield on its ETH deposits by running a weekly automated ETH covered call strategy where it stakes its ETH deposits in and then uses its to collateralize weekly out-of-money ETH call options. The yield earned from both the covered call strategy and the ETH staking rewards are reinvested weekly, effectively compounding the yields for depositors over time.</ParaLight16>
+                            </div>
+
+                            <div className={'mt-[80px] flex flex-col space-y-5'}>
+                                <TitleH3>Product Lifecycle</TitleH3>
+                                <img src={'/products/product_lifecycle.png'} alt={'lifecycle'} width={'100%'} />
+                            </div>
+
+                            <div className={'mt-[80px] flex flex-col space-y-5'}>
+                                <TitleH3>Product Payoff</TitleH3>
+                                <div className={'flex flex-col bg-white p-5'}>
+                                    <img src={'/products/payoff_chart.png'} alt={'payoff chart'} width={'100%'} />
+                                    <div className={'flex flex-col items-center space-y-[10px] mt-4'}>
+                                        <span className={'bg-clip-text text-transparent bg-primary-gradient'}>2.36%</span>
+                                        <SubtitleLight12>ETH spot weekly % change</SubtitleLight12>
+                                    </div>
+                                    <div className={'grid grid-cols-3 gap-x-4 mt-8'}>
+                                        <RecapCard label={'Base yield'} value={'5.00%'} />
+                                        <RecapCard label={'Options moneyness'} value={'2.5%'} />
+                                        <RecapCard label={'Expected yield (APY)'} value={'7.36%'} />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className={'mt-[80px] flex flex-col space-y-5'}>
+                                <TitleH3>Risk</TitleH3>
+                                <ParaLight16>The primary risk for running this covered call strategy is that the vault may incur a weekly loss in the case where the call options sold by the vault expire in-the-money (meaning the price of ETH is above the strike price of the call options minted by the vault).
+
+                                    The Theta Vault smart contracts have been audited by OpenZeppelin and ChainSafe. Despite that, users are advised to exercise caution and only risk funds they can afford to lose.</ParaLight16>
+                            </div>
+
+                            <div className={'mt-[80px] flex flex-col space-y-5'}>
+                                <TitleH3>Fees</TitleH3>
+                                <ParaLight16>The vault fee structure consists of a 15% flat fee on the yield earned between epochs.
+
+                                    If the weekly strategy is profitable, the weekly performance fee is charged on the premiums earned and the weekly management fee is charged on the assets managed by the vault.
+
+                                    If the weekly strategy is unprofitable, there are no fees charged.</ParaLight16>
+                            </div>
+
+                            <div className={'mt-[80px] flex flex-col space-y-5'}>
+                                <TitleH3>Counterparties</TitleH3>
+                                <ParaLight16>The vault funds its weekly twin-twin strategy with the yield earned from leading funds to a list of market makers vetted by SuperHedge.</ParaLight16>
+                            </div>
+
+                            <div className={'mt-[80px] flex flex-col space-y-5'}>
+                                <TitleH3>Deposit Activity</TitleH3>
                             </div>
                         </div>
                     }

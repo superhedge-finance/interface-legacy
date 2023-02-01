@@ -13,7 +13,10 @@ import {configureChains, createClient, WagmiConfig} from 'wagmi';
 import {mainnet, goerli, polygon} from 'wagmi/chains';
 import {alchemyProvider} from 'wagmi/providers/alchemy';
 import {publicProvider} from 'wagmi/providers/public';
+import { Chart as ChartJS, Title, Tooltip, Legend, Filler, LineElement, CategoryScale, LinearScale, PointElement } from "chart.js";
 import Layout from "./Layout";
+
+ChartJS.register(Title, Tooltip, Legend, Filler, LineElement, CategoryScale, LinearScale, PointElement);
 
 const {chains, provider, webSocketProvider} = configureChains(
     [

@@ -1,3 +1,5 @@
+import React from "react";
+
 export const PrimaryButton = ({ label, disabled = false, className, onClick }: { label: string, disabled?: boolean, className?: string, onClick?: () => void }) => {
     return (
         <button className={`bg-[#292929] w-full text-white rounded-[8px] py-[18px] px-[28px] ${className ?? ''} ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`} onClick={!disabled ? onClick : undefined}>
@@ -11,6 +13,30 @@ export const SecondaryButton = ({ label, disabled = false, className, onClick }:
         <button className={`bg-white border-[1px] border-[#292929] w-full text-black rounded-[8px] py-[18px] px-[28px] ${className ?? ''} ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`} onClick={!disabled ? onClick : undefined}>
             {label}
         </button>
+    );
+}
+
+export const TitleH3 = ({ children, className }: { children: React.ReactNode, className?: string }) => {
+    return (
+        <span className={`text-[32px] text-[#161717] leading-[40px] ${className ?? ''}`}>
+            {children}
+        </span>
+    );
+}
+
+export const ParaLight16 = ({ children, className }: { children: React.ReactNode, className?: string }) => {
+    return (
+        <span className={`text-[16px] leading-[24px] text-grey-70 font-light ${className ?? ''}`}>
+            {children}
+        </span>
+    );
+}
+
+export const SubtitleLight12 = ({ children, className }: { children: React.ReactNode, className?: string }) => {
+    return (
+        <span className={`text-[12px] leading-[12px] text-grey-70 font-light ${className ?? ''}`}>
+            {children}
+        </span>
     );
 }
 

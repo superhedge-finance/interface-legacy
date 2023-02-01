@@ -161,7 +161,7 @@ export const ActionArea = ({productAddress}: { productAddress: string }) => {
     return (
         <>
             <div
-                className={`bg-white py-[60px] px-[84px] rounded flex flex-col ${!address ? 'justify-between space-y-[100px]' : ''}`}>
+                className={`bg-white py-[60px] px-[84px] rounded h-fit ${!address ? 'justify-between space-y-[100px]' : ''}`}>
                 <div className={'p-1 flex items-center bg-[#EBEBEB] rounded-[6px] h-[38px]'}>
                     <div
                         className={`${tab === 0 ? 'bg-white' : 'bg-transparent'} cursor-pointer h-[30px] rounded-[6px] p-2 flex flex-1 items-center justify-center`}
@@ -337,9 +337,9 @@ export const ActionArea = ({productAddress}: { productAddress: string }) => {
                 {
                     address &&
                     <div className={'mt-7 flex items-center justify-center'}>
-                        <span className={'text-[#677079]'}>Contract:</span>
+                        <span className={'text-[#677079] mr-2'}>Contract:</span>
                         <span
-                            className={'mr-2'}>{productAddress.slice(0, 10) + '...' + productAddress.slice(-10)}</span>
+                            className={'mr-2 bg-clip-text text-transparent bg-primary-gradient'}>{truncateAddress(productAddress)}</span>
                         <a href={`https://goerli.etherscan.io/address/${productAddress}`} target={'_blank'}
                            rel="noreferrer">
                             <Image src={'/icons/external.svg'} alt={'external'} width={20} height={20}/>
