@@ -4,7 +4,7 @@ import { RadioGroup } from '@headlessui/react'
 import {useAccount, useSigner} from "wagmi";
 import Image from "next/image";
 import {Dialog, Transition} from "@headlessui/react";
-import {PrimaryButton} from "../basic";
+import {PrimaryButton, SecondaryButton} from "../basic";
 import {ethers} from "ethers";
 import ProductABI from "../../constants/abis/SHProduct.json";
 import ERC20ABI from "../../constants/abis/ERC20.json";
@@ -315,17 +315,20 @@ export const ActionArea = ({productAddress}: { productAddress: string }) => {
 
                         <div className={'mt-7'}>
                             <PrimaryButton
-                                label={`INITIATE WITHDRAW`}
+                                label={withdrawableBalance === 0 ? 'No Withdrawable Balance' : 'INITIATE WITHDRAW'}
+                                className={'uppercase'}
+                                disabled={withdrawableBalance === 0}
                                 onClick={() => setWithdrawStatus(WITHDRAW_STATUS.INITIATE)}
                             />
 
                             {
                                 (status === 3 || status === 4) &&
-                                    <button
-                                        className='bg-white border-[1px] border-[#292929] w-full text-black rounded-[8px] py-[18px] px-[28px] mt-4'
-                                        onClick={onRequestWithdraw}>
-                                        {'REQUEST WITHDRAW'}
-                                    </button>
+                                    <SecondaryButton
+                                        label={principalBalance > 0 ? 'Request Withdrawal of Principal on Maturity' : 'No principal to withdraw'}
+                                        className='mt-4 uppercase'
+                                        disabled={principalBalance === 0}
+                                        onClick={onRequestWithdraw}
+                                    />
                             }
                         </div>
                     </>

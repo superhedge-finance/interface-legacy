@@ -6,6 +6,14 @@ export const PrimaryButton = ({ label, disabled = false, className, onClick }: {
     );
 }
 
+export const SecondaryButton = ({ label, disabled = false, className, onClick }: { label: string, disabled?: boolean, className?: string, onClick?: () => void }) => {
+    return (
+        <button className={`bg-white border-[1px] border-[#292929] w-full text-black rounded-[8px] py-[18px] px-[28px] ${className ?? ''} ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`} onClick={!disabled ? onClick : undefined}>
+            {label}
+        </button>
+    );
+}
+
 export const SkeletonCard = () => {
     return (
         <div className="flex w-full flex-1 flex-col items-center">
