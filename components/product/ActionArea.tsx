@@ -9,6 +9,7 @@ import {ethers} from "ethers";
 import ProductABI from "../../constants/abis/SHProduct.json";
 import ERC20ABI from "../../constants/abis/ERC20.json";
 import {DEPOSIT_STATUS, WITHDRAW_STATUS} from "../../types/enums";
+import {truncateAddress} from "../../utils/helpers";
 
 const pricePerLot = 1000;
 
@@ -380,7 +381,7 @@ export const ActionArea = ({productAddress}: { productAddress: string }) => {
                                 leaveTo="opacity-0 scale-95"
                             >
                                 <Dialog.Panel
-                                    className="w-full max-w-[800px] transform overflow-hidden rounded-2xl bg-white py-[60px] px-[80px] text-left align-middle shadow-xl transition-all">
+                                    className="w-full max-w-[800px] transform overflow-hidden rounded-2xl bg-white py-[60px] px-[160px] text-left align-middle shadow-xl transition-all">
                                     <Dialog.Title
                                         className="text-[32px] font-medium leading-[40px] text-[#161717] text-center"
                                     >
@@ -392,10 +393,17 @@ export const ActionArea = ({productAddress}: { productAddress: string }) => {
                                         }
                                     </Dialog.Title>
                                     <div className="mt-7 flex flex-col items-center">
-                                        <p className="text-sm text-gray-500">
+                                        <p className="text-[16px] text-gray-500">
                                             Smart contract link
                                         </p>
-                                        <p>{productAddress}</p>
+                                        <div className={'flex items-center mt-4'}>
+                                            <span className={'bg-primary-gradient text-transparent bg-clip-text text-[20px]'}>{truncateAddress(productAddress)}</span>
+                                            <a href={`https://goerli.etherscan.io/address/${productAddress}`} target={'_blank'}
+                                               rel="noreferrer">
+                                                <Image src={'/icons/external.svg'} alt={'external'} width={20} height={20}/>
+                                            </a>
+                                        </div>
+                                        <img className={'mt-8'} src={'/products/default_nft_image.png'} alt={'nft image'} />
                                     </div>
 
                                     <div className="mt-8 flex items-center justify-between space-x-8 h-[50px]">
