@@ -13,7 +13,7 @@ export default function NavMenu() {
                     </Link>
                 </li>
                 <li>
-                    <Link href="#" className="block p-0 hover:text-white text-[#f8f8f880]">
+                    <Link href="/portfolio" className={`block p-0 hover:text-white ${router.pathname === '/portfolio' ? 'text-white' : 'text-[#f8f8f880]'}`}>
                         Portfolio
                     </Link>
                 </li>

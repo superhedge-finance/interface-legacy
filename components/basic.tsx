@@ -24,6 +24,14 @@ export const TitleH3 = ({ children, className }: { children: React.ReactNode, cl
     );
 }
 
+export const TitleH5 = ({ children, className }: { children: React.ReactNode, className?: string }) => {
+    return (
+        <span className={`text-[24px] leading-[32px] text-[#161717] ${className ?? ''}`}>
+            {children}
+        </span>
+    );
+}
+
 export const ParaLight16 = ({ children, className }: { children: React.ReactNode, className?: string }) => {
     return (
         <span className={`text-[16px] leading-[24px] text-grey-70 font-light ${className ?? ''}`}>
