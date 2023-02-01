@@ -3,13 +3,7 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 export default function WalletConnect() {
     return (
-        <div
-            style={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            padding: 12,
-            }}
-        >
+        <div className={'hidden md:block flex items-end p-3'}>
             <ConnectButton.Custom>
                 {({
                     account,

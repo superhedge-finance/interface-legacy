@@ -1,11 +1,10 @@
 import Image from "next/image";
 import {NFTItem} from "../../types/marketplace";
-import {ProductSpreads, ProductStatus} from "../../types";
 import {PrimaryButton} from "../basic";
 
 const MarketplaceItem = ({ item }: {item: NFTItem}) => {
     return (
-        <div className={'flex flex-col py-11 px-12 rounded-[16px] bg-white'}>
+        <div className={'flex flex-col p-6 md:py-11 md:px-12 rounded-[16px] bg-white'}>
             <div className={'flex items-center space-x-2'}>
                 <div className={'relative flex items-center mr-[10px]'}>
                     <Image src={item.currency1.toLowerCase()} className='rounded-full' alt='Product Logo' width={20} height={20}/>
