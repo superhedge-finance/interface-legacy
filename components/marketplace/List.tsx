@@ -1,4 +1,4 @@
-import {NFTItem} from "../../types/marketplace";
+import {NFTItem} from "../../types";
 import MarketplaceItem from "./Item";
 import MultiRangeSlider from "../commons/multiRangeSlider";
 

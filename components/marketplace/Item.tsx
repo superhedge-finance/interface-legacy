@@ -1,8 +1,11 @@
 import Image from "next/image";
-import {NFTItem} from "../../types/marketplace";
+import {NFTItem} from "../../types";
 import {PrimaryButton} from "../basic";
+import {useRouter} from "next/router";
 
 const MarketplaceItem = ({ item }: {item: NFTItem}) => {
+    const Router = useRouter();
+
     return (
         <div className={'flex flex-col p-6 md:py-11 md:px-12 rounded-[16px] bg-white'}>
             <div className={'flex items-center space-x-2'}>
@@ -43,7 +46,7 @@ const MarketplaceItem = ({ item }: {item: NFTItem}) => {
                 </div>
             </div>
 
-            <PrimaryButton label={'Buy Now'} className={'mt-4 uppercase'}/>
+            <PrimaryButton label={'Buy Now'} className={'mt-4 uppercase'} onClick={() => Router.push(`/marketplace/${item.id}`) }/>
         </div>
     )
 }

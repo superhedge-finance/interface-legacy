@@ -127,3 +127,17 @@
     pointer-events: all;
     position: relative;
 }
+
+.form-radio {
+    top: 0;
+    left: 0;
+    height: 1.25rem;
+    width: 1.25rem;
+    border: 2px solid #484848;
+    border-radius: .375rem;
+}
+
+.form-radio:checked {
+    background: #484848;
+    border-color: #484848;
+}

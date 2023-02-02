@@ -1,74 +1,11 @@
 import {useState} from "react";
 import {Tab} from "@headlessui/react";
 import {classNames} from "../../styles/helper";
-import {ProductCategoryList} from "../../types";
+import {mockData, ProductCategoryList} from "../../types";
 import MarketplaceList from "../../components/marketplace/List";
-import {NFTItem} from "../../types/marketplace";
+import {NFTItem} from "../../types";
 
 const underlyingList = ['ALL', 'ETH/USDC', 'BTC/USDC']
-
-const mockData: Array<NFTItem> = [
-    {
-        id: 1,
-        name: 'ETH/USDC',
-        label: 'ETH Bullish Spread',
-        currency1: '/currency/eth.svg',
-        currency2: '/currency/usdc.svg',
-        offer_price: 1809,
-        mtm_price: 2809,
-        total_lots: 23,
-    },
-    {
-        id: 1,
-        name: 'BTC/USDC',
-        label: 'BTC Bullish Spread',
-        currency1: '/currency/btc.svg',
-        currency2: '/currency/usdc.svg',
-        offer_price: 1609,
-        mtm_price: 1800,
-        total_lots: 34,
-    },
-    {
-        id: 1,
-        name: 'ETH/USDC',
-        label: 'ETH Bearish Spread',
-        currency1: '/currency/eth.svg',
-        currency2: '/currency/usdc.svg',
-        offer_price: 1800,
-        mtm_price: 1900,
-        total_lots: 57,
-    },
-    {
-        id: 1,
-        name: 'BTC/USDC',
-        label: 'BTC Bearish Spread',
-        currency1: '/currency/btc.svg',
-        currency2: '/currency/usdc.svg',
-        offer_price: 2005,
-        mtm_price: 2100,
-        total_lots: 18,
-    },
-    {
-        id: 1,
-        name: 'ETH/USDC',
-        label: 'ETH Range Spread',
-        currency1: '/currency/eth.svg',
-        currency2: '/currency/usdc.svg',
-        offer_price: 1509,
-        mtm_price: 1609,
-        total_lots: 20,
-    },
-    {
-        id: 1,
-        name: 'BTC/USDC',
-        label: 'BTC Range Spread',
-        currency1: '/currency/btc.svg',
-        currency2: '/currency/usdc.svg',
-        offer_price: 1950,
-        mtm_price: 2000,
-        total_lots: 80,
-    }
-]
 
 const Marketplace = () => {
     const [items, setItems] = useState<Array<NFTItem>>(mockData)

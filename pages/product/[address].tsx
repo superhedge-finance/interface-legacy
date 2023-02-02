@@ -6,16 +6,7 @@ import {ActionArea} from "../../components/product/ActionArea";
 import {ParaLight16, SkeletonCard, SubtitleLight12, TitleH3} from "../../components/basic";
 import {ReturnsChart} from "../../components/product/ReturnsChart";
 import {getProduct} from "../../service";
-import {IProduct} from "../../types/interface";
-import {ProductSpreads, ProductStatus} from "../../types";
-
-const status = [
-    'Pending',
-    'Indicative',
-    'Indicative',
-    'Active',
-    'Active'
-]
+import {IProduct, ProductSpreads, ProductStatus} from "../../types";
 
 const RecapCard = ({ label, value }: { label: string, value: string }) => {
     return (

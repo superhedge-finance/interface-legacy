@@ -16,6 +16,14 @@ export const SecondaryButton = ({ label, disabled = false, className, onClick }:
     );
 }
 
+export const TitleH2 = ({ children, className }: { children: React.ReactNode, className?: string }) => {
+    return (
+        <span className={`text-[44px] text-[#161717] leading-[44px] ${className ?? ''}`}>
+            {children}
+        </span>
+    );
+}
+
 export const TitleH3 = ({ children, className }: { children: React.ReactNode, className?: string }) => {
     return (
         <span className={`text-[32px] text-[#161717] leading-[40px] ${className ?? ''}`}>
@@ -35,6 +43,14 @@ export const TitleH5 = ({ children, className }: { children: React.ReactNode, cl
 export const ParaLight16 = ({ children, className }: { children: React.ReactNode, className?: string }) => {
     return (
         <span className={`text-[16px] leading-[24px] text-grey-70 font-light ${className ?? ''}`}>
+            {children}
+        </span>
+    );
+}
+
+export const TagRegular12 = ({ children, className }: { children: React.ReactNode, className?: string }) => {
+    return (
+        <span className={`text-[12px] leading-[12px] ${className ?? ''}`}>
             {children}
         </span>
     );
