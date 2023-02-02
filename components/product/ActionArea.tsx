@@ -8,7 +8,7 @@ import {PrimaryButton, SecondaryButton} from "../basic";
 import {ethers} from "ethers";
 import ProductABI from "../../constants/abis/SHProduct.json";
 import ERC20ABI from "../../constants/abis/ERC20.json";
-import {DEPOSIT_STATUS, WITHDRAW_STATUS} from "../../types/enums";
+import {DEPOSIT_STATUS, WITHDRAW_STATUS} from "../../types";
 import {truncateAddress} from "../../utils/helpers";
 
 const pricePerLot = 1000;

@@ -6,7 +6,7 @@ export const SuperHedgeTabs = ({ labels, tab, width, setTab }: { labels: string[
                     return (
                         <div
                             key={index}
-                            className={`${tab === index ? 'bg-white' : 'bg-transparent'} cursor-pointer h-[30px] rounded-[6px] p-2 flex flex-1 items-center justify-center ${width ?? `w-[${width}]px`}`}
+                            className={`${tab === index ? 'bg-white' : 'bg-transparent'} cursor-pointer h-[30px] rounded-[6px] p-2 flex flex-1 items-center justify-center ${width ? `w-[${width}px]` : ''}`}
                             onClick={() => setTab(index)}>
                             {label}
                         </div>
