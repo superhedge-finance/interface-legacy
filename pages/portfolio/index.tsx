@@ -1,4 +1,5 @@
 import {useState} from "react";
+import {useAccount} from "wagmi";
 import {TitleH3} from "../../components/basic";
 import {PortfolioSummary} from "../../components/portfolio/Summary";
 import {PortfolioPositions} from "../../components/portfolio/Positions";
@@ -7,6 +8,8 @@ import {SuperHedgeTabs} from "../../components/commons/Tabs";
 import {PortfolioPositionList} from "../../components/portfolio/PositionList";
 
 const Portfolio = () => {
+    const {address} = useAccount()
+
     const [tab, setTab] = useState(0);
 
     return (
@@ -24,12 +27,24 @@ const Portfolio = () => {
                                 </div>
 
                                 <div className={'flex flex-col space-y-[20px]'}>
-                                    <TitleH3>Positions</TitleH3>
+                                    <div className={'flex items-center justify-between'}>
+                                        <TitleH3>Positions</TitleH3>
+                                        {
+                                            address &&
+                                                <span>SHOW NFT ARTWORK</span>
+                                        }
+                                    </div>
                                     <PortfolioPositions />
                                 </div>
 
                                 <div className={'flex flex-col space-y-[20px]'}>
-                                    <TitleH3>Transaction History</TitleH3>
+                                    <div className={'flex items-center justify-between'}>
+                                        <TitleH3>Transaction History</TitleH3>
+                                        {
+                                            address &&
+                                            <SuperHedgeTabs labels={['LATEST', 'NEWEST']} tab={tab} setTab={(tab) => setTab(tab)} className={'w-[120px]'} />
+                                        }
+                                    </div>
                                     <PortfolioTransactionHistory />
                                 </div>
                             </div>

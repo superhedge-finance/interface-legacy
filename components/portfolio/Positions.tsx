@@ -2,6 +2,9 @@ import Image from "next/image";
 import {useConnectModal} from "@rainbow-me/rainbowkit";
 import {useAccount} from "wagmi";
 import {ParaLight16, PrimaryButton, TitleH5} from "../basic";
+import {PositionCard} from "./PositionCard";
+
+const positions = ['1', '2']
 
 const ConnectWalletCard = ({ onConnect }: { onConnect: () => void }) => {
     return (
@@ -41,8 +44,14 @@ export const PortfolioPositions = () => {
                 <ConnectWalletCard onConnect={onConnect} />
             }
             {
-                address &&
+                address && positions.length === 0 &&
                 <NoPositionCard />
+            }
+            {
+                address && positions.length > 0 &&
+                    positions.map((position, index) => {
+                        return <PositionCard key={index} />
+                    })
             }
         </div>
     )

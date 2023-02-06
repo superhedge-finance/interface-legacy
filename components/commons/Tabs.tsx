@@ -1,4 +1,4 @@
-export const SuperHedgeTabs = ({ labels, tab, width, setTab }: { labels: string[], width?: number, tab: number, setTab: (tab: number) => void}) => {
+export const SuperHedgeTabs = ({ labels, tab, width, className, setTab }: { labels: string[], width?: number, className?: string, tab: number, setTab: (tab: number) => void}) => {
     return (
         <div className={'p-1 flex items-center bg-[#EBEBEB] rounded-[6px] h-[38px]'}>
             {
@@ -6,7 +6,7 @@ export const SuperHedgeTabs = ({ labels, tab, width, setTab }: { labels: string[
                     return (
                         <div
                             key={index}
-                            className={`${tab === index ? 'bg-white' : 'bg-transparent'} cursor-pointer h-[30px] rounded-[6px] p-2 flex flex-1 items-center justify-center ${width ? `w-[${width}px]` : ''}`}
+                            className={`${tab === index ? 'bg-white' : 'bg-transparent'} cursor-pointer h-[30px] rounded-[6px] p-2 flex flex-1 items-center justify-center ${className ?? ''} ${width ? `w-[200px]` : 'w-full'}`}
                             onClick={() => setTab(index)}>
                             {label}
                         </div>

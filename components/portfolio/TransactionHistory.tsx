@@ -2,6 +2,9 @@ import Image from "next/image";
 import {useAccount} from "wagmi";
 import {useConnectModal} from "@rainbow-me/rainbowkit";
 import {ParaLight16, PrimaryButton, TitleH5} from "../basic";
+import {TransactionCard, TransactionHeader} from "./TransactionCard";
+
+const transactions = ['1', '2', '3', '4', '5']
 
 const ConnectWalletCard = ({ onConnect }: { onConnect: () => void }) => {
     return (
@@ -41,8 +44,22 @@ export const PortfolioTransactionHistory = () => {
                     <ConnectWalletCard onConnect={onConnect} />
             }
             {
-                address &&
+                address && transactions.length === 0 &&
                     <NoTransactionCard />
+            }
+            {
+                address && transactions.length > 0 &&
+                <div className={'bg-white py-[30px] px-5 rounded-lg'}>
+                    <TransactionHeader />
+                    {
+                        transactions.map((transaction, index) => {
+                            return <TransactionCard
+                                key={index}
+                                className={index % 2 === 0 ? 'bg-[#00000014]' : 'bg-white'}
+                            />
+                        })
+                    }
+                </div>
             }
         </div>
     )

@@ -2,8 +2,7 @@ import Image from 'next/image';
 import Link from "next/link";
 import {useMemo} from "react";
 import {ethers} from "ethers";
-import {ProductSpreads, ProductStatus} from "../types";
-import {IProduct} from '../types/interface';
+import {ProductSpreads, ProductStatus, IProduct} from "../../types";
 
 export default function Product({product}: { product: IProduct }) {
     const capacity = useMemo(() => {

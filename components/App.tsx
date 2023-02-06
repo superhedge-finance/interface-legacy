@@ -15,6 +15,7 @@ import {alchemyProvider} from 'wagmi/providers/alchemy';
 import {publicProvider} from 'wagmi/providers/public';
 import { Chart as ChartJS, Title, Tooltip, Legend, Filler, LineElement, CategoryScale, LinearScale, PointElement } from "chart.js";
 import Layout from "./Layout";
+import {ToastProvider} from "./providers/ToastProvider";
 
 ChartJS.register(Title, Tooltip, Legend, Filler, LineElement, CategoryScale, LinearScale, PointElement);
 
@@ -71,7 +72,9 @@ function App({children}: AppProps) {
         <React.StrictMode>
             <WagmiConfig client={wagmiClient}>
                 <RainbowKitProvider appInfo={demoAppInfo} chains={chains}>
-                    <Layout>{children}</Layout>
+                    <ToastProvider>
+                        <Layout>{children}</Layout>
+                    </ToastProvider>
                 </RainbowKitProvider>
             </WagmiConfig>
         </React.StrictMode>

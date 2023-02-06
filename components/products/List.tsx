@@ -1,6 +1,6 @@
 import {useEffect, useMemo, useState} from 'react'
 import { Tab } from '@headlessui/react'
-import Product from '../Product'
+import Product from './Product'
 import {SkeletonCard} from "../basic";
 import {getProducts} from "../../service";
 import {IProduct} from "../../types/interface";
