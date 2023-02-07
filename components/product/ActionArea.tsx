@@ -130,6 +130,21 @@ export const ActionArea = ({productAddress}: { productAddress: string }) => {
         return `DEPOSIT ${(pricePerLot * lots).toLocaleString()} USDC`
     }, [principalBalance, status, lots, profit, optionBalance, couponBalance])
 
+    const isSticky = () => {
+        const header = document.querySelector('.action-area');
+        const scrollTop = window.scrollY;
+        if (!header) return;
+        scrollTop >= 200 ? header.classList.add('is-sticky') : header.classList.remove('is-sticky');
+    };
+
+    // Sticky Menu Area
+    useEffect(() => {
+        window.addEventListener('scroll', isSticky);
+        return () => {
+            window.removeEventListener('scroll', isSticky);
+        };
+    });
+
     useEffect(() => {
         (async () => {
             if (signer && productAddress && address) {
@@ -161,7 +176,7 @@ export const ActionArea = ({productAddress}: { productAddress: string }) => {
     return (
         <>
             <div
-                className={`bg-white py-[60px] px-[84px] rounded h-fit ${!address ? 'justify-between space-y-[100px]' : ''}`}>
+                className={`col-span-1 action-area bg-white py-[60px] px-[84px] rounded h-fit ${!address ? 'justify-between space-y-[100px]' : ''}`}>
                 <div className={'p-1 flex items-center bg-[#EBEBEB] rounded-[6px] h-[38px]'}>
                     <div
                         className={`${tab === 0 ? 'bg-white' : 'bg-transparent'} cursor-pointer h-[30px] rounded-[6px] p-2 flex flex-1 items-center justify-center`}

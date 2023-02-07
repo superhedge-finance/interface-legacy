@@ -67,12 +67,12 @@ const ProductDetail = () => {
 
     return (
         <div>
-            <div className={'grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-12 px-0 md:px-12'}>
-                <div>
-                    {
-                        isLoading &&
-                        <SkeletonCard />
-                    }
+            {
+                isLoading &&
+                <SkeletonCard />
+            }
+            <div className={'grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-12 px-0 md:px-12 relative'}>
+                <div className={'col-span-1'}>
                     {
                         !isLoading && product &&
                         <div className="flex flex-col p-6">
@@ -100,7 +100,7 @@ const ProductDetail = () => {
                                 </div>
                                 <div className={'flex flex-col items-center'}>
                                     <span className="d-block mb-1 text-sm font-normal text-gray-700 dark:text-gray-400">Estimated APY</span>
-                                    <span className="font-medium leading-tight text-3xl text-transparent bg-primary-gradient bg-clip-text">7-15%</span>
+                                    <span className="font-medium leading-tight text-3xl text-transparent bg-primary-gradient bg-clip-text">{product.issuanceCycle.apy}</span>
                                 </div>
                             </div>
                             <div className={'flex flex-col flex-1'}>
@@ -196,7 +196,10 @@ const ProductDetail = () => {
                         </div>
                     }
                 </div>
-                <ActionArea productAddress={product ? product.address : ''} />
+                {
+                    !isLoading && product &&
+                        <ActionArea productAddress={product.address} />
+                }
             </div>
         </div>
     )

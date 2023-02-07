@@ -28,6 +28,20 @@ export default function Product({product}: { product: IProduct }) {
         return '/currency/' + product.underlying.split('/')[0] + '.svg'
     }, [product]);
 
+    const issuance_date = useMemo(() => {
+        const issuanceDate = new Date(product.issuanceCycle.issuanceDate * 1000).getTime()
+        const currentDate = new Date().getTime()
+        const diffInMilliseconds = issuanceDate - currentDate;
+        const diffInSeconds = diffInMilliseconds / 1000;
+        const diffInMinutes = diffInSeconds / 60;
+        const diffInHours = diffInMinutes / 60;
+        const hours = Math.floor(diffInHours);
+        const minutes = Math.floor((diffInHours - hours) * 60);
+        const seconds = Math.floor((diffInMinutes - Math.floor(diffInMinutes)) * 60);
+
+        return `${hours}h ${minutes}m ${seconds}s`
+    }, [product]);
+
     return (
         <div className="flex flex-col py-11 px-12 rounded-[16px] bg-white">
             <div className={'flex justify-between'}>
@@ -72,13 +86,13 @@ export default function Product({product}: { product: IProduct }) {
                 </div>
                 <div className={'flex flex-col items-center'}>
                     <span className="d-block mb-1 text-sm font-normal text-gray-700 dark:text-gray-400">Estimated APY</span>
-                    <h3 className="font-medium leading-tight text-3xl bg-clip-text text-transparent bg-primary-gradient">7-15%</h3>
+                    <h3 className="font-medium leading-tight text-3xl bg-clip-text text-transparent bg-primary-gradient">{product.issuanceCycle.apy}</h3>
                 </div>
             </div>
             <div className={'flex items-center justify-between mt-5'}>
                 <div className='flex flex-col items-center bg-[#0000000a] h-[66px] rounded-[7px] py-3 px-4'>
                     <p className="text-[12px] font-light text-gray-700">Issuance date</p>
-                    <h3 className="text-[20px] font-light text-black">20h 24m 15s</h3>
+                    <h3 className="text-[20px] font-light text-black">{issuance_date}</h3>
                 </div>
                 <div className='flex flex-col items-center bg-[#0000000a] h-[66px] rounded-[7px] py-3 px-4'>
                     <span className="text-[12px] font-light text-gray-700">Investment Duration</span>

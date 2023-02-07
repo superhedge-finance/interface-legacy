@@ -6,6 +6,11 @@ type Cycle = {
     strikePrice2: number;
     strikePrice3: number;
     strikePrice4: number;
+    tr1: number;
+    tr2: number;
+    issuanceDate: number;
+    maturityDate: number;
+    apy: string;
     url: string;
 }
 

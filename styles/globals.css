@@ -141,3 +141,9 @@
     background: #484848;
     border-color: #484848;
 }
+
+.is-sticky {
+    position: sticky;
+    top: 40px;
+    right: 96px;
+}
