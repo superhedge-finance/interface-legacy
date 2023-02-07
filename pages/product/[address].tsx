@@ -139,7 +139,12 @@ const ProductDetail = () => {
 
                             <div className={'mt-[80px]'}>
                                 <TitleH3>Product Returns</TitleH3>
-                                <ReturnsChart />
+                                <ReturnsChart
+                                    strikePrice1={product.issuanceCycle.strikePrice1}
+                                    strikePrice2={product.issuanceCycle.strikePrice2}
+                                    tr1={product.issuanceCycle.tr1}
+                                    tr2={product.issuanceCycle.tr2}
+                                />
                             </div>
 
                             <div className={'mt-[80px] flex flex-col space-y-5'}>
