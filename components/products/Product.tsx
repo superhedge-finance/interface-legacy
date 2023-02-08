@@ -43,6 +43,13 @@ export default function Product({product}: { product: IProduct }) {
         return `${hours}H : ${minutes}M : ${seconds}S`
     }, [product]);
 
+    const investment_duration = useMemo(() => {
+        if (product) {
+            return Math.floor((product.issuanceCycle.maturityDate - product.issuanceCycle.issuanceDate) / 3600 / 24) + 'D'
+        }
+        return '0D'
+    }, [product]);
+
     return (
         <div className="flex flex-col py-11 px-12 rounded-[16px] bg-white">
             <div className={'flex justify-between'}>
@@ -107,7 +114,7 @@ export default function Product({product}: { product: IProduct }) {
                 </div>
                 <div className='flex flex-col items-center bg-[#0000000a] h-[66px] rounded-[7px] py-3 px-4'>
                     <span className="text-[12px] font-light text-gray-700">Investment Duration</span>
-                    <span className="text-[20px] font-light text-black">30D</span>
+                    <span className="text-[20px] font-light text-black">{investment_duration}</span>
                 </div>
                 <div className='flex flex-col items-center bg-[#0000000a] h-[66px] rounded-[7px] py-3 px-4'>
                     <span className="text-[12px] font-light text-gray-700">Principal Protection</span>
