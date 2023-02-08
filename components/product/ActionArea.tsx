@@ -42,7 +42,7 @@ export const ActionArea = ({productAddress, product}: { productAddress: string, 
         try {
             if (currencyInstance && productInstance) {
                 const decimal = await currencyInstance.decimals()
-                const requestBalance = ethers.utils.parseUnits((pricePerLot * lots).toString(), decimal)
+                const requestBalance = ethers.utils.parseUnits((depositPrice).toString(), decimal)
                 const currentAllowance = await currencyInstance.allowance(address, productAddress)
                 if (currentAllowance.lt(requestBalance)) {
                     const tx = await currencyInstance.approve(productAddress, requestBalance)
@@ -50,7 +50,7 @@ export const ActionArea = ({productAddress, product}: { productAddress: string, 
                     await tx.wait()
                 }
                 setDepositStatus(DEPOSIT_STATUS.DEPOSIT)
-                const depositTx = await productInstance.deposit(ethers.utils.parseUnits((pricePerLot * lots).toString(), decimal), principalBalance > 0 && profit === 1)
+                const depositTx = await productInstance.deposit(requestBalance, principalBalance > 0 && profit === 1)
                 await depositTx.wait()
             }
         } catch (e) {
@@ -112,6 +112,23 @@ export const ActionArea = ({productAddress, product}: { productAddress: string, 
         }
         return 0
     }, [status, principalBalance, optionBalance, couponBalance])
+
+    const depositPrice = useMemo(() => {
+        if (status !== 1) {
+            return 0
+        }
+        if (principalBalance > 0) {
+            if (profit === 1) {
+                if (pricePerLot * lots > (optionBalance + couponBalance)) {
+                    return pricePerLot * lots - (optionBalance + couponBalance)
+                }
+                return 0
+            } else if (profit === 2) {
+                return pricePerLot * lots
+            }
+        }
+        return pricePerLot * lots
+    }, [principalBalance, status, lots, profit, optionBalance, couponBalance])
 
     const depositButtonLabel = useMemo(() => {
         if (status !== 1) {
