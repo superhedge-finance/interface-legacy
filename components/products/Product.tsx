@@ -3,6 +3,7 @@ import Link from "next/link";
 import {useMemo} from "react";
 import {ethers} from "ethers";
 import {ProductSpreads, ProductStatus, IProduct} from "../../types";
+import {ReturnsChart} from "../product/ReturnsChart";
 
 export default function Product({product}: { product: IProduct }) {
     const capacity = useMemo(() => {
@@ -39,7 +40,7 @@ export default function Product({product}: { product: IProduct }) {
         const minutes = Math.floor((diffInHours - hours) * 60);
         const seconds = Math.floor((diffInMinutes - Math.floor(diffInMinutes)) * 60);
 
-        return `${hours}h ${minutes}m ${seconds}s`
+        return `${hours}H : ${minutes}M : ${seconds}S`
     }, [product]);
 
     return (
@@ -89,6 +90,16 @@ export default function Product({product}: { product: IProduct }) {
                     <h3 className="font-medium leading-tight text-3xl bg-clip-text text-transparent bg-primary-gradient">{product.issuanceCycle.apy}</h3>
                 </div>
             </div>
+
+            <div>
+                <ReturnsChart
+                    strikePrice1={product.issuanceCycle.strikePrice1}
+                    strikePrice2={product.issuanceCycle.strikePrice2}
+                    tr1={product.issuanceCycle.tr1}
+                    tr2={product.issuanceCycle.tr2}
+                />
+            </div>
+
             <div className={'flex items-center justify-between mt-5'}>
                 <div className='flex flex-col items-center bg-[#0000000a] h-[66px] rounded-[7px] py-3 px-4'>
                     <p className="text-[12px] font-light text-gray-700">Issuance date</p>

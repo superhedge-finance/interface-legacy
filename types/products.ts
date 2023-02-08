@@ -12,4 +12,6 @@ export const ProductSpreads = [
     {label: 'Butterfly', className: 'bg-butterFly'},
 ]
 
+export const ProductUnderlyingList = ['All', 'ETH/USDC', 'BTC/USDC']
+
 export const ProductCategoryList = ['All', 'BULLISH', 'BEARISH', 'RANGE']

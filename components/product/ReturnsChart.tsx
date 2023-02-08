@@ -17,7 +17,7 @@ export const ReturnsChart = ({ tr1, tr2, strikePrice1, strikePrice2 }: {
                     }],
                 }}
                 width={400}
-                height={200}
+                height={150}
                 options={{
                     plugins: {
                         legend: {

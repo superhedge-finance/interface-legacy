@@ -3,8 +3,7 @@ import { Tab } from '@headlessui/react'
 import Product from './Product'
 import {SkeletonCard} from "../basic";
 import {getProducts} from "../../service";
-import {IProduct} from "../../types/interface";
-import {ProductCategoryList} from "../../types";
+import {ProductCategoryList, ProductUnderlyingList, IProduct} from "../../types";
 import {classNames} from "../../styles/helper";
 
 export default function ProductList() {
@@ -12,10 +11,6 @@ export default function ProductList() {
   const [isProductLoading, setIsProductLoading] = useState(false)
   const [underlying, setUnderlying] = useState('All')
   const [category, setCategory] = useState('All')
-
-  const underlyingList = useMemo(() => {
-    return ['All'].concat(products.map((product) => product.underlying).filter((v, i, a) => a.indexOf(v) === i))
-  }, [products]);
 
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
@@ -64,7 +59,7 @@ export default function ProductList() {
       <div className="flex space-x-7">
         <Tab.Group>
           <Tab.List className="flex space-x-1 rounded-xl bg-[#EBEBEB] p-1">
-            {underlyingList.map((underlying, index) => (
+            {ProductUnderlyingList.map((underlying, index) => (
               <Tab
                 key={index}
                 className={({ selected }) =>
