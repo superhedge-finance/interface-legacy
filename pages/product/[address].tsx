@@ -56,6 +56,13 @@ const ProductDetail = () => {
         return -1
     }, [product])
 
+    const investment_duration = useMemo(() => {
+        if (product) {
+            return Math.floor((product.issuanceCycle.maturityDate - product.issuanceCycle.issuanceDate) / 3600 / 24) + 'D'
+        }
+        return '0D'
+    }, [product]);
+
     useEffect(() => {
         return () => {
             setIsLoading(true)
@@ -125,7 +132,7 @@ const ProductDetail = () => {
                             <div className={'flex flex-col mt-[80px]'}>
                                 <TitleH3>Product Recap</TitleH3>
                                 <div className={'flex items-center justify-between space-x-2 mt-5'}>
-                                    <RecapCard label={'Investment Duration'} value={'30D'} />
+                                    <RecapCard label={'Investment Duration'} value={investment_duration} />
                                     <RecapCard label={'Coupon'} value={`${product.issuanceCycle.coupon / 100}% / WEEK`} />
                                     <RecapCard label={'Principal Protection'} value={'100%'} />
                                 </div>
@@ -203,7 +210,7 @@ const ProductDetail = () => {
                 </div>
                 {
                     !isLoading && product &&
-                        <ActionArea productAddress={product.address} />
+                        <ActionArea productAddress={product.address} product={product} />
                 }
             </div>
         </div>

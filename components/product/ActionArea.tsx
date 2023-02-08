@@ -8,12 +8,12 @@ import {PrimaryButton, SecondaryButton} from "../basic";
 import {ethers} from "ethers";
 import ProductABI from "../../constants/abis/SHProduct.json";
 import ERC20ABI from "../../constants/abis/ERC20.json";
-import {DEPOSIT_STATUS, WITHDRAW_STATUS} from "../../types";
+import {DEPOSIT_STATUS, IProduct, WITHDRAW_STATUS} from "../../types";
 import {truncateAddress} from "../../utils/helpers";
 
 const pricePerLot = 1000;
 
-export const ActionArea = ({productAddress}: { productAddress: string }) => {
+export const ActionArea = ({productAddress, product}: { productAddress: string, product: IProduct }) => {
     const {address} = useAccount()
     const {data: signer} = useSigner()
     const {openConnectModal} = useConnectModal()
@@ -78,7 +78,7 @@ export const ActionArea = ({productAddress}: { productAddress: string }) => {
                         await tx2.wait()
                     }
                     setWithdrawStatus(WITHDRAW_STATUS.DONE)
-                } else if (status === 2) {
+                } else if (status >= 2) {
                     if (optionBalance > 0) {
                         const tx1 = await productInstance.withdrawOption();
                         await tx1.wait()
@@ -107,7 +107,7 @@ export const ActionArea = ({productAddress}: { productAddress: string }) => {
     const withdrawableBalance = useMemo(() => {
         if (status === 1) {
             return principalBalance + optionBalance + couponBalance
-        } else if (status === 2) {
+        } else if (status >= 2) {
             return optionBalance + couponBalance
         }
         return 0
@@ -418,7 +418,7 @@ export const ActionArea = ({productAddress}: { productAddress: string }) => {
                                                 <Image src={'/icons/external.svg'} alt={'external'} width={20} height={20}/>
                                             </a>
                                         </div>
-                                        <img className={'mt-8'} src={'/products/default_nft_image.png'} alt={'nft image'} />
+                                        <img className={'mt-8'} src={product.issuanceCycle.url || '/products/default_nft_image.png'} alt={'nft image'} />
                                     </div>
 
                                     <div className="mt-8 flex items-center justify-between space-x-8 h-[50px]">
