@@ -42,7 +42,7 @@ export const ActionArea = ({productAddress, product}: { productAddress: string, 
         try {
             if (currencyInstance && productInstance) {
                 const decimal = await currencyInstance.decimals()
-                const requestBalance = ethers.utils.parseUnits((depositPrice).toString(), decimal)
+                const requestBalance = ethers.utils.parseUnits((depositAmount).toString(), decimal)
                 const currentAllowance = await currencyInstance.allowance(address, productAddress)
                 if (currentAllowance.lt(requestBalance)) {
                     const tx = await currencyInstance.approve(productAddress, requestBalance)
@@ -113,7 +113,7 @@ export const ActionArea = ({productAddress, product}: { productAddress: string, 
         return 0
     }, [status, principalBalance, optionBalance, couponBalance])
 
-    const depositPrice = useMemo(() => {
+    const depositAmount = useMemo(() => {
         if (status !== 1) {
             return 0
         }
@@ -135,17 +135,10 @@ export const ActionArea = ({productAddress, product}: { productAddress: string, 
             return 'Please await unlock to deposit'
         }
         if (principalBalance > 0) {
-            if (profit === 1) {
-                if (pricePerLot * lots > (optionBalance + couponBalance)) {
-                    return `TOP-UP ON ${(pricePerLot * lots - (optionBalance + couponBalance)).toLocaleString()} USDC`
-                }
-                return `TOP-UP ON 0 USDC`
-            } else if (profit === 2) {
-                return `TOP-UP ON ${(pricePerLot * lots).toLocaleString()} USDC`
-            }
+            return `TOP-UP On ${depositAmount.toLocaleString()} USDC`
         }
-        return `DEPOSIT ${(pricePerLot * lots).toLocaleString()} USDC`
-    }, [principalBalance, status, lots, profit, optionBalance, couponBalance])
+        return `DEPOSIT ${(depositAmount).toLocaleString()} USDC`
+    }, [principalBalance, status, depositAmount])
 
     const isSticky = () => {
         const header = document.querySelector('.action-area');
