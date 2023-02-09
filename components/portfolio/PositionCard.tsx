@@ -1,4 +1,4 @@
-import {useCallback, useMemo, useState} from "react";
+import {useCallback, useEffect, useMemo, useState} from "react";
 import Image from "next/image";
 import {ethers} from "ethers";
 import {useAccount, useSigner} from "wagmi";
@@ -27,7 +27,7 @@ export const PositionCard = ({ position, enabled }: { position: IProduct, enable
         return new ethers.Contract(position.address, ProductABI, signer)
     }, [position, signer, address])
 
-    useCallback(() => {
+    useEffect(() => {
         (async () => {
             if (productInstance && address) {
                 const balance = await productInstance.principalBalance(address)

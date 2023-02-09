@@ -8,20 +8,17 @@ import {ethers} from "ethers";
 import {getProduct} from "../../../service";
 import {RecapCard} from "../../../components/commons/RecapCard";
 import {NFTProductCard} from "../../../components/portfolio/NFTProductCard";
+import ProductABI from "../../../constants/abis/SHProduct.json";
+import {useSigner} from "wagmi";
 
 const PositionDetail = () => {
     const router = useRouter()
+    const {data: signer} = useSigner()
     const {address} = router.query
 
+    const [principal, setPrincipal] = useState<number>(0)
     const [isLoading, setIsLoading] = useState(false)
     const [product, setProduct] = useState<IProduct | undefined>(undefined)
-
-    const capacity = useMemo(() => {
-        if (product) {
-            return Number(ethers.utils.formatUnits(product.currentCapacity, 6))
-        }
-        return 0
-    }, [product]);
 
     const currency1 = useMemo(() => {
         if (product) {
@@ -48,12 +45,10 @@ const PositionDetail = () => {
         return -1
     }, [product])
 
-    const investment_duration = useMemo(() => {
-        if (product) {
-            return Math.floor((product.issuanceCycle.maturityDate - product.issuanceCycle.issuanceDate) / 3600 / 24) + 'D'
-        }
-        return '0D'
-    }, [product]);
+    const productInstance = useMemo(() => {
+        if (!product || !signer || !address) return null
+        return new ethers.Contract(product.address, ProductABI, signer)
+    }, [product, signer, address])
 
     useEffect(() => {
         return () => {
@@ -63,6 +58,15 @@ const PositionDetail = () => {
             }).finally(() => setIsLoading(false))
         };
     }, [address]);
+
+    useEffect(() => {
+        (async () => {
+            if (productInstance && address) {
+                const balance = await productInstance.principalBalance(address)
+                setPrincipal(Number(ethers.utils.formatUnits(balance, 6)))
+            }
+        })()
+    }, [productInstance, address])
 
     return (
         <div>
@@ -105,8 +109,8 @@ const PositionDetail = () => {
                             <div className={'flex flex-col mt-[80px]'}>
                                 <TitleH3>Product Recap</TitleH3>
                                 <div className={'flex items-center justify-between space-x-2 mt-5'}>
-                                    <RecapCard label={'Principal Amount'} value={'7,500 USDC'} />
-                                    <RecapCard label={'Product Lots'} value={'3 LOTS'} />
+                                    <RecapCard label={'Principal Amount'} value={`${principal.toLocaleString()} USDC`} />
+                                    <RecapCard label={'Product Lots'} value={`${principal / 1000} LOTS`} />
                                     <RecapCard label={'Market Price'} value={'8,000 USDC'} />
                                 </div>
                                 <div className={'flex items-center justify-between space-x-2 mt-2'}>
