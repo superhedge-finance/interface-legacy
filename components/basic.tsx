@@ -2,7 +2,7 @@ import React from "react";
 
 export const PrimaryButton = ({ label, disabled = false, className, onClick }: { label: string, disabled?: boolean, className?: string, onClick?: () => void }) => {
     return (
-        <button className={`bg-[#292929] w-full text-white rounded-[8px] py-[18px] px-[28px] ${className ?? ''} ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`} onClick={!disabled ? onClick : undefined}>
+        <button className={`bg-[#292929] w-full text-white rounded-[8px] px-[28px] h-[50px] ${className ?? ''} ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`} onClick={!disabled ? onClick : undefined}>
             {label}
         </button>
     );
@@ -56,9 +56,9 @@ export const TagRegular12 = ({ children, className }: { children: React.ReactNod
     );
 }
 
-export const SubtitleLight12 = ({ children, className }: { children: React.ReactNode, className?: string }) => {
+export const SubtitleLight12 = ({ children, className = 'text-grey-70' }: { children: React.ReactNode, className?: string }) => {
     return (
-        <span className={`text-[12px] leading-[12px] text-grey-70 font-light ${className ?? ''}`}>
+        <span className={`text-[12px] leading-[12px] font-light ${className ?? ''}`}>
             {children}
         </span>
     );

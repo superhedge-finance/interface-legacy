@@ -5,8 +5,10 @@ import {useAccount, useSigner} from "wagmi";
 import {PrimaryButton} from "../basic";
 import {IProduct} from "../../types";
 import ProductABI from "../../constants/abis/SHProduct.json";
+import {useRouter} from "next/router";
 
 export const PositionCard = ({ position, enabled }: { position: IProduct, enabled: boolean }) => {
+    const Router = useRouter()
     const {address} = useAccount()
     const {data: signer} = useSigner()
 
@@ -69,7 +71,7 @@ export const PositionCard = ({ position, enabled }: { position: IProduct, enable
                     <img src={'/portfolio/position_timeline.svg'} width={'100%'} />
                 </div>
 
-                <PrimaryButton label={'SEE DETAILS'} className={'mt-6'} />
+                <PrimaryButton label={'SEE DETAILS'} className={'mt-6'} onClick={() => Router.push(`/portfolio/position/${position.address}`)} />
             </div>
 
             {
