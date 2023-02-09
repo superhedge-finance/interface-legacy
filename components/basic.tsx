@@ -64,6 +64,14 @@ export const SubtitleLight12 = ({ children, className }: { children: React.React
     );
 }
 
+export const SubtitleRegular14 = ({ children, className }: { children: React.ReactNode, className?: string }) => {
+    return (
+        <span className={`text-[14px] leading-[14px] text-blacknew-100 ${className ?? ''}`}>
+            {children}
+        </span>
+    );
+}
+
 export const SkeletonCard = () => {
     return (
         <div className="flex w-full flex-1 flex-col items-center">

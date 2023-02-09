@@ -1,10 +1,8 @@
-import axios from 'axios';
-
-const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://192.168.8.111:4000/api';
+import axios from './axios'
 
 export const getProducts = async () => {
     try {
-        const { data } = await axios.get(BASE_URL + '/products');
+        const { data } = await axios.get('/products');
         return data;
     } catch (e) {
         console.error(e)
@@ -13,7 +11,7 @@ export const getProducts = async () => {
 
 export const getProduct = async (address: string) => {
     try {
-        const { data } = await axios.get(BASE_URL + '/products/' + address);
+        const { data } = await axios.get('/products/' + address);
         return data;
     } catch (e) {
         console.error(e)

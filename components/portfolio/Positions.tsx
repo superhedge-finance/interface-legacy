@@ -1,10 +1,11 @@
+import {useEffect, useState} from "react";
 import Image from "next/image";
 import {useConnectModal} from "@rainbow-me/rainbowkit";
 import {useAccount} from "wagmi";
 import {ParaLight16, PrimaryButton, TitleH5} from "../basic";
 import {PositionCard} from "./PositionCard";
-
-const positions = ['1', '2']
+import {getPosition} from "../../service";
+import {IProduct} from "../../types";
 
 const ConnectWalletCard = ({ onConnect }: { onConnect: () => void }) => {
     return (
@@ -27,15 +28,28 @@ const NoPositionCard = () => {
     )
 }
 
-export const PortfolioPositions = () => {
+export const PortfolioPositions = ({ enabled }: { enabled: boolean }) => {
     const {address} = useAccount()
     const {openConnectModal} = useConnectModal()
+
+    const [positions, setPositions] = useState<IProduct[]>([])
 
     const onConnect = () => {
         if (!address && openConnectModal) {
             openConnectModal()
         }
     }
+
+    useEffect(() => {
+        (async () => {
+            if (address) {
+                // fetch positions
+                const positions = await getPosition(address)
+                console.log(positions)
+                setPositions(positions)
+            }
+        })()
+    }, [address])
 
     return (
         <div>
@@ -50,7 +64,7 @@ export const PortfolioPositions = () => {
             {
                 address && positions.length > 0 &&
                     positions.map((position, index) => {
-                        return <PositionCard key={index} />
+                        return <PositionCard key={index} position={position} enabled={enabled} />
                     })
             }
         </div>
