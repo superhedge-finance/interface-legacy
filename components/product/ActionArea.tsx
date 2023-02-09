@@ -428,7 +428,7 @@ export const ActionArea = ({productAddress, product}: { productAddress: string, 
                                                 <Image src={'/icons/external.svg'} alt={'external'} width={20} height={20}/>
                                             </a>
                                         </div>
-                                        <img className={'mt-8'} src={product.issuanceCycle.url || '/products/default_nft_image.png'} alt={'nft image'} />
+                                        <img className={'mt-8'} src={product.issuanceCycle.image_uri || '/products/default_nft_image.png'} alt={'nft image'} />
                                     </div>
 
                                     <div className="mt-8 flex items-center justify-between space-x-8 h-[50px]">

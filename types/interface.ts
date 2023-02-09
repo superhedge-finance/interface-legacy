@@ -13,6 +13,7 @@ type Cycle = {
     maturityDate: number;
     apy: string;
     url: string;
+    image_uri: string;
 }
 
 export interface IProduct {

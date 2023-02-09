@@ -15,11 +15,11 @@ export const PositionCard = ({ position, enabled }: { position: IProduct, enable
     const [principal, setPrincipal] = useState<number>(0)
 
     const currency1 = useMemo(() => {
-        return '/currency/' + position.underlying.split('/')[1] + '.svg'
+        return '/currency/' + position.underlying.split('/')[1].toLowerCase() + '.svg'
     }, [position]);
 
     const currency2 = useMemo(() => {
-        return '/currency/' + position.underlying.split('/')[0] + '.svg'
+        return '/currency/' + position.underlying.split('/')[0].toLowerCase() + '.svg'
     }, [position]);
 
     const productInstance = useMemo(() => {
@@ -77,7 +77,7 @@ export const PositionCard = ({ position, enabled }: { position: IProduct, enable
             {
                 enabled &&
                     <div className={'mt-6'}>
-                        <img src={'/products/default_nft_image.png'} width={'100%'} />
+                        <img src={position.issuanceCycle.image_uri || '/products/default_nft_image.png'} width={'100%'} />
                     </div>
             }
         </>
