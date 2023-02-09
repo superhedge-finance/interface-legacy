@@ -45,7 +45,6 @@ export const PortfolioPositions = ({ enabled }: { enabled: boolean }) => {
             if (address) {
                 // fetch positions
                 const positions = await getPosition(address)
-                console.log(positions)
                 setPositions(positions)
             }
         })()

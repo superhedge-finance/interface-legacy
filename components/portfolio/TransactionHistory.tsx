@@ -3,8 +3,9 @@ import {useAccount} from "wagmi";
 import {useConnectModal} from "@rainbow-me/rainbowkit";
 import {ParaLight16, PrimaryButton, TitleH5} from "../basic";
 import {TransactionCard, TransactionHeader} from "./TransactionCard";
-
-const transactions = ['1', '2', '3', '4', '5']
+import {useEffect, useState} from "react";
+import {getHistory, getPosition} from "../../service";
+import {History} from "../../types";
 
 const ConnectWalletCard = ({ onConnect }: { onConnect: () => void }) => {
     return (
@@ -31,11 +32,23 @@ export const PortfolioTransactionHistory = () => {
     const {address} = useAccount()
     const {openConnectModal} = useConnectModal()
 
+    const [histories, setHistories] = useState<History[]>([])
+
     const onConnect = () => {
         if (!address && openConnectModal) {
             openConnectModal()
         }
     }
+
+    useEffect(() => {
+        (async () => {
+            if (address) {
+                // fetch histories
+                const histories = await getHistory(address)
+                setHistories(histories)
+            }
+        })()
+    }, [address])
 
     return (
         <div>
@@ -44,17 +57,18 @@ export const PortfolioTransactionHistory = () => {
                     <ConnectWalletCard onConnect={onConnect} />
             }
             {
-                address && transactions.length === 0 &&
+                address && histories.length === 0 &&
                     <NoTransactionCard />
             }
             {
-                address && transactions.length > 0 &&
+                address && histories.length > 0 &&
                 <div className={'bg-white py-[30px] px-5 rounded-lg'}>
                     <TransactionHeader />
                     {
-                        transactions.map((transaction, index) => {
+                        histories.map((history, index) => {
                             return <TransactionCard
                                 key={index}
+                                history={history}
                                 className={index % 2 === 0 ? 'bg-[#00000014]' : 'bg-white'}
                             />
                         })

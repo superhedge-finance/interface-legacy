@@ -1,4 +1,5 @@
 import { BigNumber } from "ethers";
+import {HISTORY_TYPE, WITHDRAW_TYPE} from "./enums";
 
 type Cycle = {
     coupon: number;
@@ -22,4 +23,14 @@ export interface IProduct {
     maxCapacity: BigNumber;
     currentCapacity: string;
     issuanceCycle: Cycle;
+}
+
+export type History = {
+    address: string;
+    type: HISTORY_TYPE;
+    withdrawType: WITHDRAW_TYPE;
+    productName: string;
+    amountInDecimal: number;
+    transactionHash: string;
+    createdAt: string;
 }

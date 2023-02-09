@@ -1,4 +1,5 @@
 import Image from "next/image";
+import {History, HISTORY_TYPE} from "../../types";
 
 export const TransactionHeader = () => {
     return (
@@ -12,17 +13,19 @@ export const TransactionHeader = () => {
     )
 }
 
-export const TransactionCard = ({ className }: { className: string }) => {
+export const TransactionCard = ({ history, className }: { history: History, className: string }) => {
     return (
         <div className={`py-3 px-6 h-[40px] grid grid-cols-5 rounded-[6px] ${className ?? ''}`}>
             <div className={'flex items-center space-x-2'}>
-                <Image src={'/portfolio/withdraw_icon.svg'} alt={'withdraw icon'} width={16} height={16} />
-                <span className={'bg-clip-text text-transparent bg-primary-gradient text-[12px] leading-[16px]'}>Withdraw</span>
+                <a href={`https://goerli.etherscan.io/tx/${history.transactionHash}`} target={'_blank'} rel={'noreferrer'}>
+                    <Image src={history.type === HISTORY_TYPE.DEPOSIT ? '/portfolio/withdraw_icon.svg' : '/portfolio/deposit_icon.svg'} alt={'withdraw icon'} width={16} height={16} />
+                </a>
+                <span className={'bg-clip-text text-transparent bg-primary-gradient text-[12px] leading-[16px]'}>{history.type === HISTORY_TYPE.DEPOSIT ? 'DEPOSIT' : 'Withdraw'}</span>
             </div>
-            <span className={'text-[12px] leading-[16px] text-grey-70'}>ETH Bullish Spread</span>
-            <span className={'text-[12px] leading-[16px] text-grey-70'}>22 Nov</span>
-            <span className={'text-[12px] leading-[16px] text-blacknew-100'}>Withdrawed</span>
-            <span className={'text-[12px] leading-[16px] text-blacknew-100'}>5,000 USD</span>
+            <span className={'text-[12px] leading-[16px] text-grey-70'}>{history.productName}</span>
+            <span className={'text-[12px] leading-[16px] text-grey-70'}>{new Date(history.createdAt).toLocaleDateString('default', { day: 'numeric', month: 'short' })}</span>
+            <span className={'text-[12px] leading-[16px] text-blacknew-100'}>{history.type === HISTORY_TYPE.DEPOSIT ? 'Deposited' : 'Withdrawed'}</span>
+            <span className={'text-[12px] leading-[16px] text-blacknew-100'}>{history.amountInDecimal.toLocaleString()} USD</span>
         </div>
     )
 }

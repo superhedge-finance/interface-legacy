@@ -17,3 +17,15 @@ export enum WITHDRAW_STATUS {
     PENDING,
     DONE,
 }
+
+export enum HISTORY_TYPE {
+    DEPOSIT = "DEPOSIT",
+    WITHDRAW = "WITHDRAW",
+}
+
+export enum WITHDRAW_TYPE {
+    NONE = "NONE",
+    PRINCIPAL = "PRINCIPAL",
+    COUPON = "COUPON",
+    OPTION = "OPTION",
+}
