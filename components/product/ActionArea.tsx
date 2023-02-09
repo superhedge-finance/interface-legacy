@@ -135,7 +135,7 @@ export const ActionArea = ({productAddress, product}: { productAddress: string, 
             return 'Please await unlock to deposit'
         }
         if (principalBalance > 0) {
-            return `TOP-UP On ${depositAmount.toLocaleString()} USDC`
+            return `TOP-UP ON ${depositAmount.toLocaleString()} USDC`
         }
         return `DEPOSIT ${(depositAmount).toLocaleString()} USDC`
     }, [principalBalance, status, depositAmount])
