@@ -9,12 +9,13 @@ import {getProduct} from "../../../service";
 import {RecapCard} from "../../../components/commons/RecapCard";
 import {NFTProductCard} from "../../../components/portfolio/NFTProductCard";
 import ProductABI from "../../../constants/abis/SHProduct.json";
-import {useSigner} from "wagmi";
+import {useAccount, useSigner} from "wagmi";
 
 const PositionDetail = () => {
     const router = useRouter()
     const {data: signer} = useSigner()
-    const {address} = router.query
+    const {address} = useAccount()
+    const {address: productAddress} = router.query
 
     const [principal, setPrincipal] = useState<number>(0)
     const [isLoading, setIsLoading] = useState(false)
@@ -46,18 +47,18 @@ const PositionDetail = () => {
     }, [product])
 
     const productInstance = useMemo(() => {
-        if (!product || !signer || !address) return null
-        return new ethers.Contract(product.address, ProductABI, signer)
-    }, [product, signer, address])
+        if (signer && productAddress) return new ethers.Contract(productAddress as string, ProductABI, signer)
+        else return null
+    }, [signer, productAddress])
 
     useEffect(() => {
         return () => {
             setIsLoading(true)
-            getProduct(address as string).then((product) => {
+            getProduct(productAddress as string).then((product) => {
                 setProduct(product)
             }).finally(() => setIsLoading(false))
         };
-    }, [address]);
+    }, [productAddress]);
 
     useEffect(() => {
         (async () => {
