@@ -25,7 +25,7 @@ const NoListedNFTCard = () => {
             <ParaLight16 className={'text-grey-70 text-center mt-3'}>
                 List NFT from your Products
             </ParaLight16>
-            <PrimaryButton label={'LIST NFT'} className={'mt-5 max-w-[300px] uppercase'} onClick={() => Router.push('/')} />
+            <PrimaryButton label={'LIST NFT'} className={'mt-5 max-w-[300px] uppercase'} onClick={() => Router.push('/portfolio/choose')} />
         </div>
     )
 }

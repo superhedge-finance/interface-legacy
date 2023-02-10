@@ -28,7 +28,7 @@ const NoTransactionCard = () => {
     )
 }
 
-export const PortfolioTransactionHistory = () => {
+export const PortfolioTransactionHistory = ({ order }: { order: number}) => {
     const {address} = useAccount()
     const {openConnectModal} = useConnectModal()
 
@@ -44,11 +44,11 @@ export const PortfolioTransactionHistory = () => {
         (async () => {
             if (address) {
                 // fetch histories
-                const histories = await getHistory(address)
+                const histories = await getHistory(address, order)
                 setHistories(histories)
             }
         })()
-    }, [address])
+    }, [address, order])
 
     return (
         <div>

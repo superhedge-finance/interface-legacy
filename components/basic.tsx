@@ -10,15 +10,15 @@ export const PrimaryButton = ({ label, disabled = false, className, onClick }: {
 
 export const SecondaryButton = ({ label, disabled = false, className, onClick }: { label: string, disabled?: boolean, className?: string, onClick?: () => void }) => {
     return (
-        <button className={`bg-white border-[1px] border-[#292929] w-full text-black rounded-[8px] py-[18px] px-[28px] ${className ?? ''} ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`} onClick={!disabled ? onClick : undefined}>
+        <button className={`bg-white border-[1px] border-[#292929] w-full text-black rounded-[8px] h-[50px] px-[28px] ${className ?? ''} ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`} onClick={!disabled ? onClick : undefined}>
             {label}
         </button>
     );
 }
 
-export const TitleH2 = ({ children, className }: { children: React.ReactNode, className?: string }) => {
+export const TitleH2 = ({ children, className = 'text-[#161717]' }: { children: React.ReactNode, className?: string }) => {
     return (
-        <span className={`text-[44px] text-[#161717] leading-[44px] ${className ?? ''}`}>
+        <span className={`text-[44px] leading-[44px] ${className ?? ''}`}>
             {children}
         </span>
     );

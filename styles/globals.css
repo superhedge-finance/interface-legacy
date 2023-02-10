@@ -147,3 +147,12 @@
     top: 40px;
     right: 96px;
 }
+
+.gradient-border {
+    border: 1px solid;
+    border-image: linear-gradient(267.79deg, #11CB79 42.5%, #11A692 67.51%, #002366 99.18%) 1;
+    border-image-slice: 1;
+    border-radius: 16px;
+    background-clip: border-box;
+    background-color: white;
+}

@@ -25,13 +25,9 @@ export const ReturnsChart = ({ tr1, tr2, strikePrice1, strikePrice2 }: {
                         },
                     },
                     scales: {
-                        xAxes: {
-                            display: false,
-                        },
-                        yAxes: {
-                            display: true,
-                            min: 90,
-                            max: 130,
+                        y: {
+                            suggestedMin: 90,
+                            suggestedMax: 130,
                         }
                     },
                 }}

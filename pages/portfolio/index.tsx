@@ -12,6 +12,7 @@ const Portfolio = () => {
     const {address} = useAccount()
 
     const [tab, setTab] = useState(0);
+    const [historyOrder, setHistoryOrder] = useState(0);
     const [enabled, setEnabled] = useState(false);
 
     return (
@@ -60,10 +61,10 @@ const Portfolio = () => {
                                         <TitleH3>Transaction History</TitleH3>
                                         {
                                             address &&
-                                            <SuperHedgeTabs labels={['LATEST', 'NEWEST']} tab={tab} setTab={(tab) => setTab(tab)} className={'w-[120px]'} />
+                                            <SuperHedgeTabs labels={['LATEST', 'NEWEST']} tab={historyOrder} setTab={(tab) => setHistoryOrder(tab)} className={'w-[120px]'} />
                                         }
                                     </div>
-                                    <PortfolioTransactionHistory />
+                                    <PortfolioTransactionHistory order={historyOrder} />
                                 </div>
                             </div>
                     }

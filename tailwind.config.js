@@ -19,6 +19,7 @@ module.exports = {
           '60': '#828A93',
           '40': '#AFB7BE',
           '30': '#D6D7D8',
+          '20': '#EBEBEB',
         },
         'whitenew': {
           '100': '#F8F8F8',
