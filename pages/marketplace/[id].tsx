@@ -75,7 +75,7 @@ const MarketplaceDetail = () => {
 
                         <div className={'mt-[80px] w-full'}>
                             <TitleH3>Product Returns</TitleH3>
-                            <ReturnsChart />
+                            <ReturnsChart tr1={10003} tr2={11600} strikePrice1={2000} strikePrice2={2500} />
                         </div>
 
                         <div className={'mt-[80px] flex flex-col space-y-5'}>

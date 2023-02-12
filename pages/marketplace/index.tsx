@@ -1,9 +1,8 @@
 import {useState} from "react";
 import {Tab} from "@headlessui/react";
 import {classNames} from "../../styles/helper";
-import {mockData, ProductCategoryList} from "../../types";
+import {mockData, ProductCategoryList, NFTItem} from "../../types";
 import MarketplaceList from "../../components/marketplace/List";
-import {NFTItem} from "../../types";
 
 const underlyingList = ['ALL', 'ETH/USDC', 'BTC/USDC']
 

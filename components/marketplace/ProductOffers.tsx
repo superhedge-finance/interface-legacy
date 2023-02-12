@@ -2,6 +2,8 @@ import {SuperHedgeTabs} from "../commons/Tabs";
 import {useState} from "react";
 import {RecapCard} from "../commons/RecapCard";
 import {PrimaryButton} from "../basic";
+import ItemBuyConfirmDialog from "./ItemBuyConfirmDialog";
+import ItemPositionAddedDialog from "./ItemPositionAddedDialog";
 
 const OfferCard = () => {
     return (
@@ -23,6 +25,8 @@ const OfferCard = () => {
 
 export const ProductOffers = () => {
     const [tab, setTab] = useState(0);
+    const [open, setOpen] = useState(false);
+    const [addedOpen, setAddedOpen] = useState(false);
 
     return (
         <div>
@@ -35,7 +39,13 @@ export const ProductOffers = () => {
                 <OfferCard />
                 <OfferCard />
             </div>
-            <PrimaryButton label={'BUY THIS PRODUCT FOR 1,010 USDC'} className={'mt-7'} />
+            <PrimaryButton label={'BUY THIS PRODUCT FOR 1,010 USDC'} className={'mt-7'} onClick={() => setOpen(true)} />
+
+            <ItemBuyConfirmDialog open={open} setOpen={(open) => setOpen(open)} onConfirm={() => {
+                setOpen(false)
+                setAddedOpen(true)
+            }} />
+            <ItemPositionAddedDialog open={addedOpen} setOpen={(open) => setAddedOpen(open)} />
         </div>
     )
 }

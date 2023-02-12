@@ -1,6 +1,9 @@
+import {useState} from "react";
 import Image from "next/image";
 import {useRouter} from "next/router";
 import {ParaLight16, PrimaryButton, TitleH5} from "../basic";
+import MarketplaceItem from "../marketplace/Item";
+import {mockData, NFTItem} from "../../types";
 
 const NoPositionCard = () => {
     const Router = useRouter()
@@ -31,10 +34,22 @@ const NoListedNFTCard = () => {
 }
 
 export const PortfolioPositionList = () => {
+    const [items, setItems] = useState<Array<NFTItem>>(mockData)
+
     return (
-        <>
+        <div className={`${items.length === 0 ? 'self-center' : ''}`}>
             {/*<NoPositionCard />*/}
-            <NoListedNFTCard />
-        </>
+            {
+                items.length === 0 &&
+                    <NoListedNFTCard />
+            }
+            <div className={'grid grid-cols-1 md:grid-cols-3 mt-12 gap-x-0 md:gap-x-5 gap-y-5 md:gap-y-8'}>
+                {
+                    items.map((item, index) => (
+                        <MarketplaceItem key={index} item={item} />
+                    ))
+                }
+            </div>
+        </div>
     )
 }

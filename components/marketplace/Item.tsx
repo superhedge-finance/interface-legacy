@@ -2,6 +2,8 @@ import Image from "next/image";
 import {NFTItem} from "../../types";
 import {PrimaryButton} from "../basic";
 import {useRouter} from "next/router";
+import {RecapCard} from "../commons/RecapCard";
+import {ReturnsChart} from "../product/ReturnsChart";
 
 const MarketplaceItem = ({ item }: {item: NFTItem}) => {
     const Router = useRouter();
@@ -28,22 +30,12 @@ const MarketplaceItem = ({ item }: {item: NFTItem}) => {
             </div>
 
             <div className={'mt-3 flex items-center space-x-3'}>
-                <div className={'flex flex-1'}>
-                    <div className={'py-3 px-4 w-full rounded-lg bg-[rgba(0,0,0,0.04)] flex flex-col items-center justify-center space-y-2'}>
-                        <span className={'text-grey-70 text-[12px] leading-[12px]'}>MTM Price</span>
-                        <div className={'flex items-center text-[16px] leading-[16px] space-x-2 uppercase'}>
-                            <span className={'text-blacknew-100'}>{item.mtm_price.toLocaleString()} USDC</span>
-                        </div>
-                    </div>
-                </div>
-                <div className={'flex flex-1'}>
-                    <div className={'py-3 px-4 w-full rounded-lg bg-[rgba(0,0,0,0.04)] flex flex-col items-center justify-center space-y-2'}>
-                        <span className={'text-grey-70 text-[12px] leading-[12px]'}>Total Lots</span>
-                        <div className={'flex items-center text-[16px] leading-[16px] space-x-2 uppercase'}>
-                            <span className={'text-blacknew-100'}>{item.total_lots.toLocaleString()} USDC</span>
-                        </div>
-                    </div>
-                </div>
+                <RecapCard label={'MTM Price'} value={item.mtm_price.toLocaleString() + ' USDC'} />
+                <RecapCard label={'Total Lots'} value={item.total_lots.toLocaleString() + ' USDC'} />
+            </div>
+
+            <div>
+                <ReturnsChart tr1={10003} tr2={11600} strikePrice1={2000} strikePrice2={2500} />
             </div>
 
             <PrimaryButton label={'Buy Now'} className={'mt-4 uppercase'} onClick={() => Router.push(`/marketplace/${item.id}`) }/>

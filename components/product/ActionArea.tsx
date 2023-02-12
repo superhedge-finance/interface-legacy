@@ -468,7 +468,7 @@ export const ActionArea = ({productAddress, product}: { productAddress: string, 
             </Transition>
 
             <Transition appear show={withdrawStatus !== WITHDRAW_STATUS.NONE} as={Fragment}>
-                <Dialog as="div" className="relative z-10" onClose={() => setWithdrawStatus(WITHDRAW_STATUS.NONE)}>
+                <Dialog as="div" className="relative z-10" onClose={() =>  setWithdrawStatus(WITHDRAW_STATUS.NONE)}>
                     <Transition.Child
                         as={Fragment}
                         enter="ease-out duration-300"
