@@ -1,12 +1,12 @@
 import Image from "next/image";
+import {useRouter} from "next/router";
 import {NFTItem} from "../../types";
 import {PrimaryButton} from "../basic";
-import {useRouter} from "next/router";
 import {RecapCard} from "../commons/RecapCard";
 import {ReturnsChart} from "../product/ReturnsChart";
 
 const MarketplaceItem = ({ item }: {item: NFTItem}) => {
-    const Router = useRouter();
+    const router = useRouter();
 
     return (
         <div className={'flex flex-col p-6 md:py-11 md:px-12 rounded-[16px] bg-white'}>
@@ -38,7 +38,7 @@ const MarketplaceItem = ({ item }: {item: NFTItem}) => {
                 <ReturnsChart tr1={10003} tr2={11600} strikePrice1={2000} strikePrice2={2500} />
             </div>
 
-            <PrimaryButton label={'Buy Now'} className={'mt-4 uppercase'} onClick={() => Router.push(`/marketplace/${item.id}`) }/>
+            <PrimaryButton label={`${router.pathname.includes('portfolio') ? 'VIEW DETAILS' : 'BUY NOW'}`} className={'mt-4 uppercase'} onClick={() => router.push(router.pathname.includes('portfolio') ? `/portfolio/nft/${item.id}` : `/marketplace/${item.id}`) }/>
         </div>
     )
 }

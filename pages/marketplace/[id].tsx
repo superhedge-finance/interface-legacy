@@ -86,7 +86,7 @@ const MarketplaceDetail = () => {
 
                         <div className={'mt-[80px] w-full flex flex-col space-y-5'}>
                             <TitleH3>Product Lifecycle</TitleH3>
-                            <img src={'/products/product_lifecycle.png'} alt={'lifecycle'} width={'100%'} />
+                            <img src={'/portfolio/product_lifecycle.svg'} alt={'lifecycle'} width={'100%'} />
                         </div>
 
                         <div className={'mt-[80px] w-full flex flex-col space-y-5'}>
