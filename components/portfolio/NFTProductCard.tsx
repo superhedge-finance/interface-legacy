@@ -1,13 +1,15 @@
-import {IProduct} from "../../types";
-import Image from "next/image";
 import {useMemo} from "react";
+import Image from "next/image";
+import {useRouter} from "next/router";
 import {useAccount} from "wagmi";
+import {IProduct} from "../../types";
 import {RecapCard} from "../commons/RecapCard";
 import {ReturnsChart} from "../product/ReturnsChart";
 import {PrimaryButton, SubtitleLight12} from "../basic";
 import {truncateAddress} from "../../utils/helpers";
 
 export const NFTProductCard = ({ product }: { product: IProduct }) => {
+    const router = useRouter()
     const {address} = useAccount()
 
     const currency1 = useMemo(() => {
@@ -56,7 +58,7 @@ export const NFTProductCard = ({ product }: { product: IProduct }) => {
                 <SubtitleLight12 className={'text-blacknew-100'}>{truncateAddress(address || '')}</SubtitleLight12>
             </div>
 
-            <PrimaryButton label={'LIST NFT'} />
+            <PrimaryButton label={'LIST NFT'} onClick={() => router.push('/portfolio/create')} />
         </div>
     )
 }

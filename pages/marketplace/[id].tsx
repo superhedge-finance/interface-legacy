@@ -5,6 +5,29 @@ import {useEffect, useState} from "react";
 import {RecapCard} from "../../components/commons/RecapCard";
 import {ProductOffers} from "../../components/marketplace/ProductOffers";
 import {ReturnsChart} from "../../components/product/ReturnsChart";
+import {TransactionCard, TransactionHeader} from "../../components/portfolio/TransactionCard";
+import {ActivityHeader, ActivityRow} from "../../components/marketplace/ActivityRow";
+
+const activities = [
+    {
+        date: '22 Okt',
+        amount: 10320,
+        lots: 10,
+        contract: '0x3826539Cbd8d68DCF119e80B994557B4278CeC9f',
+    },
+    {
+        date: '21 Okt',
+        amount: 5320,
+        lots: 5,
+        contract: '0x3826539Cbd8d68DCF119e80B994557B4278CeC9f',
+    },
+    {
+        date: '19 Okt',
+        amount: 7520,
+        lots: 7,
+        contract: '0x3826539Cbd8d68DCF119e80B994557B4278CeC9f',
+    },
+]
 
 const MarketplaceDetail = () => {
     const [item, setItem] = useState<NFTItem>()
@@ -15,7 +38,7 @@ const MarketplaceDetail = () => {
     }, [])
 
     return (
-        <div className={'pt-[80px] flex justify-center'}>
+        <div className={'py-[80px] flex justify-center'}>
             <div className={'max-w-[650px] w-full'}>
                 {
                     item &&
@@ -128,6 +151,18 @@ const MarketplaceDetail = () => {
 
                         <div className={'mt-[80px] w-full flex flex-col space-y-5'}>
                             <TitleH3>Deposit Activity</TitleH3>
+                            <div className={'bg-white py-[30px] px-5 rounded-lg'}>
+                                <ActivityHeader />
+                                {
+                                    activities.map((activity, index) => {
+                                        return <ActivityRow
+                                            key={index}
+                                            activity={activity}
+                                            className={index % 2 === 0 ? 'bg-[#00000014]' : 'bg-white'}
+                                        />
+                                    })
+                                }
+                            </div>
                         </div>
                     </div>
                 }
