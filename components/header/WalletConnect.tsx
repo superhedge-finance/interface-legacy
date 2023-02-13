@@ -33,31 +33,31 @@ export default function WalletConnect() {
                             {(() => {
                             if (!mounted || !account || !chain) {
                                 return (
-                                <button className="uppercase text-[#161717] text-[14px] font-semibold leading-[14px] bg-white py-[18px] px-8 rounded-[8px]" onClick={openConnectModal} type="button">
+                                <div className="uppercase text-[#161717] text-[14px] font-semibold leading-[14px] bg-white py-[18px] cursor-pointer px-8 rounded-[8px]" onClick={openConnectModal}>
                                     Connect Wallet
-                                </button>
+                                </div>
                                 );
                             }
 
                             if (chain.unsupported) {
                                 return (
-                                <button onClick={openChainModal} type="button">
+                                <div onClick={openChainModal}>
                                     Wrong network
-                                </button>
+                                </div>
                                 );
                             }
 
                             return (
                                 <Menu as={'div'} className={'relative'}>
-                                    <Menu.Button>
-                                        <button type="button" className={'text-[#F8F6F5] uppercase text-[14px] leading-[14px] h-[50px] font-semibold bg-[#161717] border-[1px] border-[#CFD1D3] rounded-[8px] py-[15px] px-8'}>
+                                    <Menu.Button as={'div'}>
+                                        <div className={'text-[#F8F6F5] uppercase text-[14px] leading-[14px] h-[50px] font-semibold bg-[#161717] border-[1px] border-[#CFD1D3] rounded-[8px] cursor-pointer py-[15px] px-8'}>
                                             {account.displayName}
                                             {account.displayBalance
                                             ? ` (${account.displayBalance})`
                                             : ''}
-                                        </button>
+                                        </div>
                                     </Menu.Button>
-                                    <Menu.Items as={'div'} className={'absolute bg-[#161717] rounded-bl-lg rounded-br-lg w-full text-[13px] leading-[16px]'}>
+                                    <Menu.Items as={'div'} className={'absolute bg-[#161717] rounded-bl-lg rounded-br-lg w-full text-[13px] leading-[16px] z-[99]'}>
                                         <Menu.Item as={'div'} className={'h-[64px] border border-[1px] border-[#4B4B4B]'}>
                                             <Link href={'/profile'}>
                                                 <div className={'flex items-center justify-center h-full text-grey-70 py-4 px-[10px]'}>

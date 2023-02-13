@@ -22,6 +22,7 @@ export const ActionArea = ({productAddress, product}: { productAddress: string, 
     const [lots, setLots] = useState(1);
     const [isOpen, setIsOpen] = useState(false)
     const [status, setStatus] = useState(0)
+    const [withdrawing, setWithdrawing] = useState(false)
     const [principalBalance, setPrincipalBalance] = useState(0)
     const [optionBalance, setOptionBalance] = useState(0)
     const [couponBalance, setCouponBalance] = useState(0)
@@ -64,6 +65,7 @@ export const ActionArea = ({productAddress, product}: { productAddress: string, 
     const onWithdraw = async () => {
         if (productInstance) {
             try {
+                setWithdrawing(true)
                 if (status === 1) {
                     if (principalBalance > 0) {
                         const tx = await productInstance.withdrawPrincipal();
@@ -93,6 +95,8 @@ export const ActionArea = ({productAddress, product}: { productAddress: string, 
                 }
             } catch (e) {
                 setWithdrawStatus(WITHDRAW_STATUS.NONE)
+            } finally {
+                setWithdrawing(false)
             }
         }
     }
@@ -531,20 +535,8 @@ export const ActionArea = ({productAddress, product}: { productAddress: string, 
                                             </button>
                                             :
                                             <div className="mt-8 flex items-center justify-between space-x-8 h-[50px]">
-                                                <button
-                                                    type="button"
-                                                    className="flex flex-1 items-center justify-center rounded-md border border-[#4B4B4B] border-[1px] px-4 py-2 text-sm font-medium text-black rounded-[8px] h-full"
-                                                    onClick={() => setWithdrawStatus(WITHDRAW_STATUS.NONE)}
-                                                >
-                                                    NO
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    className="flex flex-1 items-center justify-center rounded-md border border-transparent bg-[#292929] px-4 py-2 text-sm font-medium text-white rounded-[8px] h-full"
-                                                    onClick={onWithdraw}
-                                                >
-                                                    YES
-                                                </button>
+                                                <SecondaryButton label={'NO'} onClick={() => setWithdrawStatus(WITHDRAW_STATUS.NONE)}/>
+                                                <PrimaryButton label={'YES'} onClick={onWithdraw} disabled={withdrawing} loading={withdrawing} className={'flex items-center justify-center'}/>
                                             </div>
                                     }
                                 </Dialog.Panel>
