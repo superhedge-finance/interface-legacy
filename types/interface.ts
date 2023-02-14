@@ -35,3 +35,10 @@ export type History = {
     transactionHash: string;
     createdAt: string;
 }
+
+export type Activity = {
+    date: string;
+    amount: number;
+    lots: number;
+    contract: string;
+}

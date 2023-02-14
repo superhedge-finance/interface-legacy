@@ -7,6 +7,28 @@ import {ParaLight16, SkeletonCard, SubtitleLight12, TitleH3} from "../../compone
 import {ReturnsChart} from "../../components/product/ReturnsChart";
 import {getProduct} from "../../service";
 import {IProduct, ProductSpreads, ProductStatus} from "../../types";
+import {ActivityHeader, ActivityRow} from "../../components/commons/ActivityRow";
+
+const activities = [
+    {
+        date: '22 Okt',
+        amount: 10320,
+        lots: 10,
+        contract: '0x3826539Cbd8d68DCF119e80B994557B4278CeC9f',
+    },
+    {
+        date: '21 Okt',
+        amount: 5320,
+        lots: 5,
+        contract: '0x3826539Cbd8d68DCF119e80B994557B4278CeC9f',
+    },
+    {
+        date: '19 Okt',
+        amount: 7520,
+        lots: 7,
+        contract: '0x3826539Cbd8d68DCF119e80B994557B4278CeC9f',
+    },
+]
 
 const RecapCard = ({ label, value }: { label: string, value: string }) => {
     return (
@@ -204,6 +226,18 @@ const ProductDetail = () => {
 
                             <div className={'mt-[80px] flex flex-col space-y-5'}>
                                 <TitleH3>Deposit Activity</TitleH3>
+                                <div className={'bg-white py-[30px] px-5 rounded-lg'}>
+                                <ActivityHeader />
+                                {
+                                    activities.map((activity, index) => {
+                                        return <ActivityRow
+                                            key={index}
+                                            activity={activity}
+                                            className={index % 2 === 0 ? 'bg-[#00000014]' : 'bg-white'}
+                                        />
+                                    })
+                                }
+                            </div>
                             </div>
                         </div>
                     }

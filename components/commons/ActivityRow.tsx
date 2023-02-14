@@ -30,8 +30,8 @@ export const ActivityRow = ({ activity, className }: { activity: Activity, class
                     <div className={'flex items-center'}>
                         <span className={'bg-primary-gradient bg-clip-text text-transparent'}>
                             {truncateAddress(activity.contract)}
-                        </span>
-                        <Image src={'/icons/external.svg'} alt={'external icon'} width={16} height={16} />
+                        </span>&nbsp;
+                        <Image src={'/icons/external.svg'} alt={'external icon'} width={18} height={18} />
                     </div>
                 </a>
             </span>

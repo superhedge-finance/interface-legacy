@@ -6,7 +6,7 @@ import {RecapCard} from "../../components/commons/RecapCard";
 import {ProductOffers} from "../../components/marketplace/ProductOffers";
 import {ReturnsChart} from "../../components/product/ReturnsChart";
 import {TransactionCard, TransactionHeader} from "../../components/portfolio/TransactionCard";
-import {ActivityHeader, ActivityRow} from "../../components/marketplace/ActivityRow";
+import {ActivityHeader, ActivityRow} from "../../components/commons/ActivityRow";
 
 const activities = [
     {

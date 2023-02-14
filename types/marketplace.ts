@@ -10,10 +10,3 @@ export type NFTItem = {
     underlying?: string;
     category?: string;
 }
-
-export type Activity = {
-    date: string;
-    amount: number;
-    lots: number;
-    contract: string;
-}
