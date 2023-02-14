@@ -1,5 +1,5 @@
 export const truncateAddress = (address: string) => {
-    return `${address.slice(0, 10)}...${address.slice(-10)}`;
+    return `${address.slice(0, 9)}...${address.slice(-9)}`;
 }
 
 export const getCurrencyIcon = (underlying: string): { currency1: string, currency2: string } => {
