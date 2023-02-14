@@ -28,7 +28,7 @@ export const SecondaryButton = ({ label, disabled = false, className, onClick }:
 
 export const TitleH2 = ({ children, className = 'text-[#161717]' }: { children: React.ReactNode, className?: string }) => {
     return (
-        <span className={`text-[44px] leading-[44px] ${className ?? ''}`}>
+        <span className={`text-[36px] md:text-[44px] leading-[44px] ${className ?? ''}`}>
             {children}
         </span>
     );
@@ -58,6 +58,14 @@ export const ParaLight16 = ({ children, className }: { children: React.ReactNode
     );
 }
 
+export const ParaRegular18 = ({ children, className }: { children: React.ReactNode, className?: string }) => {
+    return (
+        <span className={`text-[18px] leading-[24px] text-grey-70 font-light ${className ?? ''}`}>
+            {children}
+        </span>
+    );
+}
+
 export const TagRegular12 = ({ children, className }: { children: React.ReactNode, className?: string }) => {
     return (
         <span className={`text-[12px] leading-[12px] ${className ?? ''}`}>
@@ -77,6 +85,22 @@ export const SubtitleLight12 = ({ children, className = 'text-grey-70' }: { chil
 export const SubtitleRegular14 = ({ children, className }: { children: React.ReactNode, className?: string }) => {
     return (
         <span className={`text-[14px] leading-[14px] text-blacknew-100 ${className ?? ''}`}>
+            {children}
+        </span>
+    );
+}
+
+export const SubtitleRegular16 = ({ children, className = 'text-grey-70' }: { children: React.ReactNode, className?: string }) => {
+    return (
+        <span className={`text-[16px] leading-[16px] ${className ?? ''}`}>
+            {children}
+        </span>
+    );
+}
+
+export const SubtitleRegular20 = ({ children, className = 'text-grey-70' }: { children: React.ReactNode, className?: string }) => {
+    return (
+        <span className={`text-[20px] leading-[20px] font-light ${className ?? ''}`}>
             {children}
         </span>
     );

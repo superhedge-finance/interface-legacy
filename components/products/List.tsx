@@ -56,7 +56,7 @@ export default function ProductList() {
 
   return (
     <div className="w-full mr-8 px-2 sm:px-0">
-      <div className="flex space-x-7">
+      <div className="flex-col md:flex-row md:flex md:space-x-7 space-y-3 md:space-y-0">
         <Tab.Group>
           <Tab.List className="flex space-x-1 rounded-xl bg-[#EBEBEB] p-1">
             {ProductUnderlyingList.map((underlying, index) => (
@@ -104,10 +104,10 @@ export default function ProductList() {
       {/** BULLISH PRODUCTS **/}
       {
         (category === 'All' || category === 'BULLISH') &&
-          <div className="mt-[60px] flex flex-col">
+          <div className="md:mt-[60px] mt-8 flex flex-col">
             <h1 className='text-[44px] text-grey-80'>Bullish Products</h1>
             <p className='max-w-md text-[16px] leading-[24px] text-grey-70'>We try to provide the most accurate and up-to-date list of cryptos with the most accurate rates and information.</p>
-            <div className='grid grid-cols-2 gap-8 mt-6'>
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mt-6'>
               {
                 !isProductLoading && bullishProducts.map((product, idx) => (
                     <Product key={idx} product={product} />
@@ -120,10 +120,10 @@ export default function ProductList() {
       {/** BEARISH PRODUCTS **/}
       {
         (category === 'All' || category === 'BEARISH') &&
-          <div className="mt-[100px] flex flex-col">
+          <div className="md:mt-[100px] mt-8 flex flex-col">
             <h1 className='text-[44px] text-grey-80'>Bearish Products</h1>
             <p className='max-w-md text-[16px] leading-[24px] text-grey-70'>We try to provide the most accurate and up-to-date list of cryptos with the most accurate rates and information.</p>
-            <div className='grid grid-cols-2 gap-8 mt-6'>
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mt-6'>
               {
                 !isProductLoading && bearishProducts.map((product, idx) => (
                     <Product key={idx} product={product} />
@@ -136,10 +136,10 @@ export default function ProductList() {
       {/** RANGE PRODUCTS **/}
       {
         (category === 'All' || category === 'RANGE') &&
-          <div className="mt-[100px] flex flex-col">
+          <div className="md:mt-[100px] mt-8 flex flex-col">
             <h1 className='text-[44px] text-grey-80'>Range Products</h1>
             <p className='max-w-md text-[16px] leading-[24px] text-grey-70'>We try to provide the most accurate and up-to-date list of cryptos with the most accurate rates and information.</p>
-            <div className='grid grid-cols-2 gap-8 mt-6'>
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mt-6'>
               {
                 !isProductLoading && rangeProducts.map((product, idx) => (
                     <Product key={idx} product={product} />

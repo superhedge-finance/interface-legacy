@@ -4,7 +4,7 @@ import { RadioGroup } from '@headlessui/react'
 import {useAccount, useSigner} from "wagmi";
 import Image from "next/image";
 import {Dialog, Transition} from "@headlessui/react";
-import {PrimaryButton, SecondaryButton} from "../basic";
+import {ParaLight16, ParaRegular18, PrimaryButton, SecondaryButton, SubtitleRegular16} from "../basic";
 import {ethers} from "ethers";
 import ProductABI from "../../constants/abis/SHProduct.json";
 import ERC20ABI from "../../constants/abis/ERC20.json";
@@ -18,6 +18,7 @@ export const ActionArea = ({productAddress, product}: { productAddress: string, 
     const {data: signer} = useSigner()
     const {openConnectModal} = useConnectModal()
 
+    const [scrollY, setScrollY] = useState(0)
     const [tab, setTab] = useState(0);
     const [lots, setLots] = useState(1);
     const [isOpen, setIsOpen] = useState(false)
@@ -147,8 +148,9 @@ export const ActionArea = ({productAddress, product}: { productAddress: string, 
     const isSticky = () => {
         const header = document.querySelector('.action-area');
         const scrollTop = window.scrollY;
-        if (!header) return;
-        scrollTop >= 200 ? header.classList.add('is-sticky') : header.classList.remove('is-sticky');
+        setScrollY(scrollTop);
+        // if (!header) return;
+        // scrollTop >= 200 ? header.classList.add('is-sticky') : header.classList.remove('is-sticky');
     };
 
     // Sticky Menu Area
@@ -190,7 +192,7 @@ export const ActionArea = ({productAddress, product}: { productAddress: string, 
     return (
         <>
             <div
-                className={`col-span-1 action-area bg-white py-[60px] px-[84px] rounded h-fit ${!address ? 'justify-between space-y-[100px]' : ''}`}>
+                className={`col-span-1 ${scrollY >= 200 ? 'md:sticky md:right-[96px] md:top-[40px]' : ''} w-full fixed z-30 md:sticky bottom-0 bg-white -m-5 md:m-0 p-5 md:py-[60px] md:px-[84px] rounded h-fit ${!address ? 'justify-between space-y-[100px]' : ''}`}>
                 <div className={'p-1 flex items-center bg-[#EBEBEB] rounded-[6px] h-[38px]'}>
                     <div
                         className={`${tab === 0 ? 'bg-white' : 'bg-transparent'} cursor-pointer h-[30px] rounded-[6px] p-2 flex flex-1 items-center justify-center`}
@@ -215,7 +217,7 @@ export const ActionArea = ({productAddress, product}: { productAddress: string, 
                 {
                     (address && tab === 0) &&
                     <>
-                        <div className={'bg-[#EBEBEB] rounded-[6px] p-5 flex flex-col items-center mt-10'}>
+                        <div className={'bg-transparent md:bg-[#EBEBEB] rounded-[6px] p-5 flex flex-col items-center mt-0 md:mt-10'}>
                             {
                                 principalBalance === 0 ?
                                     <>
@@ -256,63 +258,69 @@ export const ActionArea = ({productAddress, product}: { productAddress: string, 
                             }
                         </div>
 
-                        <div className={'mt-8 text-[#494D51] text-[16px]'}>
-                            No of lots
+                        <div className={'hidden md:block flex flex-col w-full'}>
+                            <div className={'mt-8 text-[#494D51] text-[16px]'}>
+                                No of lots
+                            </div>
+
+                            <div className={'relative flex items-center mt-2'}>
+                                <input
+                                    className={'w-full py-3 px-4 bg-[#FBFBFB] border border-[1px] border-[#E6E6E6] rounded focus:outline-none'}
+                                    value={lots} onChange={(e) => setLots(Number(e.target.value))} type="text"/>
+                                <span className={'absolute right-4 text-[#828A93]'}>Lots</span>
+                            </div>
+
+                            <div className={'mt-3 flex justify-between items-center text-[#828A93]'}>
+                                <div className={'flex items-center'}>
+                                    <Image src={'/miniUSDC.svg'} alt={'miniUSDC'} width={20} height={20}/>
+                                    <span className={'ml-2'}>{(pricePerLot * lots).toLocaleString()} USDC</span>
+                                </div>
+                                <div className={'flex items-center'}>
+                                    <span className={'mr-2'}>1 lot -</span>
+                                    <Image src={'/miniUSDC.svg'} alt={'miniUSDC'} width={20} height={20}/>
+                                    <span className={'ml-2'}>{pricePerLot.toLocaleString()} USDC</span>
+                                </div>
+                            </div>
+
+                            <div className={'mt-5 grid grid-cols-5 gap-2'}>
+                                <div
+                                    className={'bg-[#FBFBFB] cursor-pointer flex flex-1 items-center justify-center text-center rounded-[6px] py-2 px-3 text-[12px] leading-[12px]'}
+                                    onClick={() => setLots(1)}>
+                                    MIN
+                                </div>
+                                <div
+                                    className={'bg-[#FBFBFB] cursor-pointer flex flex-1 items-center justify-center text-center rounded-[6px] py-2 px-3 text-[12px] leading-[12px]'}
+                                    onClick={() => setLots(5)}>
+                                    5 LOTS
+                                </div>
+                                <div
+                                    className={'bg-[#FBFBFB] cursor-pointer flex flex-1 items-center justify-center text-center rounded-[6px] py-2 px-3 text-[12px] leading-[12px]'}
+                                    onClick={() => setLots(10)}>
+                                    10 LOTS
+                                </div>
+                                <div
+                                    className={'bg-[#FBFBFB] cursor-pointer flex flex-1 items-center justify-center text-center rounded-[6px] py-2 px-3 text-[12px] leading-[12px]'}
+                                    onClick={() => setLots(100)}>
+                                    100 LOTS
+                                </div>
+                                <div
+                                    className={'bg-[#FBFBFB] cursor-pointer flex flex-1 items-center justify-center text-center rounded-[6px] py-2 px-3 text-[12px] leading-[12px]'}
+                                    onClick={() => setLots(maxLots)}>
+                                    MAX
+                                </div>
+                            </div>
+
+                            <div className={'mt-7'}>
+                                <PrimaryButton
+                                    label={depositButtonLabel}
+                                    disabled={status !== 1}
+                                    onClick={() => setIsOpen(true)}
+                                />
+                            </div>
                         </div>
 
-                        <div className={'relative flex items-center mt-2'}>
-                            <input
-                                className={'w-full py-3 px-4 bg-[#FBFBFB] border border-[1px] border-[#E6E6E6] rounded focus:outline-none'}
-                                value={lots} onChange={(e) => setLots(Number(e.target.value))} type="text"/>
-                            <span className={'absolute right-4 text-[#828A93]'}>Lots</span>
-                        </div>
-
-                        <div className={'mt-3 flex justify-between items-center text-[#828A93]'}>
-                            <div className={'flex items-center'}>
-                                <Image src={'/miniUSDC.svg'} alt={'miniUSDC'} width={20} height={20}/>
-                                <span className={'ml-2'}>{(pricePerLot * lots).toLocaleString()} USDC</span>
-                            </div>
-                            <div className={'flex items-center'}>
-                                <span className={'mr-2'}>1 lot -</span>
-                                <Image src={'/miniUSDC.svg'} alt={'miniUSDC'} width={20} height={20}/>
-                                <span className={'ml-2'}>{pricePerLot.toLocaleString()} USDC</span>
-                            </div>
-                        </div>
-
-                        <div className={'mt-5 grid grid-cols-5 gap-2'}>
-                            <div
-                                className={'bg-[#FBFBFB] cursor-pointer flex flex-1 items-center justify-center text-center rounded-[6px] py-2 px-3 text-[12px] leading-[12px]'}
-                                onClick={() => setLots(1)}>
-                                MIN
-                            </div>
-                            <div
-                                className={'bg-[#FBFBFB] cursor-pointer flex flex-1 items-center justify-center text-center rounded-[6px] py-2 px-3 text-[12px] leading-[12px]'}
-                                onClick={() => setLots(5)}>
-                                5 LOTS
-                            </div>
-                            <div
-                                className={'bg-[#FBFBFB] cursor-pointer flex flex-1 items-center justify-center text-center rounded-[6px] py-2 px-3 text-[12px] leading-[12px]'}
-                                onClick={() => setLots(10)}>
-                                10 LOTS
-                            </div>
-                            <div
-                                className={'bg-[#FBFBFB] cursor-pointer flex flex-1 items-center justify-center text-center rounded-[6px] py-2 px-3 text-[12px] leading-[12px]'}
-                                onClick={() => setLots(100)}>
-                                100 LOTS
-                            </div>
-                            <div
-                                className={'bg-[#FBFBFB] cursor-pointer flex flex-1 items-center justify-center text-center rounded-[6px] py-2 px-3 text-[12px] leading-[12px]'}
-                                onClick={() => setLots(maxLots)}>
-                                MAX
-                            </div>
-                        </div>
-
-                        <div className={'mt-7'}>
-                            <PrimaryButton
-                                label={depositButtonLabel}
-                                disabled={status !== 1}
-                                onClick={() => setIsOpen(true)}
-                            />
+                        <div className={'block md:hidden w-full pb-5'}>
+                            <PrimaryButton label={'DEPOSIT'} />
                         </div>
                     </>
                 }
@@ -320,52 +328,63 @@ export const ActionArea = ({productAddress, product}: { productAddress: string, 
                 {
                     address && tab === 1 &&
                     <>
-                        <div className={'text-[#677079] text-[16px] leading-[16px] text-center mt-[33px]'}>Withdraw
-                            info
+                        <div className={'hidden md:block flex flex-col w-full'}>
+                            <div className={'text-[#677079] text-[16px] leading-[16px] text-center mt-[33px]'}>Withdraw
+                                info
+                            </div>
+
+                            <div className={'bg-[#0000000a] p-5 rounded-[6px] flex flex-col items-center mt-[17px]'}>
+                                <span className={'text-[#677079] text-[16px] leading-[16px]'}>Total Balance</span>
+                                <span
+                                    className={'text-[#161717] text-[22px] leading-[22px] mt-3'}>{(principalBalance + optionBalance + couponBalance).toLocaleString()} USDC ({lotsCount} lot)</span>
+                            </div>
+
+                            <div className={'bg-[#0000000a] p-5 rounded-[6px] flex flex-col items-center mt-[17px]'}>
+                                <span className={'text-[#677079] text-[16px] leading-[16px]'}>Withdrawable Balance</span>
+                                <span
+                                    className={'text-[#161717] text-[22px] leading-[22px] mt-3'}>{withdrawableBalance.toLocaleString()} USDC</span>
+                            </div>
+
+                            <div className={'font-light text-[14px] leading-[20px] text-[#677079] mt-[44px]'}>
+                                {
+                                    status !== 1 ? 'Your Deposit is locked, so you can initiate only Profit Withdraw right now or request\n' +
+                                        'withdraw All Amount at Maturity Date.' : 'Vault is unlocked. You may deposits or withdraw funds at this time.'
+                                }
+                            </div>
+
+                            <div className={'mt-7'}>
+                                <PrimaryButton
+                                    label={withdrawableBalance === 0 ? 'No Withdrawable Balance' : 'INITIATE WITHDRAW'}
+                                    className={'uppercase'}
+                                    disabled={withdrawableBalance === 0}
+                                    onClick={() => setWithdrawStatus(WITHDRAW_STATUS.INITIATE)}
+                                />
+
+                                {
+                                    (status === 3 || status === 4) &&
+                                        <SecondaryButton
+                                            label={principalBalance > 0 ? 'Request Withdrawal of Principal on Maturity' : 'No principal to withdraw'}
+                                            className='mt-4 uppercase'
+                                            disabled={principalBalance === 0}
+                                            onClick={onRequestWithdraw}
+                                        />
+                                }
+                            </div>
                         </div>
 
-                        <div className={'bg-[#0000000a] p-5 rounded-[6px] flex flex-col items-center mt-[17px]'}>
-                            <span className={'text-[#677079] text-[16px] leading-[16px]'}>Total Balance</span>
-                            <span
-                                className={'text-[#161717] text-[22px] leading-[22px] mt-3'}>{(principalBalance + optionBalance + couponBalance).toLocaleString()} USDC ({lotsCount} lot)</span>
-                        </div>
+                        <div className={'block md:hidden w-full pb-5'}>
+                            <div className={'flex flex-col items-center w-full space-y-2 py-4'}>
+                                <SubtitleRegular16>Current Balance</SubtitleRegular16>
+                                <ParaRegular18 className={'text-center'}>You have no Deposit. <br /> Please Deposit first</ParaRegular18>
+                            </div>
 
-                        <div className={'bg-[#0000000a] p-5 rounded-[6px] flex flex-col items-center mt-[17px]'}>
-                            <span className={'text-[#677079] text-[16px] leading-[16px]'}>Withdrawable Balance</span>
-                            <span
-                                className={'text-[#161717] text-[22px] leading-[22px] mt-3'}>{withdrawableBalance.toLocaleString()} USDC</span>
-                        </div>
-
-                        <div className={'font-light text-[14px] leading-[20px] text-[#677079] mt-[44px]'}>
-                            {
-                                status !== 1 ? 'Your Deposit is locked, so you can initiate only Profit Withdraw right now or request\n' +
-                                    'withdraw All Amount at Maturity Date.' : 'Vault is unlocked. You may deposits or withdraw funds at this time.'
-                            }
-                        </div>
-
-                        <div className={'mt-7'}>
-                            <PrimaryButton
-                                label={withdrawableBalance === 0 ? 'No Withdrawable Balance' : 'INITIATE WITHDRAW'}
-                                className={'uppercase'}
-                                disabled={withdrawableBalance === 0}
-                                onClick={() => setWithdrawStatus(WITHDRAW_STATUS.INITIATE)}
-                            />
-
-                            {
-                                (status === 3 || status === 4) &&
-                                    <SecondaryButton
-                                        label={principalBalance > 0 ? 'Request Withdrawal of Principal on Maturity' : 'No principal to withdraw'}
-                                        className='mt-4 uppercase'
-                                        disabled={principalBalance === 0}
-                                        onClick={onRequestWithdraw}
-                                    />
-                            }
+                            <PrimaryButton label={'INITIATE WITHDRAW'} />
                         </div>
                     </>
                 }
                 {
                     address &&
-                    <div className={'mt-7 flex items-center justify-center'}>
+                    <div className={'hidden md:flex mt-7 items-center justify-center'}>
                         <span className={'text-[#677079] mr-2'}>Contract:</span>
                         <span
                             className={'mr-2 bg-clip-text text-transparent bg-primary-gradient'}>{truncateAddress(productAddress)}</span>

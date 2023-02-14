@@ -4,6 +4,9 @@ import {useMemo} from "react";
 import {ethers} from "ethers";
 import {ProductSpreads, ProductStatus, IProduct} from "../../types";
 import {ReturnsChart} from "../product/ReturnsChart";
+import {getCurrencyIcon} from "../../utils/helpers";
+import {RecapCard} from "../commons/RecapCard";
+import {SubtitleRegular20, TitleH2} from "../basic";
 
 export default function Product({product}: { product: IProduct }) {
     const capacity = useMemo(() => {
@@ -21,13 +24,7 @@ export default function Product({product}: { product: IProduct }) {
         return -1
     }, [product])
 
-    const currency1 = useMemo(() => {
-        return '/currency/' + product.underlying.split('/')[1] + '.svg'
-    }, [product]);
-
-    const currency2 = useMemo(() => {
-        return '/currency/' + product.underlying.split('/')[0] + '.svg'
-    }, [product]);
+    const { currency1, currency2 } = getCurrencyIcon(product.underlying)
 
     const issuance_date = useMemo(() => {
         const issuanceDate = new Date(product.issuanceCycle.issuanceDate * 1000).getTime()
@@ -51,7 +48,7 @@ export default function Product({product}: { product: IProduct }) {
     }, [product]);
 
     return (
-        <div className="flex flex-col py-11 px-12 rounded-[16px] bg-white">
+        <div className="flex flex-col p-6 md:py-11 md:px-12 rounded-[12px] md:rounded-[16px] bg-white">
             <div className={'flex justify-between'}>
                 <div className={'inline-block'}>
                     <span
@@ -62,17 +59,19 @@ export default function Product({product}: { product: IProduct }) {
                             className={`text-white text-sm ml-3 px-4 py-2 rounded-lg ${ProductSpreads[categoryIndex].className}`}>{ProductSpreads[categoryIndex].label}</span>
                     }
                 </div>
-                <Image src={'/icons/social_logo.svg'} alt={'social logo'} width={80} height={72} />
+                <div className={'w-[46px] md:w-[80px] h-[41px] md:h-[72px]'}>
+                    <img src={'/icons/social_logo.svg'} alt={'social logo'} width={'100%'} height={'100% '} />
+                </div>
             </div>
             <div className='my-5 flex flex-row'>
                 <div className={'relative flex items-center mr-[40px]'}>
-                    <Image src={currency1.toLowerCase()} className='rounded-full' alt='Product Logo' width={60} height={60}/>
-                    <Image src={currency2.toLowerCase()} className='rounded-full absolute left-[40px]' alt='Product Logo'
-                           width={60} height={60}/>
+                    <img src={currency1} className='rounded-full w-[40px] md:w-[60px] h-[40px] md:h-[60px]' alt='Product Logo' width={'100%'} height={'100%'}/>
+                    <img src={currency2} className='rounded-full w-[40px] md:w-[60px] h-[40px] md:h-[60px] absolute left-[30px] md:left-[40px]' alt='Product Logo'
+                           width={'100%'} height={'100%'}/>
                 </div>
                 <div className='flex flex-col justify-around ml-3'>
-                    <h5 className="text-xl tracking-tight text-black">{product.underlying}</h5>
-                    <span className='text-sm text-gray-700'>{product.name}</span>
+                    <TitleH2 className="text-black">{product.underlying}</TitleH2>
+                    <SubtitleRegular20>{product.name}</SubtitleRegular20>
                 </div>
             </div>
             <div className={'flex justify-between items-center space-x-12'}>
@@ -92,10 +91,13 @@ export default function Product({product}: { product: IProduct }) {
                         <span className="text-sm text-gray-700">USDC {Number(product.maxCapacity.toString()).toLocaleString()}</span>
                     </div>
                 </div>
-                <div className={'flex flex-col items-center'}>
+                <div className={'hidden md:flex flex-col items-center'}>
                     <span className="d-block mb-1 text-sm font-normal text-gray-700 dark:text-gray-400">Estimated APY</span>
                     <h3 className="font-medium leading-tight text-3xl bg-clip-text text-transparent bg-primary-gradient">{product.issuanceCycle.apy}</h3>
                 </div>
+            </div>
+            <div className={'block md:hidden'}>
+                <RecapCard label={'Estimated APY'} value={product.issuanceCycle.apy} />
             </div>
 
             <div>
@@ -107,18 +109,18 @@ export default function Product({product}: { product: IProduct }) {
                 />
             </div>
 
-            <div className={'flex items-center justify-between mt-5'}>
-                <div className='flex flex-col items-center bg-[#0000000a] h-[66px] rounded-[7px] py-3 px-4'>
-                    <p className="text-[12px] font-light text-gray-700">Issuance date</p>
-                    <h3 className="text-[20px] font-light text-black">{issuance_date}</h3>
+            <div className={'flex-col md:flex-row md:flex space-y-3 md:space-y-0 items-center justify-between mt-5'}>
+                <div className='flex md:flex-col items-center justify-between bg-[#0000000a] h-[40px] md:h-[66px] rounded-[7px] py-3 px-4'>
+                    <p className="text-[16px] md:text-[12px] font-light text-gray-700">Issuance date</p>
+                    <h3 className="text-[16px] md:text-[20px] font-light text-black">{issuance_date}</h3>
                 </div>
-                <div className='flex flex-col items-center bg-[#0000000a] h-[66px] rounded-[7px] py-3 px-4'>
-                    <span className="text-[12px] font-light text-gray-700">Investment Duration</span>
-                    <span className="text-[20px] font-light text-black">{investment_duration}</span>
+                <div className='flex md:flex-col items-center justify-between bg-[#0000000a] h-[40px] md:h-[66px] rounded-[7px] py-3 px-4'>
+                    <span className="text-[16px] md:text-[12px] font-light text-gray-700">Investment Duration</span>
+                    <span className="text-[16px] md:text-[20px] font-light text-black">{investment_duration}</span>
                 </div>
-                <div className='flex flex-col items-center bg-[#0000000a] h-[66px] rounded-[7px] py-3 px-4'>
-                    <span className="text-[12px] font-light text-gray-700">Principal Protection</span>
-                    <span className="text-[20px] font-light text-black">100%</span>
+                <div className='flex md:flex-col items-center justify-between bg-[#0000000a] h-[40px] md:h-[66px] rounded-[7px] py-3 px-4'>
+                    <span className="text-[16px] md:text-[12px] font-light text-gray-700">Principal Protection</span>
+                    <span className="text-[16px] md:text-[20px] font-light text-black">100%</span>
                 </div>
             </div>
             <Link href={`/product/${product.address}`}>

@@ -3,12 +3,14 @@ import {useRouter} from "next/router";
 import Image from "next/image";
 import {ethers} from "ethers";
 import {ActionArea} from "../../components/product/ActionArea";
-import {ParaLight16, SkeletonCard, SubtitleLight12, TitleH3} from "../../components/basic";
+import {ParaLight16, SkeletonCard, SubtitleLight12, SubtitleRegular20, TitleH2, TitleH3} from "../../components/basic";
 import {ReturnsChart} from "../../components/product/ReturnsChart";
 import {getProduct} from "../../service";
 import {IProduct, ProductSpreads, ProductStatus} from "../../types";
 import {ActivityHeader, ActivityRow} from "../../components/commons/ActivityRow";
 import Timeline from "../../components/product/Timeline";
+import {getCurrencyIcon} from "../../utils/helpers";
+import {RecapCard} from "../../components/commons/RecapCard";
 
 const activities = [
     {
@@ -31,11 +33,11 @@ const activities = [
     },
 ]
 
-const RecapCard = ({ label, value }: { label: string, value: string }) => {
+const RecapCardMobile = ({ label, value }: { label: string, value: string }) => {
     return (
-        <div className='flex flex-col flex-1 items-center bg-[#0000000a] h-[66px] rounded-[7px] py-3 px-4'>
-            <p className="text-[12px] font-light text-gray-700">{label}</p>
-            <h3 className="text-[20px] font-light text-black">{value}</h3>
+        <div className='flex md:flex-col w-full justify-between h-[40px] md:h-[66px] flex-1 items-center bg-[#0000000a] h-[66px] rounded-[7px] py-3 px-4'>
+            <p className="text-[16px] md:text-[12px] font-light text-gray-700">{label}</p>
+            <h3 className="text-[16px] md:text-[20px] font-light text-black">{value}</h3>
         </div>
     )
 }
@@ -56,14 +58,14 @@ const ProductDetail = () => {
 
     const currency1 = useMemo(() => {
         if (product) {
-            return '/currency/' + product.underlying.split('/')[1] + '.svg'
+            return getCurrencyIcon(product.underlying).currency1
         }
         return '/currency/usdc.svg'
     }, [product]);
 
     const currency2 = useMemo(() => {
         if (product) {
-            return '/currency/' + product.underlying.split('/')[0] + '.svg'
+            return getCurrencyIcon(product.underlying).currency2
         }
         return '/currency/eth.svg'
     }, [product]);
@@ -105,7 +107,7 @@ const ProductDetail = () => {
                 <div className={'col-span-1'}>
                     {
                         !isLoading && product &&
-                        <div className="flex flex-col p-6">
+                        <div className="flex flex-col px-0 py-6 md:px-6">
                             <div>
                                 <span
                                     className={`inline-block text-white text-sm py-2 px-3 rounded-lg ${ProductStatus[product.status].className}`}>{ProductStatus[product.status].label}</span>
@@ -117,18 +119,16 @@ const ProductDetail = () => {
                             <div className={'flex justify-between items-end my-5'}>
                                 <div className='flex flex-row'>
                                     <div className={'relative flex items-center mr-[40px]'}>
-                                        <Image src={currency1.toLowerCase()} className='rounded-full' alt='Product Logo' width={60}
-                                               height={60}/>
-                                        <Image src={currency2.toLowerCase()} className='rounded-full absolute left-[40px]'
-                                               alt='Product Logo'
-                                               width={60} height={60}/>
+                                        <img src={currency1} className='rounded-full w-[40px] md:w-[60px] h-[40px] md:h-[60px]' alt='Product Logo' width={'100%'} height={'100%'}/>
+                                        <img src={currency2} className='rounded-full w-[40px] md:w-[60px] h-[40px] md:h-[60px] absolute left-[30px] md:left-[40px]' alt='Product Logo'
+                                             width={'100%'} height={'100%'}/>
                                     </div>
                                     <div className='flex flex-col justify-around ml-3'>
-                                        <h5 className="text-[44px] text-black">{product.underlying}</h5>
-                                        <span className='text-[20px] font-light text-gray-700'>{product.name}</span>
+                                        <TitleH2 className="text-black">{product.underlying}</TitleH2>
+                                        <SubtitleRegular20>{product.name}</SubtitleRegular20>
                                     </div>
                                 </div>
-                                <div className={'flex flex-col items-center'}>
+                                <div className={'hidden md:flex flex-col items-center'}>
                                     <span className="d-block mb-1 text-sm font-normal text-gray-700 dark:text-gray-400">Estimated APY</span>
                                     <span className="font-medium leading-tight text-3xl text-transparent bg-primary-gradient bg-clip-text">{product.issuanceCycle.apy}</span>
                                 </div>
@@ -151,15 +151,18 @@ const ProductDetail = () => {
                                         className="text-sm text-gray-700">USDC {Number(product.maxCapacity.toString()).toLocaleString()}</span>
                                 </div>
                             </div>
+                            <div className={'block md:hidden'}>
+                                <RecapCard label={'Estimated APY'} value={product.issuanceCycle.apy} />
+                            </div>
 
                             <div className={'flex flex-col mt-[80px]'}>
                                 <TitleH3>Product Recap</TitleH3>
-                                <div className={'flex items-center justify-between space-x-2 mt-5'}>
-                                    <RecapCard label={'Investment Duration'} value={investment_duration} />
-                                    <RecapCard label={'Coupon'} value={`${product.issuanceCycle.coupon / 100}% / WEEK`} />
-                                    <RecapCard label={'Principal Protection'} value={'100%'} />
+                                <div className={'flex flex-col md:flex-row items-center justify-between space-x-0 md:space-x-2 space-y-3 md:space-y-0 mt-5'}>
+                                    <RecapCardMobile label={'Investment Duration'} value={investment_duration} />
+                                    <RecapCardMobile label={'Coupon'} value={`${product.issuanceCycle.coupon / 100}% / WEEK`} />
+                                    <RecapCardMobile label={'Principal Protection'} value={'100%'} />
                                 </div>
-                                <div className={'flex items-center justify-between space-x-2 mt-2'}>
+                                <div className={'grid md:grid-cols-4 grid-cols-2 gap-2 mt-2'}>
                                     <RecapCard label={'Strike 1 price'} value={`${(product.issuanceCycle.strikePrice1)}`} />
                                     <RecapCard label={'Strike 2 price'} value={`${(product.issuanceCycle.strikePrice2)}`} />
                                     <RecapCard label={'Strike 3 price'} value={`${(product.issuanceCycle.strikePrice3)}`} />
@@ -197,10 +200,10 @@ const ProductDetail = () => {
                                         <span className={'bg-clip-text text-transparent bg-primary-gradient'}>2.36%</span>
                                         <SubtitleLight12>ETH spot weekly % change</SubtitleLight12>
                                     </div>
-                                    <div className={'grid grid-cols-3 gap-x-4 mt-8'}>
+                                    <div className={'grid grid-cols-2 md:grid-cols-3 gap-4 mt-8'}>
                                         <RecapCard label={'Base yield'} value={'5.00%'} />
                                         <RecapCard label={'Options moneyness'} value={'2.5%'} />
-                                        <RecapCard label={'Expected yield (APY)'} value={'7.36%'} />
+                                        <RecapCard className={'col-span-2 md:col-span-1'} label={'Expected yield (APY)'} value={'7.36%'} />
                                     </div>
                                 </div>
                             </div>
