@@ -6,6 +6,7 @@ import {PrimaryButton} from "../basic";
 import {IProduct} from "../../types";
 import ProductABI from "../../constants/abis/SHProduct.json";
 import {useRouter} from "next/router";
+import Timeline from "../product/Timeline";
 
 export const PositionCard = ({ position, enabled }: { position: IProduct, enabled: boolean }) => {
     const Router = useRouter()
@@ -68,7 +69,7 @@ export const PositionCard = ({ position, enabled }: { position: IProduct, enable
                 </div>
 
                 <div className={'mt-6'}>
-                    <img src={'/portfolio/position_timeline.svg'} width={'100%'} />
+                    <Timeline issuance={position.issuanceCycle.issuanceDate} maturity={position.issuanceCycle.maturityDate} compact={true} />
                 </div>
 
                 <PrimaryButton label={'SEE DETAILS'} className={'mt-6'} onClick={() => Router.push(`/portfolio/position/${position.address}`)} />

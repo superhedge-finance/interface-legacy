@@ -4,6 +4,7 @@ import {IProduct} from "../../types";
 import {getCurrencyIcon} from "../../utils/helpers";
 import {RecapCard} from "../commons/RecapCard";
 import {useRouter} from "next/router";
+import Timeline from "../product/Timeline";
 
 const PortfolioNFTCard = ({ product }: { product: IProduct }) => {
     const Router = useRouter()
@@ -35,7 +36,7 @@ const PortfolioNFTCard = ({ product }: { product: IProduct }) => {
 
             <RecapCard label={'Principal Amount'} value={'USDC 6,600 (3 Lots)'} />
 
-            <img src={'/portfolio/position_timeline.svg'} width={'100%'} />
+            <Timeline issuance={product.issuanceCycle.issuanceDate} maturity={product.issuanceCycle.maturityDate} />
         </div>
     )
 }

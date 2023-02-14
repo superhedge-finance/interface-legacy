@@ -5,7 +5,7 @@ module.exports = {
     './components/**/*.{js,ts,jsx,tsx}',
   ],
   safelist: [
-    { pattern: /(bg|w)-./ },
+    { pattern: /(bg|w|left)-./ },
   ],
   theme: {
     extend: {
@@ -17,6 +17,7 @@ module.exports = {
           '80': '#494D51',
           '70': '#677079',
           '60': '#828A93',
+          '50': '#A5A9AE',
           '40': '#AFB7BE',
           '30': '#D6D7D8',
           '20': '#EBEBEB',

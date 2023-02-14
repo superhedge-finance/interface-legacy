@@ -8,6 +8,7 @@ import {ReturnsChart} from "../../components/product/ReturnsChart";
 import {getProduct} from "../../service";
 import {IProduct, ProductSpreads, ProductStatus} from "../../types";
 import {ActivityHeader, ActivityRow} from "../../components/commons/ActivityRow";
+import Timeline from "../../components/product/Timeline";
 
 const activities = [
     {
@@ -184,7 +185,8 @@ const ProductDetail = () => {
 
                             <div className={'mt-[80px] flex flex-col space-y-5'}>
                                 <TitleH3>Product Lifecycle</TitleH3>
-                                <img src={'/portfolio/product_lifecycle.svg'} alt={'lifecycle'} width={'100%'} />
+                                <Timeline issuance={product.issuanceCycle.issuanceDate} maturity={product.issuanceCycle.maturityDate} />
+                                {/*<img src={'/portfolio/product_lifecycle.svg'} alt={'lifecycle'} width={'100%'} />*/}
                             </div>
 
                             <div className={'mt-[80px] flex flex-col space-y-5'}>
