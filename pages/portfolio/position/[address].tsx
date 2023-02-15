@@ -10,6 +10,7 @@ import {RecapCard} from "../../../components/commons/RecapCard";
 import {NFTProductCard} from "../../../components/portfolio/NFTProductCard";
 import ProductABI from "../../../constants/abis/SHProduct.json";
 import {useAccount, useSigner} from "wagmi";
+import Timeline from "../../../components/product/Timeline";
 
 const PositionDetail = () => {
     const router = useRouter()
@@ -124,7 +125,7 @@ const PositionDetail = () => {
 
                             <div className={'mt-[80px] flex flex-col space-y-5'}>
                                 <TitleH3>Product Lifecycle</TitleH3>
-                                <img src={'/portfolio/product_lifecycle.svg'} alt={'lifecycle'} width={'100%'} />
+                                <Timeline issuance={product.issuanceCycle.issuanceDate} maturity={product.issuanceCycle.maturityDate} />
                             </div>
 
                             <div className={'mt-[80px] flex flex-col space-y-5'}>
