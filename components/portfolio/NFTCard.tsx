@@ -13,7 +13,7 @@ const PortfolioNFTCard = ({ product }: { product: IProduct }) => {
     const [hover, setHover] = useState(false)
 
     return (
-        <div className={`flex flex-col space-y-6 p-6 md:py-11 md:px-12 rounded-[16px] bg-white cursor-pointer ${hover ? 'gradient-border' : ''}`} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} onClick={() => Router.push('/portfolio/create')}>
+        <div className={`flex flex-col space-y-6 p-6 md:py-11 md:px-12 rounded-[16px] bg-white cursor-pointer ${hover ? 'gradient-border' : ''}`} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} onClick={() => Router.push(`/portfolio/create/${product.address}`)}>
             <div className={'flex justify-between items-start'}>
                 <div className='flex flex-row'>
                     <div className={'relative flex items-center mr-[40px]'}>

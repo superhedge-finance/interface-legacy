@@ -17,7 +17,7 @@ const OfferCard = () => {
                     <span className={'text-grey-60 text-[20px] leading-[20px]'}>3 Lots</span>
                 </div>
             </div>
-            <RecapCard label={'Offer valid until'} value={'29 Nov'} />
+            <RecapCard label={'Offer since since'} value={'29 Nov'} />
             <RecapCard label={'Username'} value={'0xa377...CCA5'} />
         </div>
     )
