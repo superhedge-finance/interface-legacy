@@ -175,6 +175,7 @@ const ProductDetail = () => {
                                 <ReturnsChart
                                     strikePrice1={product.issuanceCycle.strikePrice1}
                                     strikePrice2={product.issuanceCycle.strikePrice2}
+                                    strikePrice3={product.issuanceCycle.strikePrice3}
                                     tr1={product.issuanceCycle.tr1}
                                     tr2={product.issuanceCycle.tr2}
                                 />

@@ -50,6 +50,7 @@ export const NFTProductCard = ({ product }: { product: IProduct }) => {
                     tr2={product.issuanceCycle.tr2}
                     strikePrice1={product.issuanceCycle.strikePrice1}
                     strikePrice2={product.issuanceCycle.strikePrice2}
+                    strikePrice3={product.issuanceCycle.strikePrice3}
                 />
             </div>
 

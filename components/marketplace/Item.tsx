@@ -35,7 +35,7 @@ const MarketplaceItem = ({ item }: {item: NFTItem}) => {
             </div>
 
             <div>
-                <ReturnsChart tr1={10003} tr2={11600} strikePrice1={2000} strikePrice2={2500} />
+                <ReturnsChart tr1={10003} tr2={11600} strikePrice1={2000} strikePrice2={2500} strikePrice3={0}/>
             </div>
 
             <PrimaryButton label={`${router.pathname.includes('portfolio') ? 'VIEW DETAILS' : 'BUY NOW'}`} className={'mt-4 uppercase'} onClick={() => router.push(router.pathname.includes('portfolio') ? `/portfolio/nft/${item.id}` : `/marketplace/${item.id}`) }/>

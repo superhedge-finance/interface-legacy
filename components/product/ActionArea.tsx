@@ -33,6 +33,8 @@ export const ActionArea = ({productAddress, product}: { productAddress: string, 
     const [currencyInstance, setCurrencyInstance] = useState<ethers.Contract | undefined>(undefined)
     const [maxLots, setMaxLots] = useState(0)
     const [profit, setProfit] = useState(1)
+    // following state is for deposit modal
+    const [expand, setExpand] = useState(false)
 
     const onConnect = () => {
         if (!address && openConnectModal) {
@@ -192,19 +194,27 @@ export const ActionArea = ({productAddress, product}: { productAddress: string, 
     return (
         <>
             <div
-                className={`col-span-1 ${scrollY >= 200 ? 'md:sticky md:right-[96px] md:top-[40px]' : ''} w-full fixed z-30 md:sticky bottom-0 bg-white -m-5 md:m-0 p-5 md:py-[60px] md:px-[84px] rounded h-fit ${!address ? 'justify-between space-y-[100px]' : ''}`}>
-                <div className={'p-1 flex items-center bg-[#EBEBEB] rounded-[6px] h-[38px]'}>
-                    <div
-                        className={`${tab === 0 ? 'bg-white' : 'bg-transparent'} cursor-pointer h-[30px] rounded-[6px] p-2 flex flex-1 items-center justify-center`}
-                        onClick={() => setTab(0)}>
-                        DEPOSIT
-                    </div>
-                    <div
-                        className={`${tab === 1 ? 'bg-white' : 'bg-transparent'} cursor-pointer h-[30px] rounded-[6px] p-2 flex flex-1 items-center justify-center`}
-                        onClick={() => setTab(1)}>
-                        WITHDRAW
-                    </div>
-                </div>
+                className={`col-span-1 ${scrollY >= 200 ? 'md:sticky md:right-[96px] md:top-[40px]' : ''} w-full fixed z-30 md:sticky bottom-0 bg-white -m-5 md:m-0 p-5 md:py-[60px] md:px-[84px] rounded ${expand ? 'h-screen' : 'h-fit'} ${!address ? 'justify-between space-y-[100px]' : ''}`}>
+                {
+                    !expand
+                        ?
+                        <div className={'p-1 flex items-center bg-[#EBEBEB] rounded-[6px] h-[38px]'}>
+                            <div
+                                className={`${tab === 0 ? 'bg-white' : 'bg-transparent'} cursor-pointer h-[30px] rounded-[6px] p-2 flex flex-1 items-center justify-center`}
+                                onClick={() => setTab(0)}>
+                                DEPOSIT
+                            </div>
+                            <div
+                                className={`${tab === 1 ? 'bg-white' : 'bg-transparent'} cursor-pointer h-[30px] rounded-[6px] p-2 flex flex-1 items-center justify-center`}
+                                onClick={() => setTab(1)}>
+                                WITHDRAW
+                            </div>
+                        </div>
+                        :
+                        <div className={'flex items-center justify-end'}>
+                            <img src={'/icons/close.svg'} onClick={() => setExpand(false)} />
+                        </div>
+                }
 
                 {
                     !address &&
@@ -216,8 +226,8 @@ export const ActionArea = ({productAddress, product}: { productAddress: string, 
 
                 {
                     (address && tab === 0) &&
-                    <>
-                        <div className={'bg-transparent md:bg-[#EBEBEB] rounded-[6px] p-5 flex flex-col items-center mt-0 md:mt-10'}>
+                    <div className={'flex flex-col justify-between w-full'}>
+                        <div className={`${expand ? 'bg-[#EBEBEB]' : 'bg-transparent'} md:bg-[#EBEBEB] rounded-[6px] p-5 flex flex-col items-center mt-0 md:mt-10`}>
                             {
                                 principalBalance === 0 ?
                                     <>
@@ -258,7 +268,7 @@ export const ActionArea = ({productAddress, product}: { productAddress: string, 
                             }
                         </div>
 
-                        <div className={'hidden md:block flex flex-col w-full'}>
+                        <div className={`${expand ? '' : 'hidden'} md:block flex flex-col w-full`}>
                             <div className={'mt-8 text-[#494D51] text-[16px]'}>
                                 No of lots
                             </div>
@@ -309,20 +319,23 @@ export const ActionArea = ({productAddress, product}: { productAddress: string, 
                                     MAX
                                 </div>
                             </div>
-
-                            <div className={'mt-7'}>
-                                <PrimaryButton
-                                    label={depositButtonLabel}
-                                    disabled={status !== 1}
-                                    onClick={() => setIsOpen(true)}
-                                />
-                            </div>
                         </div>
 
-                        <div className={'block md:hidden w-full pb-5'}>
-                            <PrimaryButton label={'DEPOSIT'} />
+                        <div className={`${expand ? '' : 'hidden'} md:block mt-7`}>
+                            <PrimaryButton
+                                label={depositButtonLabel}
+                                disabled={status !== 1}
+                                onClick={() => setIsOpen(true)}
+                            />
                         </div>
-                    </>
+
+                        {
+                            !expand &&
+                                <div className={'block md:hidden w-full pb-5'}>
+                                    <PrimaryButton label={'DEPOSIT'} onClick={() => setExpand(true)} />
+                                </div>
+                        }
+                    </div>
                 }
 
                 {

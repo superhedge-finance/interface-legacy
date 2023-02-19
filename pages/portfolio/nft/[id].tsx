@@ -65,7 +65,7 @@ const PortfolioNFTDetails = () => {
                             <RecapCard label={'Market Price'} value={'1,100 USDC'} />
                         </div>
 
-                        <div className={'w-full mt-[80px]'}>
+                        <div className={'w-full mt-[80px]'}>`
                             <TitleH3>Product Recap</TitleH3>
                             <div className={'flex items-center justify-between space-x-2 mt-5'}>
                                 <RecapCard label={'Offer valid until'} value={`21.12.2022`} />
