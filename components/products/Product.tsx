@@ -7,6 +7,7 @@ import {ReturnsChart} from "../product/ReturnsChart";
 import {getCurrencyIcon} from "../../utils/helpers";
 import {RecapCard} from "../commons/RecapCard";
 import {SubtitleRegular20, TitleH2} from "../basic";
+import Countdown from "react-countdown";
 
 export default function Product({product}: { product: IProduct }) {
     const capacity = useMemo(() => {
@@ -26,19 +27,13 @@ export default function Product({product}: { product: IProduct }) {
 
     const { currency1, currency2 } = getCurrencyIcon(product.underlying)
 
-    const issuance_date = useMemo(() => {
-        const issuanceDate = new Date(product.issuanceCycle.issuanceDate * 1000).getTime()
-        const currentDate = new Date().getTime()
-        const diffInMilliseconds = issuanceDate - currentDate;
-        const diffInSeconds = diffInMilliseconds / 1000;
-        const diffInMinutes = diffInSeconds / 60;
-        const diffInHours = diffInMinutes / 60;
-        const hours = Math.floor(diffInHours);
-        const minutes = Math.floor((diffInHours - hours) * 60);
-        const seconds = Math.floor((diffInMinutes - Math.floor(diffInMinutes)) * 60);
-
-        return `${hours}H : ${minutes}M : ${seconds}S`
-    }, [product]);
+    const issuance_date_renderer = ({ hours, minutes, seconds, completed }: { hours: number, minutes: number, seconds: number, completed: boolean }) => {
+        if (completed) {
+            return <span>{`${hours}H : ${minutes}M : ${seconds}S`}</span>
+        } else {
+            return <span>{`${hours}H : ${minutes}M : ${seconds}S`}</span>
+        }
+    }
 
     const investment_duration = useMemo(() => {
         if (product) {
@@ -113,7 +108,9 @@ export default function Product({product}: { product: IProduct }) {
             <div className={'flex-col md:flex-row md:flex space-y-3 md:space-y-0 items-center justify-between mt-5'}>
                 <div className='flex md:flex-col items-center justify-between bg-[#0000000a] h-[40px] md:h-[66px] rounded-[7px] py-3 px-4'>
                     <p className="text-[16px] md:text-[12px] font-light text-gray-700">Issuance date</p>
-                    <h3 className="text-[16px] md:text-[20px] font-light text-black">{issuance_date}</h3>
+                    <h3 className="text-[16px] md:text-[20px] font-light text-black">
+                        <Countdown intervalDelay={1000} date={product.issuanceCycle.issuanceDate * 1000} renderer={issuance_date_renderer} />
+                    </h3>
                 </div>
                 <div className='flex md:flex-col items-center justify-between bg-[#0000000a] h-[40px] md:h-[66px] rounded-[7px] py-3 px-4'>
                     <span className="text-[16px] md:text-[12px] font-light text-gray-700">Investment Duration</span>
