@@ -1,16 +1,16 @@
 import {forwardRef, useEffect, useMemo, useState} from "react";
 import {useRouter} from "next/router";
+import Image from "next/image";
+import DatePicker from "react-datepicker";
 import {useAccount, useSigner} from "wagmi";
 import {BigNumber, ethers} from "ethers";
-import DatePicker from "react-datepicker";
 import {PrimaryButton, SecondaryButton, TitleH2} from "../../../components/basic";
 import {getProduct} from "../../../service";
 import {IProduct} from "../../../types";
 import {getMarketplaceInstance, getNFTInstance} from "../../../utils/contract";
-
 import "react-datepicker/dist/react-datepicker.css";
-import Image from "next/image";
 import ProductABI from "../../../constants/abis/SHProduct.json";
+import NFTListedDialog from "../../../components/portfolio/NFTListedDialog";
 
 const PortfolioCreatePage = () => {
     const router = useRouter()
@@ -19,6 +19,7 @@ const PortfolioCreatePage = () => {
     const {address: productAddress} = router.query
 
     const [isLoading, setIsLoading] = useState(false)
+    const [isListed, setIsListed] = useState(false)
     const [maxBalance, setMaxBalance] = useState(0)
     const [product, setProduct] = useState<IProduct | undefined>(undefined)
     const [marketplaceInstance, setMarketplaceInstance] = useState<ethers.Contract>()
@@ -69,6 +70,7 @@ const PortfolioCreatePage = () => {
                     Math.floor(startingTime.getTime() / 1000)
                 )
                 await listTx.wait()
+                setIsListed(true)
             } catch (e) {
                 console.error(e)
             } finally {
@@ -171,6 +173,8 @@ const PortfolioCreatePage = () => {
                     </div>
                 </div>
             </div>
+
+            <NFTListedDialog open={isListed} setOpen={setIsListed} onConfirm={() => router.push('/portfolio')} />
         </div>
     )
 }
