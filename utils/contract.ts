@@ -3,7 +3,7 @@ import SHMARKETPLACE_ABI from "../constants/abis/SHMarketplace.json";
 import NFT_ABI from "../constants/abis/NFT.json";
 
 export const getMarketplaceInstance = (signer: ethers.Signer) => {
-  return new ethers.Contract("0x2462e81559750ddc2447A3b2dE54dC3E3eBc1f21", SHMARKETPLACE_ABI, signer);
+  return new ethers.Contract("0xB6C5423e7579953227D861Bc49f8c4e49A8398c5", SHMARKETPLACE_ABI, signer);
 }
 
 export const getNFTInstance = (signer: ethers.Signer) => {

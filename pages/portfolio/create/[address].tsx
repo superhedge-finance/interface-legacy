@@ -50,7 +50,7 @@ const PortfolioCreatePage = () => {
     }, [signer, productAddress])
 
     const onListNFT = async () => {
-        if (address && signer && marketplaceInstance && nftInstance) {
+        if (address && signer && marketplaceInstance && nftInstance && product) {
             try {
                 setTxPending(true)
                 const isApprovedForAll = await nftInstance.isApprovedForAll(address, marketplaceInstance.address)
@@ -59,7 +59,15 @@ const PortfolioCreatePage = () => {
                     await approveTx.wait()
                 }
 
-                const listTx = await marketplaceInstance.listItem(nftInstance.address, currentTokenId, lots, '0x07865c6E87B9F70255377e024ace6630C1Eaa37F', ethers.utils.parseUnits(price.toString(), 6), Math.floor(startingTime.getTime() / 1000))
+                const listTx = await marketplaceInstance.listItem(
+                    nftInstance.address,
+                    product.address,
+                    currentTokenId,
+                    lots,
+                    '0x07865c6E87B9F70255377e024ace6630C1Eaa37F',
+                    ethers.utils.parseUnits(price.toString(), 6),
+                    Math.floor(startingTime.getTime() / 1000)
+                )
                 await listTx.wait()
             } catch (e) {
                 console.error(e)
