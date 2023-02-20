@@ -27,11 +27,11 @@ export default function Product({product}: { product: IProduct }) {
 
     const { currency1, currency2 } = getCurrencyIcon(product.underlying)
 
-    const issuance_date_renderer = ({ hours, minutes, seconds, completed }: { hours: number, minutes: number, seconds: number, completed: boolean }) => {
+    const issuance_date_renderer = ({ days, hours, minutes, seconds, completed }: { days: number, hours: number, minutes: number, seconds: number, completed: boolean }) => {
         if (completed) {
-            return <span>{`${hours}H : ${minutes}M : ${seconds}S`}</span>
+            return <span>{`${days * 24 + hours}H : ${minutes}M : ${seconds}S`}</span>
         } else {
-            return <span>{`${hours}H : ${minutes}M : ${seconds}S`}</span>
+            return <span>{`${days * 24 + hours}H : ${minutes}M : ${seconds}S`}</span>
         }
     }
 
