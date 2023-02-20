@@ -51,7 +51,7 @@ const PortfolioCreatePage = () => {
     }, [signer, productAddress])
 
     const onListNFT = async () => {
-        if (address && signer && marketplaceInstance && nftInstance && product) {
+        if (address && signer && marketplaceInstance && nftInstance && product && product.status === 3) {
             try {
                 setTxPending(true)
                 const isApprovedForAll = await nftInstance.isApprovedForAll(address, marketplaceInstance.address)
