@@ -1,4 +1,5 @@
 import React from "react";
+import { Toaster } from 'react-hot-toast';
 import {
     RainbowKitProvider,
     getDefaultWallets,
@@ -75,6 +76,7 @@ function App({children}: AppProps) {
                     <ToastProvider>
                         <Layout>{children}</Layout>
                     </ToastProvider>
+                    <Toaster position="top-right" />
                 </RainbowKitProvider>
             </WagmiConfig>
         </React.StrictMode>

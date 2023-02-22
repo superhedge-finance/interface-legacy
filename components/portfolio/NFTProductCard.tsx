@@ -1,6 +1,7 @@
 import Image from "next/image";
 import {useRouter} from "next/router";
 import {useAccount} from "wagmi";
+import toast from "react-hot-toast";
 import {IProduct} from "../../types";
 import {RecapCard} from "../commons/RecapCard";
 import {ReturnsChart} from "../product/ReturnsChart";
@@ -12,6 +13,13 @@ export const NFTProductCard = ({ product }: { product: IProduct }) => {
     const {address} = useAccount()
 
     const { currency1, currency2 } = getCurrencyIcon(product.underlying)
+
+    const onListNFT = async () => {
+        if (product.status !== 3) {
+            return toast.error('Your product is not issued yet. Please wait until issuance date to list your NFT.')
+        }
+        await router.push(`/portfolio/create/${product.address}`)
+    }
 
     return (
         <div className={'flex flex-col p-6 md:py-11 md:px-12 rounded-[16px] bg-white'}>
@@ -46,7 +54,7 @@ export const NFTProductCard = ({ product }: { product: IProduct }) => {
                 <SubtitleLight12 className={'text-blacknew-100'}>{truncateAddress(address || '')}</SubtitleLight12>
             </div>
 
-            <PrimaryButton label={'LIST NFT'} onClick={() => router.push(`/portfolio/create/${product.address}`)} />
+            <PrimaryButton label={'LIST NFT'} onClick={onListNFT} />
         </div>
     )
 }
