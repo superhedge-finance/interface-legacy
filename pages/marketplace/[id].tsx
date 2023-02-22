@@ -1,11 +1,14 @@
 import { ParaLight16, SubtitleLight12, TagRegular12, TitleH2, TitleH3 } from "../../components/basic";
 import Image from "next/image";
-import { mockData, NFTItem } from "../../types";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { RecapCard } from "../../components/commons/RecapCard";
 import { ProductOffers } from "../../components/marketplace/ProductOffers";
 import { ReturnsChart } from "../../components/product/ReturnsChart";
 import { ActivityHeader, ActivityRow } from "../../components/commons/ActivityRow";
+import { MarketplaceItemDetailType } from "../../types";
+import { getTokenItem } from "../../service";
+import { useRouter } from "next/router";
+import { getCurrencyIcon } from "../../utils/helpers";
 
 const activities = [
   {
@@ -29,12 +32,31 @@ const activities = [
 ];
 
 const MarketplaceDetail = () => {
-  const [item, setItem] = useState<NFTItem>();
+  const router = useRouter();
+  const { id } = router.query;
+
+  const [item, setItem] = useState<MarketplaceItemDetailType>();
 
   useEffect(() => {
-    const nft = mockData.find((item) => item.id === 1);
-    setItem(nft);
-  }, []);
+    (async () => {
+      const _item = await getTokenItem(id as string);
+      if (_item) setItem(_item);
+    })();
+  }, [id]);
+
+  const { currency1, currency2 } = useMemo(() => {
+    if (item) return getCurrencyIcon(item.underlying);
+    return { currency1: "/currency/usdc.svg", currency2: "/currency/eth.svg" };
+  }, [item]);
+
+  const bestOfferPrice = useMemo(() => {
+    if (item) {
+      // get the best offer price from offers array
+      const bestOffer = item.offers.reduce((prev, current) => (prev.price > current.price ? prev : current));
+      return bestOffer.price;
+    }
+    return 0;
+  }, [item]);
 
   return (
     <div className={"py-[80px] flex justify-center"}>
@@ -54,29 +76,31 @@ const MarketplaceDetail = () => {
             <div className={"flex justify-between w-full mt-12 items-end"}>
               <div className='flex flex-row'>
                 <div className={"relative flex items-center mr-[40px]"}>
-                  <Image src={item.currency2} className='rounded-full' alt='Product Logo' width={60} height={60} />
-                  <Image src={item.currency1} className='rounded-full absolute left-[40px]' alt='Product Logo' width={60} height={60} />
+                  <Image src={currency2} className='rounded-full' alt='Product Logo' width={60} height={60} />
+                  <Image src={currency1} className='rounded-full absolute left-[40px]' alt='Product Logo' width={60} height={60} />
                 </div>
                 <div className='flex flex-col justify-around ml-3'>
-                  <h5 className='text-[44px] text-black'>{item.name}</h5>
-                  <span className='text-[20px] font-light text-gray-700'>{item.label}</span>
+                  <h5 className='text-[44px] text-black'>{item.underlying}</h5>
+                  <span className='text-[20px] font-light text-gray-700'>{item.name}</span>
                 </div>
               </div>
               <div className={"flex flex-col items-center"}>
                 <span className='d-block mb-1 text-sm font-normal text-gray-700 dark:text-gray-400'>Estimated APY</span>
-                <span className='font-medium leading-tight text-3xl text-transparent bg-primary-gradient bg-clip-text'>7-15%</span>
+                <span className='font-medium leading-tight text-3xl text-transparent bg-primary-gradient bg-clip-text'>
+                  {item.issuanceCycle.apy}
+                </span>
               </div>
             </div>
 
             <div className={"flex items-center w-full mt-12 space-x-4"}>
-              <RecapCard label={"Best Offer Price"} value={"1,010 USDC"} />
-              <RecapCard label={"Total Lots"} value={"23 LOTS"} />
-              <RecapCard label={"Market Price"} value={"1,100 USDC"} />
+              <RecapCard label={"Best Offer Price"} value={`${bestOfferPrice.toLocaleString()} USDC`} />
+              <RecapCard label={"Total Lots"} value={`${item.totalLots} LOTS`} />
+              <RecapCard label={"Market Price"} value={`${item.mtmPrice.toLocaleString()} USDC`} />
             </div>
 
             <div className={"flex flex-col w-full mt-[80px]"}>
               <TitleH3 className={"text-blacknew-100 mb-5"}>Choose product offer to buy</TitleH3>
-              <ProductOffers />
+              <ProductOffers offers={item.offers} tokenId={item.tokenId} />
             </div>
 
             <div className={"mt-[80px] w-full"}>

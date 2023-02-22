@@ -1,15 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Tab } from "@headlessui/react";
 import { classNames } from "../../styles/helper";
-import { mockData, ProductCategoryList, NFTItem } from "../../types";
+import { ProductCategoryList } from "../../types";
 import MarketplaceList from "../../components/marketplace/List";
+import { MarketplaceItemType } from "../../types";
+import { getListedItems } from "../../service";
 
 const underlyingList = ["ALL", "ETH/USDC", "BTC/USDC"];
 
 const Marketplace = () => {
-  const [items] = useState<Array<NFTItem>>(mockData);
+  const [items, setItems] = useState<Array<MarketplaceItemType>>([]);
   const [, setUnderlying] = useState("ALL");
   const [, setCategory] = useState("All");
+
+  useEffect(() => {
+    (async () => {
+      const _items = await getListedItems();
+      setItems(_items);
+    })();
+  }, []);
 
   return (
     <div className={"py-10"}>

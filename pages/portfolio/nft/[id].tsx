@@ -1,16 +1,38 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { TitleH2, TitleH3 } from "../../../components/basic";
 import { RecapCard } from "../../../components/commons/RecapCard";
-import { mockData, NFTItem } from "../../../types";
+import { MarketplaceItemFullType } from "../../../types";
+import { getUserListedItem } from "../../../service";
+import { useRouter } from "next/router";
+import { getCurrencyIcon, truncateAddress } from "../../../utils/helpers";
+import Timeline from "../../../components/product/Timeline";
 
 const PortfolioNFTDetails = () => {
-  const [item, setItem] = useState<NFTItem>();
+  const router = useRouter();
+  const { id } = router.query;
+
+  const [item, setItem] = useState<MarketplaceItemFullType>();
 
   useEffect(() => {
-    const nft = mockData.find((item) => item.id === 1);
-    setItem(nft);
-  }, []);
+    (async () => {
+      const _item = await getUserListedItem(Number(id));
+      if (_item) setItem(_item);
+    })();
+  }, [id]);
+
+  const { currency1, currency2 } = useMemo(() => {
+    if (item) return getCurrencyIcon(item.underlying);
+    return { currency1: "/currency/usdc.svg", currency2: "/currency/eth.svg" };
+  }, [item]);
+
+  const offerStartSince = useMemo(() => {
+    if (item) {
+      const date = new Date(item.startingTime * 1000);
+      return date.toLocaleDateString();
+    }
+    return "";
+  }, [item]);
 
   return (
     <div className={"py-[80px] flex justify-center"}>
@@ -31,44 +53,46 @@ const PortfolioNFTDetails = () => {
             <div className={"flex justify-between w-full mt-12 items-end"}>
               <div className='flex flex-row'>
                 <div className={"relative flex items-center mr-[40px]"}>
-                  <Image src={item.currency2} className='rounded-full' alt='Product Logo' width={60} height={60} />
-                  <Image src={item.currency1} className='rounded-full absolute left-[40px]' alt='Product Logo' width={60} height={60} />
+                  <Image src={currency1} className='rounded-full' alt='Product Logo' width={60} height={60} />
+                  <Image src={currency2} className='rounded-full absolute left-[40px]' alt='Product Logo' width={60} height={60} />
                 </div>
                 <div className='flex flex-col justify-around ml-3'>
-                  <h5 className='text-[44px] text-black'>{item.name}</h5>
-                  <span className='text-[20px] font-light text-gray-700'>{item.label}</span>
+                  <h5 className='text-[44px] text-black'>{item.underlying}</h5>
+                  <span className='text-[20px] font-light text-gray-700'>{item.name}</span>
                 </div>
               </div>
               <div className={"flex flex-col items-center"}>
                 <span className='d-block mb-1 text-sm font-normal text-gray-700 dark:text-gray-400'>Estimated APY</span>
-                <span className='font-medium leading-tight text-3xl text-transparent bg-primary-gradient bg-clip-text'>7-15%</span>
+                <span className='font-medium leading-tight text-3xl text-transparent bg-primary-gradient bg-clip-text'>
+                  {item.issuanceCycle.apy}
+                </span>
               </div>
             </div>
 
             <div className={"flex items-center w-full mt-12 space-x-4"}>
-              <RecapCard label={"Price"} value={"1,010 USDC"} />
-              <RecapCard label={"Product Lots"} value={"23 LOTS"} />
-              <RecapCard label={"Market Price"} value={"1,100 USDC"} />
+              <RecapCard label={"Price"} value={`${item.offerPrice.toLocaleString()} USDC`} />
+              <RecapCard label={"Product Lots"} value={`${item.totalLots} LOTS`} />
+              <RecapCard label={"Market Price"} value={`${item.mtmPrice.toLocaleString()} USDC`} />
             </div>
 
             <div className={"w-full mt-[80px]"}>
               <TitleH3>Product Recap</TitleH3>
               <div className={"flex items-center justify-between space-x-2 mt-5"}>
-                <RecapCard label={"Offer start since"} value={`21.12.2022`} />
-                <RecapCard label={"Coupon"} value={`0.10 % / WEEK`} />
-                <RecapCard label={"Username"} value={"0xa377...CCA5"} />
+                <RecapCard label={"Offer start since"} value={offerStartSince} />
+                <RecapCard label={"Coupon"} value={`${item.issuanceCycle.coupon / 100} % / WEEK`} />
+                <RecapCard label={"Username"} value={truncateAddress(item.seller, 4)} />
               </div>
               <div className={"flex items-center justify-between space-x-2 mt-2"}>
-                <RecapCard label={"Strike 1 price"} value={`125%`} />
-                <RecapCard label={"Strike 2 price"} value={`145%`} />
-                <RecapCard label={"Strike 3 price"} value={`135%`} />
-                <RecapCard label={"Strike 4 price"} value={`155%`} />
+                <RecapCard label={"Strike 1 price"} value={`${item.issuanceCycle.strikePrice1 / 100}%`} />
+                <RecapCard label={"Strike 2 price"} value={`${item.issuanceCycle.strikePrice2 / 100}%`} />
+                <RecapCard label={"Strike 3 price"} value={`${item.issuanceCycle.strikePrice3 / 100}%`} />
+                <RecapCard label={"Strike 4 price"} value={`${item.issuanceCycle.strikePrice4 / 100}%`} />
               </div>
             </div>
 
             <div className={"mt-[80px] w-full flex flex-col space-y-5"}>
               <TitleH3>Product Lifecycle</TitleH3>
-              <img src={"/portfolio/product_lifecycle.svg"} alt={"lifecycle"} width={"100%"} />
+              <Timeline issuance={item.issuanceCycle.issuanceDate} maturity={item.issuanceCycle.maturityDate} />
             </div>
           </div>
         )}

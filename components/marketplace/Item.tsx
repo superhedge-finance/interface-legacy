@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { PrimaryButton } from "../basic";
 import { RecapCard } from "../commons/RecapCard";
 import { ReturnsChart } from "../product/ReturnsChart";
-import { MarketplaceItemType } from "../../types/portfolio";
+import { MarketplaceItemType } from "../../types";
 import { getCurrencyIcon } from "../../utils/helpers";
 
 const MarketplaceItem = ({ item }: { item: MarketplaceItemType }) => {
@@ -43,7 +43,7 @@ const MarketplaceItem = ({ item }: { item: MarketplaceItemType }) => {
       <PrimaryButton
         label={`${router.pathname.includes("portfolio") ? "VIEW DETAILS" : "BUY NOW"}`}
         className={"mt-4 uppercase"}
-        onClick={() => router.push(router.pathname.includes("portfolio") ? `/portfolio/nft/${item.id}` : `/marketplace/${item.id}`)}
+        onClick={() => router.push(router.pathname.includes("portfolio") ? `/portfolio/nft/${item.id}` : `/marketplace/${item.tokenId}`)}
       />
     </div>
   );

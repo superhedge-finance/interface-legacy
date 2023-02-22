@@ -1,8 +1,8 @@
-import { NFTItem } from "../../types";
 import MarketplaceItem from "./Item";
 import MultiRangeSlider from "../commons/multiRangeSlider";
+import { MarketplaceItemType } from "../../types";
 
-const MarketplaceList = ({ items }: { items: Array<NFTItem> }) => {
+const MarketplaceList = ({ items }: { items: Array<MarketplaceItemType> }) => {
   return (
     <div className={"flex flex-col pt-12"}>
       <div className={"flex flex-col md:flex-row items-center space-x-0 md:space-x-8 space-y-[60px] md:space-y-0"}>

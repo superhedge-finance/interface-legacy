@@ -1,12 +1,18 @@
-export type NFTItem = {
+import { Cycle } from "./interface";
+
+export type MarketplaceItemType = {
   id: number;
+  tokenId: string;
+  offerPrice: number;
+  mtmPrice: number;
+  underlying: string;
+  productAddress: string;
   name: string;
-  label: string;
-  currency1: string;
-  currency2: string;
-  offer_price: number;
-  mtm_price: number;
-  total_lots: number;
-  underlying?: string;
-  category?: string;
+  totalLots: number;
+  issuanceCycle: Cycle;
+};
+
+export type MarketplaceItemFullType = MarketplaceItemType & {
+  startingTime: number;
+  seller: string;
 };

@@ -1,8 +1,63 @@
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import { useAccount, useSigner } from "wagmi";
+import { ethers } from "ethers";
 import { PrimaryButton, SecondaryButton } from "../basic";
+import { OfferType } from "../../types";
+import { truncateAddress } from "../../utils/helpers";
+import { getERC20Instance, getMarketplaceInstance } from "../../utils/contract";
+import { MARKETPLACE_ADDRESS, NFT_ADDRESS, USDC_ADDRESS } from "../../constants/address";
 
-const ItemBuyConfirmDialog = ({ open, setOpen, onConfirm }: { open: boolean; setOpen: (open: boolean) => void; onConfirm: () => void }) => {
+const ItemBuyConfirmDialog = ({
+  offer,
+  open,
+  tokenId,
+  setOpen,
+  afterConfirm
+}: {
+  offer: OfferType;
+  open: boolean;
+  tokenId: string;
+  setOpen: (open: boolean) => void;
+  afterConfirm: (success: boolean) => void;
+}) => {
+  const { address } = useAccount();
+  const { data: signer } = useSigner();
+
+  const [loading, setLoading] = useState(false);
+  const [marketplaceInstance, setMarketplaceInstance] = useState<ethers.Contract>();
+  const [currencyInstance, setCurrencyInstance] = useState<ethers.Contract>();
+
+  const onConfirm = async () => {
+    if (marketplaceInstance && currencyInstance && address) {
+      try {
+        setLoading(true);
+        const requestBalance = ethers.utils.parseUnits((offer.quantity * offer.price).toString(), 6);
+        const currentAllowance = await currencyInstance.allowance(address, MARKETPLACE_ADDRESS);
+        if (currentAllowance.lt(requestBalance)) {
+          const approveTx = await currencyInstance.approve(MARKETPLACE_ADDRESS, requestBalance);
+          await approveTx.wait();
+        }
+
+        const tx = await marketplaceInstance.buyItem(NFT_ADDRESS, tokenId, USDC_ADDRESS, offer.seller);
+        await tx.wait();
+        afterConfirm(true);
+      } catch (e) {
+        console.error(e);
+        afterConfirm(false);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (signer) {
+      setMarketplaceInstance(getMarketplaceInstance(signer));
+      setCurrencyInstance(getERC20Instance(signer));
+    }
+  }, [signer]);
+
   return (
     <Transition appear show={open} as={Fragment}>
       <Dialog as='div' className='relative z-10' onClose={() => setOpen(false)}>
@@ -36,14 +91,22 @@ const ItemBuyConfirmDialog = ({ open, setOpen, onConfirm }: { open: boolean; set
                   Please confirm the action.
                 </Dialog.Title>
                 <div className='mt-7 flex flex-col items-center'>
-                  <p className='text-[16px] text-gray-500'>NFT listed by 0xa377...CCA5 with the offered price:</p>
-                  <span className={"bg-primary-gradient text-transparent bg-clip-text text-[20px]"}>1,010 USDC</span>
+                  <p className='text-[16px] text-gray-500'>NFT listed by {truncateAddress(offer.seller, 4)} with the offered price:</p>
+                  <span className={"bg-primary-gradient text-transparent bg-clip-text text-[20px]"}>
+                    {(offer.quantity * offer.price).toLocaleString()} USDC
+                  </span>
                   <img className={"mt-8"} src={"/products/default_nft_image.png"} alt={"nft image"} />
                 </div>
 
                 <div className='mt-8 flex items-center justify-between space-x-8 h-[50px]'>
                   <SecondaryButton label={"CANCEL"} onClick={() => setOpen(false)} />
-                  <PrimaryButton label={"CONFIRM"} onClick={onConfirm} />
+                  <PrimaryButton
+                    label={"CONFIRM"}
+                    disabled={loading}
+                    loading={loading}
+                    className={"flex items-center justify-center"}
+                    onClick={onConfirm}
+                  />
                 </div>
               </Dialog.Panel>
             </Transition.Child>

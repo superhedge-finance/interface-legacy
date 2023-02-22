@@ -1,11 +1,17 @@
 import { ethers } from "ethers";
 import SHMARKETPLACE_ABI from "../constants/abis/SHMarketplace.json";
 import NFT_ABI from "../constants/abis/NFT.json";
+import ERC20_ABI from "../constants/abis/ERC20.json";
+import { MARKETPLACE_ADDRESS, NFT_ADDRESS, USDC_ADDRESS } from "../constants/address";
 
 export const getMarketplaceInstance = (signer: ethers.Signer) => {
-  return new ethers.Contract("0xB6C5423e7579953227D861Bc49f8c4e49A8398c5", SHMARKETPLACE_ABI, signer);
+  return new ethers.Contract(MARKETPLACE_ADDRESS, SHMARKETPLACE_ABI, signer);
+};
+
+export const getERC20Instance = (signer: ethers.Signer) => {
+  return new ethers.Contract(USDC_ADDRESS, ERC20_ABI, signer);
 };
 
 export const getNFTInstance = (signer: ethers.Signer) => {
-  return new ethers.Contract("0x1be59D15ecf1a9c3Aa25102F61d746aC360aE3B4", NFT_ABI, signer);
+  return new ethers.Contract(NFT_ADDRESS, NFT_ABI, signer);
 };

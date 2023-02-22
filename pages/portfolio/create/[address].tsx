@@ -11,6 +11,7 @@ import { getMarketplaceInstance, getNFTInstance } from "../../../utils/contract"
 import "react-datepicker/dist/react-datepicker.css";
 import ProductABI from "../../../constants/abis/SHProduct.json";
 import NFTListedDialog from "../../../components/portfolio/NFTListedDialog";
+import { USDC_ADDRESS } from "../../../constants/address";
 
 const PortfolioCreatePage = () => {
   const router = useRouter();
@@ -62,7 +63,7 @@ const PortfolioCreatePage = () => {
           product.address,
           currentTokenId,
           lots,
-          "0x07865c6E87B9F70255377e024ace6630C1Eaa37F",
+          USDC_ADDRESS,
           ethers.utils.parseUnits(price.toString(), 6),
           Math.floor(startingTime.getTime() / 1000)
         );

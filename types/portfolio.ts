@@ -1,13 +1,13 @@
-import { Cycle } from "./interface";
+import { MarketplaceItemType } from "./marketplace";
 
-export type MarketplaceItemType = {
+export type OfferType = {
   id: number;
-  tokenId: string;
-  offerPrice: number;
-  mtmPrice: number;
-  underlying: string;
-  productAddress: string;
-  name: string;
-  totalLots: number;
-  issuanceCycle: Cycle;
+  price: number;
+  startingTime: number;
+  quantity: number;
+  seller: string;
+};
+
+export type MarketplaceItemDetailType = MarketplaceItemType & {
+  offers: OfferType[];
 };
