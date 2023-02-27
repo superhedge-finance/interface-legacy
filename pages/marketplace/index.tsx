@@ -1,9 +1,10 @@
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Tab } from "@headlessui/react";
 import { classNames } from "../../styles/helper";
 import { ProductCategoryList } from "../../types";
-import MarketplaceList from "../../components/marketplace/List";
 import { MarketplaceItemType } from "../../types";
+import MarketplaceList from "../../components/marketplace/List";
 import { getListedItems } from "../../service";
 
 const underlyingList = ["ALL", "ETH/USDC", "BTC/USDC"];
@@ -35,7 +36,15 @@ const Marketplace = () => {
             <span className={"text-[16px] leading-[24px] font-light text-center text-[#677079]"}>
               But you can place your Position from Portfolio as NFT
             </span>
-            <button className={"h-[50px] w-[300px] rounded-[8px] bg-[#292929] text-[#F8F8F8] text-[14px] leading-[14px]"}>LIST NFT</button>
+            <Link href={"/portfolio"}>
+              <div
+                className={
+                  "h-[50px] w-[300px] rounded-[8px] bg-[#292929] text-[#F8F8F8] text-[14px] leading-[14px] flex items-center justify-center"
+                }
+              >
+                LIST NFT
+              </div>
+            </Link>
           </div>
         </div>
       )}

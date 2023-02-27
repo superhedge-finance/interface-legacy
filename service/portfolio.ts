@@ -20,3 +20,13 @@ export const getHistory = async (address: string, order: number) => {
     return [];
   }
 };
+
+export const getUserInfo = async (address: string) => {
+  try {
+    const { data } = await axios.get(`/users/${address}`);
+    return data;
+  } catch (e) {
+    console.error(e);
+    return [];
+  }
+};

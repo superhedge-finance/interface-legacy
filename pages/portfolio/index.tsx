@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Switch } from "@headlessui/react";
 import { useAccount } from "wagmi";
 import { SubtitleRegular14, TitleH3 } from "../../components/basic";
 import { PortfolioSummary } from "../../components/portfolio/Summary";
@@ -6,7 +7,6 @@ import { PortfolioPositions } from "../../components/portfolio/Positions";
 import { PortfolioTransactionHistory } from "../../components/portfolio/TransactionHistory";
 import { SuperHedgeTabs } from "../../components/commons/Tabs";
 import { PortfolioPositionList } from "../../components/portfolio/PositionList";
-import { Switch } from "@headlessui/react";
 
 const Portfolio = () => {
   const { address } = useAccount();

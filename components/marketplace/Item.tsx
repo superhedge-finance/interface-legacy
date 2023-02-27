@@ -27,17 +27,23 @@ const MarketplaceItem = ({ item }: { item: MarketplaceItemType }) => {
         <span className={"text-grey-70 text-[12px] leading-[12px]"}>Best Offer Price</span>
         <div className={"flex items-center text-[16px] leading-[16px] space-x-2 uppercase"}>
           <span className={"bg-primary-gradient bg-clip-text text-transparent"}>{item.offerPrice.toLocaleString()} USDC</span>
-          <span className={"text-blacknew-100"}>(3 LOTS)</span>
+          <span className={"text-blacknew-100"}>({item.quantity} LOT)</span>
         </div>
       </div>
 
       <div className={"mt-3 flex items-center space-x-3"}>
         <RecapCard label={"MTM Price"} value={item.mtmPrice.toLocaleString() + " USDC"} />
-        <RecapCard label={"Total Lots"} value={item.totalLots.toLocaleString() + " USDC"} />
+        <RecapCard label={"Total Lots"} value={item.totalLots.toLocaleString() + " Lots"} />
       </div>
 
       <div>
-        <ReturnsChart tr1={10003} tr2={11600} strikePrice1={2000} strikePrice2={2500} strikePrice3={0} />
+        <ReturnsChart
+          tr1={item.issuanceCycle.tr1}
+          tr2={item.issuanceCycle.tr2}
+          strikePrice1={item.issuanceCycle.strikePrice1}
+          strikePrice2={item.issuanceCycle.strikePrice2}
+          strikePrice3={item.issuanceCycle.strikePrice3}
+        />
       </div>
 
       <PrimaryButton

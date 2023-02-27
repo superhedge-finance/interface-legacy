@@ -9,6 +9,7 @@ import { MarketplaceItemDetailType } from "../../types";
 import { getTokenItem } from "../../service";
 import { useRouter } from "next/router";
 import { getCurrencyIcon } from "../../utils/helpers";
+import Timeline from "../../components/product/Timeline";
 
 const activities = [
   {
@@ -105,7 +106,14 @@ const MarketplaceDetail = () => {
 
             <div className={"mt-[80px] w-full"}>
               <TitleH3>Product Returns</TitleH3>
-              <ReturnsChart tr1={10003} tr2={11600} strikePrice1={2000} strikePrice2={2500} strikePrice3={0} />
+
+              <ReturnsChart
+                tr1={item.issuanceCycle.tr1}
+                tr2={item.issuanceCycle.tr2}
+                strikePrice1={item.issuanceCycle.strikePrice1}
+                strikePrice2={item.issuanceCycle.strikePrice2}
+                strikePrice3={item.issuanceCycle.strikePrice3}
+              />
             </div>
 
             <div className={"mt-[80px] flex flex-col space-y-5"}>
@@ -121,7 +129,7 @@ const MarketplaceDetail = () => {
 
             <div className={"mt-[80px] w-full flex flex-col space-y-5"}>
               <TitleH3>Product Lifecycle</TitleH3>
-              <img src={"/portfolio/product_lifecycle.svg"} alt={"lifecycle"} width={"100%"} />
+              <Timeline issuance={item.issuanceCycle.issuanceDate} maturity={item.issuanceCycle.maturityDate} />
             </div>
 
             <div className={"mt-[80px] w-full flex flex-col space-y-5"}>

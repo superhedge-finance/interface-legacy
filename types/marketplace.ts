@@ -8,6 +8,7 @@ export type MarketplaceItemType = {
   underlying: string;
   productAddress: string;
   name: string;
+  quantity: number;
   totalLots: number;
   issuanceCycle: Cycle;
 };

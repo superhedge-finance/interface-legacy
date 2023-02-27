@@ -1,32 +1,25 @@
 import { ParaLight16, TitleH2 } from "../../components/basic";
 import PortfolioNFTCard from "../../components/portfolio/NFTCard";
 import { IProduct } from "../../types";
-
-const products = [
-  {
-    name: "ETH Bullish Spread",
-    underlying: "ETH/USDC",
-    issuanceCycle: {
-      apy: "22-34%"
-    }
-  } as IProduct,
-  {
-    name: "BTC Bullish Spread",
-    underlying: "BTC/USDC",
-    issuanceCycle: {
-      apy: "34-44%"
-    }
-  } as IProduct,
-  {
-    name: "ETH Range Spread",
-    underlying: "ETH/USDC",
-    issuanceCycle: {
-      apy: "10-22%"
-    }
-  } as IProduct
-];
+import {useEffect, useState} from "react";
+import {getPosition} from "../../service";
+import {useAccount} from "wagmi";
 
 const PortfolioNFTList = () => {
+  const { address } = useAccount();
+
+  const [positions, setPositions] = useState<IProduct[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      if (address) {
+        // fetch positions
+        const positions = await getPosition(address);
+        setPositions(positions);
+      }
+    })();
+  }, [address]);
+
   return (
     <div className={"py-[80px] flex justify-center"}>
       <div className={"max-w-[650px] w-full"}>
@@ -40,7 +33,7 @@ const PortfolioNFTList = () => {
           </div>
 
           <div className={"w-full mt-5 space-y-5"}>
-            {products.map((product, index) => (
+            {positions.map((product, index) => (
               <PortfolioNFTCard product={product} key={index} />
             ))}
           </div>

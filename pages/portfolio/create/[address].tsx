@@ -4,6 +4,8 @@ import Image from "next/image";
 import DatePicker from "react-datepicker";
 import { useAccount, useSigner } from "wagmi";
 import { BigNumber, ethers } from "ethers";
+import { Logger } from "@ethersproject/logger";
+import toast from "react-hot-toast";
 import { PrimaryButton, SecondaryButton, TitleH2 } from "../../../components/basic";
 import { getProduct } from "../../../service";
 import { IProduct } from "../../../types";
@@ -31,8 +33,8 @@ const PortfolioCreatePage = () => {
   const [price, setPrice] = useState(0);
   const [startingTime, setStartingTime] = useState<Date>(new Date());
 
-  // eslint-disable-next-line react/display-name
-  const CustomInput = forwardRef(({ value, onClick }: { value?: string; onClick?: () => void }) => (
+  // eslint-disable-next-line react/display-name,@typescript-eslint/no-unused-vars
+  const CustomInput = forwardRef(({ value, onClick }: { value?: string; onClick?: () => void }, ref) => (
     <div className={"relative flex items-center"}>
       <div className={"w-full py-3 px-4 bg-[#FBFBFB] border border-[1px] border-[#E6E6E6] rounded focus:outline-none"} onClick={onClick}>
         {value}
@@ -69,8 +71,12 @@ const PortfolioCreatePage = () => {
         );
         await listTx.wait();
         setIsListed(true);
-      } catch (e) {
-        console.error(e);
+      } catch (e: any) {
+        if (e && e.code && e.code === Logger.errors.ACTION_REJECTED) {
+          return toast.error("Transaction rejected");
+        } else {
+          return toast.error(e.error.message);
+        }
       } finally {
         setTxPending(false);
       }
