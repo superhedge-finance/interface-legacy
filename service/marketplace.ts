@@ -31,9 +31,9 @@ export const getUserListedItems = async (address: string): Promise<Array<Marketp
   }
 };
 
-export const getUserListedItem = async (id: number): Promise<MarketplaceItemFullType | null> => {
+export const getUserListedItem = async (listing_id: string): Promise<MarketplaceItemFullType | null> => {
   try {
-    const { data } = await axios.get(`/marketplace/item/${id}`);
+    const { data } = await axios.get(`/marketplace/item/${listing_id}`);
     return data;
   } catch (e) {
     console.error(e);

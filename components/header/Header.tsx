@@ -6,7 +6,7 @@ import React from "react";
 import useToast from "../../hooks/useToast";
 
 const Header = () => {
-  const { toast } = useToast();
+  const { toast, type } = useToast();
   return (
     <header className={"bg-[#F7F7F7] relative"}>
       <nav className='px-5 py-6 sm:px-4 sm:py-2.5 rounded-br-[16px] rounded-bl-[16px] bg-[#161717]'>
@@ -21,9 +21,7 @@ const Header = () => {
       </nav>
       {toast && (
         <div
-          className={
-            "absolute top-[78px] left-0 w-full h-[64px] flex items-center justify-center uppercase text-whitenew-100 bg-success rounded-br-[16px] rounded-bl-[16px] z-50"
-          }
+          className={`absolute top-[78px] left-0 w-full h-[64px] flex items-center justify-center uppercase text-whitenew-100 bg-${type} rounded-br-[16px] rounded-bl-[16px] z-50`}
         >
           {toast}
         </div>

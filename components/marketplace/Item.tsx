@@ -49,7 +49,9 @@ const MarketplaceItem = ({ item }: { item: MarketplaceItemType }) => {
       <PrimaryButton
         label={`${router.pathname.includes("portfolio") ? "VIEW DETAILS" : "BUY NOW"}`}
         className={"mt-4 uppercase"}
-        onClick={() => router.push(router.pathname.includes("portfolio") ? `/portfolio/nft/${item.id}` : `/marketplace/${item.listingId}`)}
+        onClick={() =>
+          router.push(router.pathname.includes("portfolio") ? `/portfolio/nft/${item.listingId}` : `/marketplace/${item.listingId}`)
+        }
       />
     </div>
   );

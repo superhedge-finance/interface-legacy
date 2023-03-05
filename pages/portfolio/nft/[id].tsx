@@ -1,25 +1,29 @@
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import Link from "next/link";
+import { useSigner } from "wagmi";
 import { TitleH2, TitleH3 } from "../../../components/basic";
 import { RecapCard } from "../../../components/commons/RecapCard";
+import Timeline from "../../../components/product/Timeline";
 import { MarketplaceItemFullType } from "../../../types";
 import { getUserListedItem } from "../../../service";
-import { useRouter } from "next/router";
 import { getCurrencyIcon, truncateAddress } from "../../../utils/helpers";
-import Timeline from "../../../components/product/Timeline";
+import { getMarketplaceInstance } from "../../../utils/contract";
 
 const PortfolioNFTDetails = () => {
   const router = useRouter();
-  const { id } = router.query;
+  const { data: signer } = useSigner();
+  const { id: listingId } = router.query;
 
   const [item, setItem] = useState<MarketplaceItemFullType>();
 
   useEffect(() => {
     (async () => {
-      const _item = await getUserListedItem(Number(id));
+      const _item = await getUserListedItem(listingId as string);
       if (_item) setItem(_item);
     })();
-  }, [id]);
+  }, [listingId]);
 
   const { currency1, currency2 } = useMemo(() => {
     if (item) return getCurrencyIcon(item.underlying);
@@ -34,6 +38,19 @@ const PortfolioNFTDetails = () => {
     return "";
   }, [item]);
 
+  const onDelete = async () => {
+    if (signer) {
+      const marketplaceInstance = getMarketplaceInstance(signer);
+      try {
+        const tx = await marketplaceInstance.cancelListing(listingId as string);
+        await tx.wait();
+        await router.push("/portfolio");
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  };
+
   return (
     <div className={"py-[80px] flex justify-center"}>
       <div className={"max-w-[650px] w-full"}>
@@ -45,8 +62,10 @@ const PortfolioNFTDetails = () => {
               </TitleH2>
 
               <div className={"flex items-center space-x-3"}>
-                <Image src={"/icons/edit.svg"} alt={"edit"} width={28} height={28} />
-                <Image src={"/icons/delete.svg"} alt={"delete"} width={28} height={28} />
+                <Link href={`/portfolio/edit/${item.listingId}`}>
+                  <Image src={"/icons/edit.svg"} alt={"edit"} width={28} height={28} />
+                </Link>
+                <Image src={"/icons/delete.svg"} alt={"delete"} width={28} height={28} className={"cursor-pointer"} onClick={onDelete} />
               </div>
             </div>
 

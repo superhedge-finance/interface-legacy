@@ -1,9 +1,9 @@
 import { ParaLight16, TitleH2 } from "../../components/basic";
 import PortfolioNFTCard from "../../components/portfolio/NFTCard";
 import { IProduct } from "../../types";
-import {useEffect, useState} from "react";
-import {getPosition} from "../../service";
-import {useAccount} from "wagmi";
+import { useEffect, useState } from "react";
+import { getPosition } from "../../service";
+import { useAccount } from "wagmi";
 
 const PortfolioNFTList = () => {
   const { address } = useAccount();
