@@ -4,6 +4,7 @@ export type MarketplaceItemType = {
   id: number;
   tokenId: string;
   offerPrice: number;
+  listingId: string;
   mtmPrice: number;
   underlying: string;
   productAddress: string;

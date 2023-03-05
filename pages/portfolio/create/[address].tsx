@@ -51,7 +51,10 @@ const PortfolioCreatePage = () => {
   }, [signer, productAddress]);
 
   const onListNFT = async () => {
-    if (address && signer && marketplaceInstance && nftInstance && product && product.status === 3) {
+    if (product && product.status !== 3) {
+      return toast.error("Your product is not issued yet. Please wait until issuance date to list your NFT.");
+    }
+    if (address && signer && marketplaceInstance && nftInstance && product) {
       try {
         setTxPending(true);
         const isApprovedForAll = await nftInstance.isApprovedForAll(address, marketplaceInstance.address);
@@ -120,7 +123,7 @@ const PortfolioCreatePage = () => {
             <div className={"pl-10 h-[150px] flex items-center pt-5"}>
               <TitleH2 className={"text-white"}>Create NFT</TitleH2>
             </div>
-            <img src={"/products/default_nft_image.png"} width={"100%"} alt={""} />
+            <img src={product ? (product.issuanceCycle.image_uri || "/products/default_nft_image.png") : "/products/default_nft_image.png"} width={"100%"} alt={""} />
           </div>
 
           <div className={"w-full flex flex-col space-y-6 bg-white rounded-[16px] p-12 mt-5"}>
@@ -137,7 +140,7 @@ const PortfolioCreatePage = () => {
                 <div className={"absolute right-4 flex items-center space-x-[10px]"}>
                   <span
                     className={
-                      "bg-grey-20 flex items-center justify-center px-3 h-[28px] w-[140px] rounded-[6px] text-[12px] leading-[12px]"
+                      "bg-grey-20 flex items-center justify-center px-3 h-[28px] w-[140px] rounded-[6px] text-[12px] leading-[12px] cursor-pointer"
                     }
                     onClick={() => setLots(1)}
                   >
@@ -145,7 +148,7 @@ const PortfolioCreatePage = () => {
                   </span>
                   <span
                     className={
-                      "bg-grey-20 flex items-center justify-center px-3 h-[28px] w-[140px] rounded-[6px] text-[12px] leading-[12px]"
+                      "bg-grey-20 flex items-center justify-center px-3 h-[28px] w-[140px] rounded-[6px] text-[12px] leading-[12px] cursor-pointer"
                     }
                     onClick={() => setLots(maxBalance)}
                   >
@@ -164,7 +167,7 @@ const PortfolioCreatePage = () => {
                   onChange={(e) => setPrice(Number(e.target.value))}
                   type='text'
                 />
-                <span className={"absolute right-4 text-[#828A93]"}>Lots</span>
+                {/*<span className={"absolute right-4 text-[#828A93]"}>Lots</span>*/}
               </div>
 
               <div
@@ -192,7 +195,7 @@ const PortfolioCreatePage = () => {
               <SecondaryButton label={"CANCEL"} onClick={() => router.push(`/portfolio/position/${product?.address}`)} />
               <PrimaryButton
                 label={"LIST NFT"}
-                disabled={!signer || !product || txPending}
+                disabled={!signer || !product || txPending || product.status !== 3}
                 loading={txPending}
                 className={"flex items-center justify-center"}
                 onClick={onListNFT}

@@ -6,18 +6,18 @@ import { PrimaryButton, SecondaryButton } from "../basic";
 import { OfferType } from "../../types";
 import { truncateAddress } from "../../utils/helpers";
 import { getERC20Instance, getMarketplaceInstance } from "../../utils/contract";
-import { MARKETPLACE_ADDRESS, NFT_ADDRESS, USDC_ADDRESS } from "../../constants/address";
+import { MARKETPLACE_ADDRESS, USDC_ADDRESS } from "../../constants/address";
 
 const ItemBuyConfirmDialog = ({
   offer,
   open,
-  tokenId,
+  listingId,
   setOpen,
   afterConfirm
 }: {
   offer: OfferType;
   open: boolean;
-  tokenId: string;
+  listingId: string;
   setOpen: (open: boolean) => void;
   afterConfirm: (success: boolean) => void;
 }) => {
@@ -39,7 +39,7 @@ const ItemBuyConfirmDialog = ({
           await approveTx.wait();
         }
 
-        const tx = await marketplaceInstance.buyItem(NFT_ADDRESS, tokenId, USDC_ADDRESS, offer.seller);
+        const tx = await marketplaceInstance.buyItem(listingId, USDC_ADDRESS, offer.seller);
         await tx.wait();
         afterConfirm(true);
       } catch (e) {

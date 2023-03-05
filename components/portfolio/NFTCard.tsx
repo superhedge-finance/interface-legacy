@@ -1,16 +1,36 @@
-import { useState } from "react";
+import {useEffect, useMemo, useState} from "react";
 import Image from "next/image";
 import { IProduct } from "../../types";
 import { getCurrencyIcon } from "../../utils/helpers";
 import { RecapCard } from "../commons/RecapCard";
 import { useRouter } from "next/router";
 import Timeline from "../product/Timeline";
+import {ethers} from "ethers";
+import ProductABI from "../../constants/abis/SHProduct.json";
+import {useAccount, useSigner} from "wagmi";
 
 const PortfolioNFTCard = ({ product }: { product: IProduct }) => {
   const Router = useRouter();
+  const { data: signer } = useSigner();
+  const { address } = useAccount();
 
   const { currency1, currency2 } = getCurrencyIcon(product.underlying);
+  const [principal, setPrincipal] = useState<number>(0);
   const [hover, setHover] = useState(false);
+
+  const productInstance = useMemo(() => {
+    if (signer && product) return new ethers.Contract(product.address as string, ProductABI, signer);
+    else return null;
+  }, [signer, product]);
+
+  useEffect(() => {
+    (async () => {
+      if (productInstance && address) {
+        const balance = await productInstance.principalBalance(address);
+        setPrincipal(Number(ethers.utils.formatUnits(balance, 6)));
+      }
+    })();
+  }, [productInstance, address]);
 
   return (
     <div
@@ -38,7 +58,7 @@ const PortfolioNFTCard = ({ product }: { product: IProduct }) => {
         </div>
       </div>
 
-      <RecapCard label={"Principal Amount"} value={"USDC 6,600 (3 Lots)"} />
+      <RecapCard label={"Principal Amount"} value={`USDC ${principal.toLocaleString()} (${Math.floor(principal / 1000)} Lots)`} />
 
       <Timeline issuance={product.issuanceCycle.issuanceDate} maturity={product.issuanceCycle.maturityDate} />
     </div>

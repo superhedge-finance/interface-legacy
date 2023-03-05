@@ -11,9 +11,9 @@ export const getListedItems = async (): Promise<Array<MarketplaceItemType>> => {
   }
 };
 
-export const getTokenItem = async (token_id: string): Promise<MarketplaceItemDetailType | null> => {
+export const getTokenItem = async (listing_id: string): Promise<MarketplaceItemDetailType | null> => {
   try {
-    const { data } = await axios.get(`/marketplace/token/${token_id}`);
+    const { data } = await axios.get(`/marketplace/token/${listing_id}`);
     return data;
   } catch (e) {
     console.error(e);

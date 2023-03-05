@@ -1,13 +1,13 @@
-import { ParaLight16, SubtitleLight12, TagRegular12, TitleH2, TitleH3 } from "../../components/basic";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/router";
 import { RecapCard } from "../../components/commons/RecapCard";
+import { ParaLight16, SubtitleLight12, TagRegular12, TitleH2, TitleH3 } from "../../components/basic";
 import { ProductOffers } from "../../components/marketplace/ProductOffers";
 import { ReturnsChart } from "../../components/product/ReturnsChart";
 import { ActivityHeader, ActivityRow } from "../../components/commons/ActivityRow";
 import { MarketplaceItemDetailType } from "../../types";
 import { getTokenItem } from "../../service";
-import { useRouter } from "next/router";
 import { getCurrencyIcon } from "../../utils/helpers";
 import Timeline from "../../components/product/Timeline";
 
@@ -101,7 +101,7 @@ const MarketplaceDetail = () => {
 
             <div className={"flex flex-col w-full mt-[80px]"}>
               <TitleH3 className={"text-blacknew-100 mb-5"}>Choose product offer to buy</TitleH3>
-              <ProductOffers offers={item.offers} tokenId={item.tokenId} />
+              <ProductOffers offers={item.offers} listingId={item.listingId} />
             </div>
 
             <div className={"mt-[80px] w-full"}>
