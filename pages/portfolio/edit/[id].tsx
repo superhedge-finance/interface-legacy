@@ -6,8 +6,8 @@ import { useAccount, useSigner } from "wagmi";
 import { ethers } from "ethers";
 import { Logger } from "@ethersproject/logger";
 import { PrimaryButton, SecondaryButton, TitleH2 } from "../../../components/basic";
-import { getProduct, getUserListedItem } from "../../../service";
-import { IProduct, MarketplaceItemFullType } from "../../../types";
+import { getUserListedItem } from "../../../service";
+import { MarketplaceItemFullType } from "../../../types";
 import { getMarketplaceInstance, getNFTInstance } from "../../../utils/contract";
 import ProductABI from "../../../constants/abis/SHProduct.json";
 import { USDC_ADDRESS } from "../../../constants/address";
@@ -22,15 +22,13 @@ const PortfolioCreatePage = () => {
   const { id: listingId } = router.query;
 
   const [item, setItem] = useState<MarketplaceItemFullType>();
-  const [, setIsLoading] = useState(false);
-  const [maxBalance, setMaxBalance] = useState(0);
-  const [product, setProduct] = useState<IProduct | undefined>(undefined);
   const [marketplaceInstance, setMarketplaceInstance] = useState<ethers.Contract>();
   const [txPending, setTxPending] = useState(false);
   const [nftInstance, setNFTInstance] = useState<ethers.Contract>();
   const [lots, setLots] = useState(1);
   const [price, setPrice] = useState(0);
   const [startingTime, setStartingTime] = useState<Date>(new Date());
+  const [productStatus, setProductStatus] = useState(0);
 
   // eslint-disable-next-line react/display-name,@typescript-eslint/no-unused-vars
   const CustomInput = forwardRef(({ value, onClick }: { value?: string; onClick?: () => void }, ref) => (
@@ -52,16 +50,16 @@ const PortfolioCreatePage = () => {
   }, [signer, productAddress]);
 
   const onUpdateNFT = async () => {
-    if (product && product.status !== 3) {
+    if (productStatus !== 3) {
       return showToast("Your product is not issued yet. Please wait until issuance date to list your NFT.", "error");
     }
-    if (address && signer && marketplaceInstance && nftInstance && product) {
+    if (address && signer && marketplaceInstance && nftInstance) {
       try {
         setTxPending(true);
         const updateTx = await marketplaceInstance.updateListing(listingId, USDC_ADDRESS, ethers.utils.parseUnits(price.toString(), 6));
         await updateTx.wait();
         showToast("NFT CHANGES SUCCESSFULLY SAVED");
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (e: any) {
         if (e && e.code && e.code === Logger.errors.ACTION_REJECTED) {
           return showToast("Transaction rejected", "error");
@@ -75,25 +73,12 @@ const PortfolioCreatePage = () => {
   };
 
   useEffect(() => {
-    return () => {
-      setIsLoading(true);
-      getProduct(productAddress as string)
-        .then((product) => {
-          setProduct(product);
-        })
-        .finally(() => setIsLoading(false));
-    };
-  }, [productAddress]);
-
-  useEffect(() => {
     (async () => {
-      if (productInstance && nftInstance && address) {
-        const currentTokenId = await productInstance.currentTokenId();
-        const maxBalance = await nftInstance.balanceOf(address, currentTokenId);
-        setMaxBalance(maxBalance.toNumber());
+      if (productInstance) {
+        setProductStatus(await productInstance.status());
       }
     })();
-  }, [productInstance, nftInstance, address]);
+  }, [productInstance]);
 
   useEffect(() => {
     (async () => {
@@ -110,6 +95,7 @@ const PortfolioCreatePage = () => {
       if (_item) {
         setItem(_item);
         setPrice(_item.offerPrice);
+        setLots(_item.quantity);
         setStartingTime(new Date(_item.startingTime * 1000));
       }
     })();
@@ -138,7 +124,8 @@ const PortfolioCreatePage = () => {
                 <input
                   className={"w-full py-3 px-4 bg-[#FBFBFB] border border-[1px] border-[#E6E6E6] rounded focus:outline-none"}
                   value={lots}
-                  onChange={(e) => setLots(Number(e.target.value))}
+                  disabled={true}
+                  // onChange={(e) => setLots(Number(e.target.value))}
                   type='text'
                 />
                 <div className={"absolute right-4 flex items-center space-x-[10px]"}>
@@ -146,7 +133,6 @@ const PortfolioCreatePage = () => {
                     className={
                       "bg-grey-20 flex items-center justify-center px-3 h-[28px] w-[140px] rounded-[6px] text-[12px] leading-[12px] cursor-pointer"
                     }
-                    onClick={() => setLots(1)}
                   >
                     MIN
                   </span>
@@ -154,7 +140,6 @@ const PortfolioCreatePage = () => {
                     className={
                       "bg-grey-20 flex items-center justify-center px-3 h-[28px] w-[140px] rounded-[6px] text-[12px] leading-[12px] cursor-pointer"
                     }
-                    onClick={() => setLots(maxBalance)}
                   >
                     MAX
                   </span>
@@ -197,10 +182,10 @@ const PortfolioCreatePage = () => {
             </div>
 
             <div className={"flex items-center space-x-6"}>
-              <SecondaryButton label={"CANCEL"} onClick={() => router.push(`/portfolio/position/${product?.address}`)} />
+              <SecondaryButton label={"CANCEL"} onClick={() => router.push(`/portfolio/position/${item?.productAddress}`)} />
               <PrimaryButton
                 label={"SAVE"}
-                disabled={!signer || !product || txPending || product.status !== 3}
+                disabled={!signer || txPending || productStatus !== 3}
                 loading={txPending}
                 className={"flex items-center justify-center"}
                 onClick={onUpdateNFT}

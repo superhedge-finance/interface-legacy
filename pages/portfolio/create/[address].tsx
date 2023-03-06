@@ -74,7 +74,7 @@ const PortfolioCreatePage = () => {
         );
         await listTx.wait();
         setIsListed(true);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (e: any) {
         if (e && e.code && e.code === Logger.errors.ACTION_REJECTED) {
           return toast.error("Transaction rejected");

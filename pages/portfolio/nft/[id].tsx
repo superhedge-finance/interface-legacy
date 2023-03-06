@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useSigner } from "wagmi";
+import useToast from "../../../hooks/useToast";
 import { TitleH2, TitleH3 } from "../../../components/basic";
 import { RecapCard } from "../../../components/commons/RecapCard";
 import Timeline from "../../../components/product/Timeline";
@@ -13,6 +14,7 @@ import { getMarketplaceInstance } from "../../../utils/contract";
 
 const PortfolioNFTDetails = () => {
   const router = useRouter();
+  const { showToast } = useToast();
   const { data: signer } = useSigner();
   const { id: listingId } = router.query;
 
@@ -44,6 +46,7 @@ const PortfolioNFTDetails = () => {
       try {
         const tx = await marketplaceInstance.cancelListing(listingId as string);
         await tx.wait();
+        showToast("NFT PRODUCT SUCCESSFULLY REMOVED FROM LISTING", "success");
         await router.push("/portfolio");
       } catch (e) {
         console.error(e);
