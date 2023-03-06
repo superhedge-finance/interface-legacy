@@ -200,10 +200,7 @@ const ProductDetail = () => {
                 <TitleH3>Vault Strategy</TitleH3>
                 <img src={"/products/vault_strategy.png"} alt={"vault strategy"} width={"100%"} />
                 <ParaLight16>
-                  The vault earns yield on its ETH deposits by running a weekly automated ETH covered call strategy where it stakes its ETH
-                  deposits in and then uses its to collateralize weekly out-of-money ETH call options. The yield earned from both the
-                  covered call strategy and the ETH staking rewards are reinvested weekly, effectively compounding the yields for depositors
-                  over time.
+                  The vault allocates the majority of investors deposits to a verified 'bluechip' yield-source, earning interests to ensure principal-protection and to pay weekly coupons. A small allocation is invested in a ETH/USDC Put-Spread option, which pays additional profits, if the option expires 'in the money'. The profits earned from the coupons and options are reinvested in additional NFT-SN in the next cycle, effectively compounding the investors' returns progressively.
                 </ParaLight16>
               </div>
 
@@ -214,45 +211,23 @@ const ProductDetail = () => {
               </div>
 
               <div className={"mt-[80px] flex flex-col space-y-5"}>
-                <TitleH3>Product Payoff</TitleH3>
-                <div className={"flex flex-col bg-white p-5"}>
-                  <img src={"/products/payoff_chart.png"} alt={"payoff chart"} width={"100%"} />
-                  <div className={"flex flex-col items-center space-y-[10px] mt-4"}>
-                    <span className={"bg-clip-text text-transparent bg-primary-gradient"}>2.36%</span>
-                    <SubtitleLight12>ETH spot weekly % change</SubtitleLight12>
-                  </div>
-                  <div className={"grid grid-cols-2 md:grid-cols-3 gap-4 mt-8"}>
-                    <RecapCard label={"Base yield"} value={"5.00%"} />
-                    <RecapCard label={"Options moneyness"} value={"2.5%"} />
-                    <RecapCard className={"col-span-2 md:col-span-1"} label={"Expected yield (APY)"} value={"7.36%"} />
-                  </div>
-                </div>
-              </div>
-
-              <div className={"mt-[80px] flex flex-col space-y-5"}>
                 <TitleH3>Risk</TitleH3>
                 <ParaLight16>
-                  The primary risk for running this covered call strategy is that the vault may incur a weekly loss in the case where the
-                  call options sold by the vault expire in-the-money (meaning the price of ETH is above the strike price of the call options
-                  minted by the vault). The Theta Vault smart contracts have been audited by OpenZeppelin and ChainSafe. Despite that, users
-                  are advised to exercise caution and only risk funds they can afford to lose.
+                  The primary risk is the smart contract risk of yield-protocols that have majority allocations. The secondary risk is counterparty risk from market makers who are the underwriters of the options.
                 </ParaLight16>
               </div>
 
               <div className={"mt-[80px] flex flex-col space-y-5"}>
                 <TitleH3>Fees</TitleH3>
                 <ParaLight16>
-                  The vault fee structure consists of a 15% flat fee on the yield earned between epochs. If the weekly strategy is
-                  profitable, the weekly performance fee is charged on the premiums earned and the weekly management fee is charged on the
-                  assets managed by the vault. If the weekly strategy is unprofitable, there are no fees charged.
+                  The vault applies a charge of 10% on profits between cycles, where profits include the coupons and option profits, if any. There are no management fees.
                 </ParaLight16>
               </div>
 
               <div className={"mt-[80px] flex flex-col space-y-5"}>
                 <TitleH3>Counterparties</TitleH3>
                 <ParaLight16>
-                  The vault funds its weekly twin-twin strategy with the yield earned from leading funds to a list of market makers vetted
-                  by SuperHedge.
+                  Counterparties for the options are either fully margined on Deribit exchange, or fully verified market makers.
                 </ParaLight16>
               </div>
 
