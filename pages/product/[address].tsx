@@ -214,22 +214,6 @@ const ProductDetail = () => {
               </div>
 
               <div className={"mt-[80px] flex flex-col space-y-5"}>
-                <TitleH3>Product Payoff</TitleH3>
-                <div className={"flex flex-col bg-white p-5"}>
-                  <img src={"/products/payoff_chart.png"} alt={"payoff chart"} width={"100%"} />
-                  <div className={"flex flex-col items-center space-y-[10px] mt-4"}>
-                    <span className={"bg-clip-text text-transparent bg-primary-gradient"}>2.36%</span>
-                    <SubtitleLight12>ETH spot weekly % change</SubtitleLight12>
-                  </div>
-                  <div className={"grid grid-cols-2 md:grid-cols-3 gap-4 mt-8"}>
-                    <RecapCard label={"Base yield"} value={"5.00%"} />
-                    <RecapCard label={"Options moneyness"} value={"2.5%"} />
-                    <RecapCard className={"col-span-2 md:col-span-1"} label={"Expected yield (APY)"} value={"7.36%"} />
-                  </div>
-                </div>
-              </div>
-
-              <div className={"mt-[80px] flex flex-col space-y-5"}>
                 <TitleH3>Risk</TitleH3>
                 <ParaLight16>
                   The primary risk for running this covered call strategy is that the vault may incur a weekly loss in the case where the
