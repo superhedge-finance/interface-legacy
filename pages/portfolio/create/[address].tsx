@@ -179,7 +179,7 @@ const PortfolioCreatePage = () => {
                 className={"rounded-[6px] bg-warning h-[32px] flex items-center justify-center px-3 text-[12px] leading-[12px] text-white"}
                 style={{ inlineSize: "fit-content" }}
               >
-                Market Price - 10,500 USDC - 10 Lots
+                {`Total: ${(lots * price).toLocaleString()} USDC - ${lots} Lots`}
               </div>
             </div>
             <div className={"flex flex-col space-y-2"}>
