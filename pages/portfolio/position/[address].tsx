@@ -138,7 +138,7 @@ const PositionDetail = () => {
                   You can withdraw your funds before Maturity date using ‘Marketplace’. Since each product is the actually minted in a form
                   of NFT, you can do P2P trading of the products owned. Just list your NFT on Marketplace.
                 </ParaLight16>
-                <NFTProductCard product={product} />
+                <NFTProductCard product={product} lots={principal / 1000} />
               </div>
             </div>
           )}
