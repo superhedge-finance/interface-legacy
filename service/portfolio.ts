@@ -13,7 +13,7 @@ export const getPosition = async (address: string, chainId?: number | null): Pro
 
 export const getHistory = async (address: string, order: number, chainId?: number | null) => {
   try {
-    const { data } = await axios.get(`/users/history/${address}?sort=${order}?chainId=${chainId}`);
+    const { data } = await axios.get(`/users/history/${address}?sort=${order}&chainId=${chainId}`);
     return data;
   } catch (e) {
     console.error(e);
