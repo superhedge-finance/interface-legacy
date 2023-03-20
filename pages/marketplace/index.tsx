@@ -1,25 +1,34 @@
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Tab } from "@headlessui/react";
+import { useNetwork } from "wagmi";
 import { classNames } from "../../styles/helper";
 import { ProductCategoryList } from "../../types";
 import { MarketplaceItemType } from "../../types";
 import MarketplaceList from "../../components/marketplace/List";
 import { getListedItems } from "../../service";
+import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
 
 const underlyingList = ["ALL", "ETH/USDC", "BTC/USDC"];
 
 const Marketplace = () => {
+  const { chain } = useNetwork();
+
   const [items, setItems] = useState<Array<MarketplaceItemType>>([]);
   const [, setUnderlying] = useState("ALL");
   const [, setCategory] = useState("All");
 
+  const chainId = useMemo(() => {
+    if (chain) return chain.id;
+    return SUPPORT_CHAIN_IDS.GOERLI;
+  }, [chain]);
+
   useEffect(() => {
     (async () => {
-      const _items = await getListedItems();
+      const _items = await getListedItems(chainId);
       setItems(_items);
     })();
-  }, []);
+  }, [chainId]);
 
   return (
     <div className={"py-10"}>

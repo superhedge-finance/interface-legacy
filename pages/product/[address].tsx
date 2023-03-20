@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import { ethers } from "ethers";
+import { useNetwork } from "wagmi";
 import { ActionArea } from "../../components/product/ActionArea";
-import { ParaLight16, SkeletonCard, SubtitleLight12, SubtitleRegular20, TitleH2, TitleH3 } from "../../components/basic";
+import { ParaLight16, SkeletonCard, SubtitleRegular20, TitleH2, TitleH3 } from "../../components/basic";
 import { ReturnsChart } from "../../components/product/ReturnsChart";
 import { getProduct } from "../../service";
 import { IProduct, ProductSpreads, ProductStatus } from "../../types";
@@ -10,6 +11,7 @@ import { ActivityHeader, ActivityRow } from "../../components/commons/ActivityRo
 import Timeline from "../../components/product/Timeline";
 import { getCurrencyIcon } from "../../utils/helpers";
 import { RecapCard } from "../../components/commons/RecapCard";
+import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
 
 const activities = [
   {
@@ -43,10 +45,16 @@ const RecapCardMobile = ({ label, value }: { label: string; value: string }) => 
 
 const ProductDetail = () => {
   const router = useRouter();
+  const { chain } = useNetwork();
   const { address } = router.query;
 
   const [isLoading, setIsLoading] = useState(false);
   const [product, setProduct] = useState<IProduct | undefined>(undefined);
+
+  const chainId = useMemo(() => {
+    if (chain) return chain.id;
+    return SUPPORT_CHAIN_IDS.GOERLI;
+  }, [chain]);
 
   const capacity = useMemo(() => {
     if (product) {
@@ -90,13 +98,13 @@ const ProductDetail = () => {
   useEffect(() => {
     return () => {
       setIsLoading(true);
-      getProduct(address as string)
+      getProduct(address as string, chainId)
         .then((product) => {
           setProduct(product);
         })
         .finally(() => setIsLoading(false));
     };
-  }, [address]);
+  }, [address, chainId]);
 
   return (
     <div>
@@ -200,10 +208,10 @@ const ProductDetail = () => {
                 <TitleH3>Vault Strategy</TitleH3>
                 <img src={"/products/vault_strategy.png"} alt={"vault strategy"} width={"100%"} />
                 <ParaLight16>
-                  The vault allocates the majority of investors deposits to a verified 'bluechip' yield-source, earning interests to ensure
+                  The vault allocates the majority of investors deposits to a verified &apos;bluechip&apos; yield-source, earning interests to ensure
                   principal-protection and to pay weekly coupons. A small allocation is invested in a ETH/USDC Put-Spread option, which pays
-                  additional profits, if the option expires 'in the money'. The profits earned from the coupons and options are reinvested
-                  in additional NFT-SN in the next cycle, effectively compounding the investors' returns progressively.
+                  additional profits, if the option expires &apos;in the money&apos;. The profits earned from the coupons and options are reinvested
+                  in additional NFT-SN in the next cycle, effectively compounding the investors&apos; returns progressively.
                 </ParaLight16>
               </div>
 

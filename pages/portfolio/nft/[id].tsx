@@ -2,8 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { useSigner } from "wagmi";
-import { useChainId } from "@rainbow-me/rainbowkit/dist/hooks/useChainId";
+import { useNetwork, useSigner } from "wagmi";
 import useToast from "../../../hooks/useToast";
 import { TitleH2, TitleH3 } from "../../../components/basic";
 import { RecapCard } from "../../../components/commons/RecapCard";
@@ -12,15 +11,21 @@ import { MarketplaceItemFullType } from "../../../types";
 import { getUserListedItem } from "../../../service";
 import { getCurrencyIcon, truncateAddress } from "../../../utils/helpers";
 import { getMarketplaceInstance } from "../../../utils/contract";
+import { SUPPORT_CHAIN_IDS } from "../../../utils/enums";
 
 const PortfolioNFTDetails = () => {
   const router = useRouter();
   const { showToast } = useToast();
   const { data: signer } = useSigner();
-  const chainId = useChainId();
+  const { chain } = useNetwork();
   const { id: listingId } = router.query;
 
   const [item, setItem] = useState<MarketplaceItemFullType>();
+
+  const chainId = useMemo(() => {
+    if (chain) return chain.id;
+    return SUPPORT_CHAIN_IDS.GOERLI;
+  }, [chain]);
 
   useEffect(() => {
     (async () => {

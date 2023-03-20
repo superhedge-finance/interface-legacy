@@ -10,6 +10,8 @@ import { MarketplaceItemDetailType } from "../../types";
 import { getTokenItem } from "../../service";
 import { getCurrencyIcon } from "../../utils/helpers";
 import Timeline from "../../components/product/Timeline";
+import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
+import { useNetwork } from "wagmi";
 
 const activities = [
   {
@@ -34,16 +36,22 @@ const activities = [
 
 const MarketplaceDetail = () => {
   const router = useRouter();
+  const { chain } = useNetwork();
   const { id } = router.query;
 
   const [item, setItem] = useState<MarketplaceItemDetailType>();
 
+  const chainId = useMemo(() => {
+    if (chain) return chain.id;
+    return SUPPORT_CHAIN_IDS.GOERLI;
+  }, [chain]);
+
   useEffect(() => {
     (async () => {
-      const _item = await getTokenItem(id as string);
+      const _item = await getTokenItem(id as string, chainId);
       if (_item) setItem(_item);
     })();
-  }, [id]);
+  }, [id, chainId]);
 
   const { currency1, currency2 } = useMemo(() => {
     if (item) return getCurrencyIcon(item.underlying);

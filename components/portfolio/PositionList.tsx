@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
-import { useAccount } from "wagmi";
+import { useEffect, useMemo, useState } from "react";
+import { useAccount, useNetwork } from "wagmi";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { ParaLight16, PrimaryButton, SkeletonCard, TitleH5 } from "../basic";
 import MarketplaceItem from "../marketplace/Item";
 import { getUserInfo, getUserListedItems } from "../../service";
 import { MarketplaceItemType } from "../../types";
+import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
 
 const NoPositionCard = () => {
   const Router = useRouter();
@@ -38,16 +39,22 @@ const NoListedNFTCard = () => {
 
 export const PortfolioPositionList = () => {
   const { address } = useAccount();
+  const { chain } = useNetwork();
 
   const [items, setItems] = useState<Array<MarketplaceItemType>>([]);
   const [loading, setLoading] = useState(false);
   const [hasNoPosition, setHasNoPosition] = useState(true);
 
+  const chainId = useMemo(() => {
+    if (chain) return chain.id;
+    return SUPPORT_CHAIN_IDS.GOERLI;
+  }, [chain]);
+
   useEffect(() => {
     (async () => {
-      if (address) {
+      if (address && chainId) {
         setLoading(true);
-        const _items = await getUserListedItems(address);
+        const _items = await getUserListedItems(address, chainId);
         const _user = await getUserInfo(address);
         if (_user) {
           setHasNoPosition(_user.productIds.length === 0);
@@ -56,7 +63,7 @@ export const PortfolioPositionList = () => {
         setLoading(false);
       }
     })();
-  }, [address]);
+  }, [address, chainId]);
 
   return (
     <div className={`${items.length !== 0 ? "" : "self-center"}`}>

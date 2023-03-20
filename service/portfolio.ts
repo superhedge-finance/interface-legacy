@@ -21,9 +21,9 @@ export const getHistory = async (address: string, order: number, chainId?: numbe
   }
 };
 
-export const getUserInfo = async (address: string, chainId?: number | null) => {
+export const getUserInfo = async (address: string) => {
   try {
-    const { data } = await axios.get(`/users/${address}?chainId=${chainId}`);
+    const { data } = await axios.get(`/users/${address}`);
     return data;
   } catch (e) {
     console.error(e);

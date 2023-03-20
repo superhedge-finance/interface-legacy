@@ -2,10 +2,9 @@ import { forwardRef, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import DatePicker from "react-datepicker";
-import { useAccount, useSigner } from "wagmi";
+import { useAccount, useNetwork, useSigner } from "wagmi";
 import { ethers } from "ethers";
 import { Logger } from "@ethersproject/logger";
-import { useChainId } from "@rainbow-me/rainbowkit/dist/hooks/useChainId";
 import { PrimaryButton, SecondaryButton, TitleH2 } from "../../../components/basic";
 import { getUserListedItem } from "../../../service";
 import { MarketplaceItemFullType } from "../../../types";
@@ -14,13 +13,14 @@ import ProductABI from "../../../utils/constants/abis/SHProduct.json";
 import { USDC_ADDRESS } from "../../../utils/constants/address";
 import "react-datepicker/dist/react-datepicker.css";
 import useToast from "../../../hooks/useToast";
+import { SUPPORT_CHAIN_IDS } from "../../../utils/enums";
 
 const PortfolioCreatePage = () => {
   const router = useRouter();
   const { showToast } = useToast();
   const { data: signer } = useSigner();
   const { address } = useAccount();
-  const chainId = useChainId();
+  const { chain } = useNetwork();
   const { id: listingId } = router.query;
 
   const [item, setItem] = useState<MarketplaceItemFullType>();
@@ -43,6 +43,11 @@ const PortfolioCreatePage = () => {
       </span>
     </div>
   ));
+
+  const chainId = useMemo(() => {
+    if (chain) return chain.id;
+    return SUPPORT_CHAIN_IDS.GOERLI;
+  }, [chain]);
 
   const productAddress = item?.productAddress;
 

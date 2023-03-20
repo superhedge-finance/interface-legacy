@@ -5,8 +5,12 @@ import { SkeletonCard } from "../basic";
 import { getProducts } from "../../service";
 import { ProductCategoryList, ProductUnderlyingList, IProduct } from "../../types";
 import { classNames } from "../../styles/helper";
+import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
+import { useNetwork } from "wagmi";
 
 export default function ProductList() {
+  const { chain } = useNetwork();
+
   const [products, setProducts] = useState<IProduct[]>([]);
   const [isProductLoading, setIsProductLoading] = useState(false);
   const [underlying, setUnderlying] = useState("All");
@@ -36,11 +40,16 @@ export default function ProductList() {
     return filteredProducts.filter((product) => product.name.toLowerCase().includes("range"));
   }, [filteredProducts]);
 
+  const chainId = useMemo(() => {
+    if (chain) return chain.id;
+    return SUPPORT_CHAIN_IDS.GOERLI;
+  }, [chain]);
+
   useEffect(() => {
     (async () => {
       try {
         setIsProductLoading(true);
-        const _products = await getProducts();
+        const _products = await getProducts(chainId);
         setProducts(_products);
       } catch (e) {
         console.error(e);
@@ -48,7 +57,7 @@ export default function ProductList() {
         setIsProductLoading(false);
       }
     })();
-  }, []);
+  }, [chainId]);
 
   if (isProductLoading) {
     return (

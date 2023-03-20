@@ -1,13 +1,13 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { useAccount, useSigner } from "wagmi";
+import { useAccount, useNetwork, useSigner } from "wagmi";
 import { ethers } from "ethers";
 import { PrimaryButton, SecondaryButton } from "../basic";
 import { OfferType } from "../../types";
 import { truncateAddress } from "../../utils/helpers";
 import { getERC20Instance, getMarketplaceInstance } from "../../utils/contract";
 import { MARKETPLACE_ADDRESS, USDC_ADDRESS } from "../../utils/constants/address";
-import { useChainId } from "@rainbow-me/rainbowkit/dist/hooks/useChainId";
+import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
 
 const ItemBuyConfirmDialog = ({
   offer,
@@ -24,7 +24,7 @@ const ItemBuyConfirmDialog = ({
 }) => {
   const { address } = useAccount();
   const { data: signer } = useSigner();
-  const chainId = useChainId();
+  const { chain } = useNetwork();
 
   const [loading, setLoading] = useState(false);
   const [marketplaceInstance, setMarketplaceInstance] = useState<ethers.Contract>();
@@ -52,6 +52,11 @@ const ItemBuyConfirmDialog = ({
       }
     }
   };
+
+  const chainId = useMemo(() => {
+    if (chain) return chain.id;
+    return SUPPORT_CHAIN_IDS.GOERLI;
+  }, [chain]);
 
   useEffect(() => {
     if (signer && chainId) {

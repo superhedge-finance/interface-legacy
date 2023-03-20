@@ -9,18 +9,25 @@ import { getProduct } from "../../../service";
 import { RecapCard } from "../../../components/commons/RecapCard";
 import { NFTProductCard } from "../../../components/portfolio/NFTProductCard";
 import ProductABI from "../../../utils/constants/abis/SHProduct.json";
-import { useAccount, useSigner } from "wagmi";
+import { useAccount, useNetwork, useSigner } from "wagmi";
 import Timeline from "../../../components/product/Timeline";
+import { SUPPORT_CHAIN_IDS } from "../../../utils/enums";
 
 const PositionDetail = () => {
   const router = useRouter();
   const { data: signer } = useSigner();
   const { address } = useAccount();
+  const { chain } = useNetwork();
   const { address: productAddress } = router.query;
 
   const [principal, setPrincipal] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(false);
   const [product, setProduct] = useState<IProduct | undefined>(undefined);
+
+  const chainId = useMemo(() => {
+    if (chain) return chain.id;
+    return SUPPORT_CHAIN_IDS.GOERLI;
+  }, [chain]);
 
   const currency1 = useMemo(() => {
     if (product) {
@@ -55,13 +62,13 @@ const PositionDetail = () => {
   useEffect(() => {
     return () => {
       setIsLoading(true);
-      getProduct(productAddress as string)
+      getProduct(productAddress as string, chainId)
         .then((product) => {
           setProduct(product);
         })
         .finally(() => setIsLoading(false));
     };
-  }, [productAddress]);
+  }, [productAddress, chainId]);
 
   useEffect(() => {
     (async () => {

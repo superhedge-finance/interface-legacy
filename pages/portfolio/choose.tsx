@@ -1,24 +1,31 @@
 import { ParaLight16, TitleH2 } from "../../components/basic";
 import PortfolioNFTCard from "../../components/portfolio/NFTCard";
 import { IProduct } from "../../types";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getPosition } from "../../service";
-import { useAccount } from "wagmi";
+import { useAccount, useNetwork } from "wagmi";
+import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
 
 const PortfolioNFTList = () => {
   const { address } = useAccount();
+  const { chain } = useNetwork();
 
   const [positions, setPositions] = useState<IProduct[]>([]);
+
+  const chainId = useMemo(() => {
+    if (chain) return chain.id;
+    return SUPPORT_CHAIN_IDS.GOERLI;
+  }, [chain]);
 
   useEffect(() => {
     (async () => {
       if (address) {
         // fetch positions
-        const positions = await getPosition(address);
+        const positions = await getPosition(address, chainId);
         setPositions(positions);
       }
     })();
-  }, [address]);
+  }, [address, chainId]);
 
   return (
     <div className={"py-[80px] flex justify-center"}>

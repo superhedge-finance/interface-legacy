@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
-import { useAccount } from "wagmi";
+import { useAccount, useNetwork } from "wagmi";
 import { ParaLight16, PrimaryButton, TitleH5 } from "../basic";
 import { PositionCard } from "./PositionCard";
 import { getPosition } from "../../service";
 import { IProduct } from "../../types";
+import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
 
 const ConnectWalletCard = ({ onConnect }: { onConnect: () => void }) => {
   return (
@@ -30,6 +31,7 @@ const NoPositionCard = () => {
 
 export const PortfolioPositions = ({ enabled }: { enabled: boolean }) => {
   const { address } = useAccount();
+  const { chain } = useNetwork();
   const { openConnectModal } = useConnectModal();
 
   const [positions, setPositions] = useState<IProduct[]>([]);
@@ -40,15 +42,20 @@ export const PortfolioPositions = ({ enabled }: { enabled: boolean }) => {
     }
   };
 
+  const chainId = useMemo(() => {
+    if (chain) return chain.id;
+    return SUPPORT_CHAIN_IDS.GOERLI;
+  }, [chain]);
+
   useEffect(() => {
     (async () => {
       if (address) {
         // fetch positions
-        const positions = await getPosition(address);
+        const positions = await getPosition(address, chainId);
         setPositions(positions);
       }
     })();
-  }, [address]);
+  }, [address, chainId]);
 
   return (
     <div>

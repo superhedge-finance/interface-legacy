@@ -1,11 +1,12 @@
 import Image from "next/image";
-import { useAccount } from "wagmi";
+import { useAccount, useNetwork } from "wagmi";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { ParaLight16, PrimaryButton, TitleH5 } from "../basic";
 import { TransactionCard, TransactionHeader } from "./TransactionCard";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getHistory } from "../../service";
 import { History } from "../../types";
+import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
 
 const ConnectWalletCard = ({ onConnect }: { onConnect: () => void }) => {
   return (
@@ -30,6 +31,7 @@ const NoTransactionCard = () => {
 
 export const PortfolioTransactionHistory = ({ order }: { order: number }) => {
   const { address } = useAccount();
+  const { chain } = useNetwork();
   const { openConnectModal } = useConnectModal();
 
   const [histories, setHistories] = useState<History[]>([]);
@@ -40,15 +42,20 @@ export const PortfolioTransactionHistory = ({ order }: { order: number }) => {
     }
   };
 
+  const chainId = useMemo(() => {
+    if (chain) return chain.id;
+    return SUPPORT_CHAIN_IDS.GOERLI;
+  }, [chain]);
+
   useEffect(() => {
     (async () => {
       if (address) {
         // fetch histories
-        const histories = await getHistory(address, order);
+        const histories = await getHistory(address, order, chainId);
         setHistories(histories);
       }
     })();
-  }, [address, order]);
+  }, [address, order, chainId]);
 
   return (
     <div>

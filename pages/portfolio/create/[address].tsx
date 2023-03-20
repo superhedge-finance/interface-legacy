@@ -2,11 +2,10 @@ import { forwardRef, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import DatePicker from "react-datepicker";
-import { useAccount, useSigner } from "wagmi";
+import { useAccount, useNetwork, useSigner } from "wagmi";
 import { BigNumber, ethers } from "ethers";
 import { Logger } from "@ethersproject/logger";
 import toast from "react-hot-toast";
-import { useChainId } from "@rainbow-me/rainbowkit/dist/hooks/useChainId";
 import { PrimaryButton, SecondaryButton, TitleH2 } from "../../../components/basic";
 import { getProduct } from "../../../service";
 import { IProduct } from "../../../types";
@@ -15,12 +14,13 @@ import "react-datepicker/dist/react-datepicker.css";
 import ProductABI from "../../../utils/constants/abis/SHProduct.json";
 import NFTListedDialog from "../../../components/portfolio/NFTListedDialog";
 import { USDC_ADDRESS } from "../../../utils/constants/address";
+import { SUPPORT_CHAIN_IDS } from "../../../utils/enums";
 
 const PortfolioCreatePage = () => {
   const router = useRouter();
   const { data: signer } = useSigner();
   const { address } = useAccount();
-  const chainId = useChainId();
+  const { chain } = useNetwork();
   const { address: productAddress } = router.query;
 
   const [, setIsLoading] = useState(false);
@@ -46,6 +46,11 @@ const PortfolioCreatePage = () => {
       </span>
     </div>
   ));
+
+  const chainId = useMemo(() => {
+    if (chain) return chain.id;
+    return SUPPORT_CHAIN_IDS.GOERLI;
+  }, [chain]);
 
   const productInstance = useMemo(() => {
     if (signer && productAddress) return new ethers.Contract(productAddress as string, ProductABI, signer);
@@ -92,13 +97,13 @@ const PortfolioCreatePage = () => {
   useEffect(() => {
     return () => {
       setIsLoading(true);
-      getProduct(productAddress as string)
+      getProduct(productAddress as string, chainId)
         .then((product) => {
           setProduct(product);
         })
         .finally(() => setIsLoading(false));
     };
-  }, [productAddress]);
+  }, [productAddress, chainId]);
 
   useEffect(() => {
     (async () => {
