@@ -7,10 +7,20 @@ import { getCurrencyIcon } from "../../utils/helpers";
 import { RecapCard } from "../commons/RecapCard";
 import { SubtitleRegular20, TitleH2 } from "../basic";
 import Countdown from "react-countdown";
+import { useNetwork } from "wagmi";
+import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
+import { DECIMAL } from "../../utils/constants/decimal";
 
 export default function Product({ product }: { product: IProduct }) {
+  const { chain } = useNetwork();
+  
+  const chainId = useMemo(() => {
+    if (chain) return chain.id;
+    return SUPPORT_CHAIN_IDS.GOERLI;
+  }, [chain]);
+  
   const capacity = useMemo(() => {
-    return Number(ethers.utils.formatUnits(product.currentCapacity, 6));
+    return Number(ethers.utils.formatUnits(product.currentCapacity, DECIMAL[chainId]));
   }, [product]);
 
   const categoryIndex = useMemo(() => {

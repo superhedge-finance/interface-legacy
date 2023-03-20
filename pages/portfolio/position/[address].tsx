@@ -12,6 +12,7 @@ import ProductABI from "../../../utils/constants/abis/SHProduct.json";
 import { useAccount, useNetwork, useSigner } from "wagmi";
 import Timeline from "../../../components/product/Timeline";
 import { SUPPORT_CHAIN_IDS } from "../../../utils/enums";
+import { DECIMAL } from "../../../utils/constants/decimal";
 
 const PositionDetail = () => {
   const router = useRouter();
@@ -74,7 +75,7 @@ const PositionDetail = () => {
     (async () => {
       if (productInstance && address) {
         const balance = await productInstance.principalBalance(address);
-        setPrincipal(Number(ethers.utils.formatUnits(balance, 6)));
+        setPrincipal(Number(ethers.utils.formatUnits(balance, DECIMAL[chainId])));
       }
     })();
   }, [productInstance, address]);

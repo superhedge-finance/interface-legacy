@@ -12,6 +12,7 @@ import Timeline from "../../components/product/Timeline";
 import { getCurrencyIcon } from "../../utils/helpers";
 import { RecapCard } from "../../components/commons/RecapCard";
 import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
+import { DECIMAL } from "../../utils/constants/decimal";
 
 const activities = [
   {
@@ -58,7 +59,7 @@ const ProductDetail = () => {
 
   const capacity = useMemo(() => {
     if (product) {
-      return Number(ethers.utils.formatUnits(product.currentCapacity, 6));
+      return Number(ethers.utils.formatUnits(product.currentCapacity, DECIMAL[chainId]));
     }
     return 0;
   }, [product]);

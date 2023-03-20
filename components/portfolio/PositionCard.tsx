@@ -1,17 +1,20 @@
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { ethers } from "ethers";
-import { useAccount, useSigner } from "wagmi";
+import { useAccount, useSigner, useNetwork } from "wagmi";
 import { PrimaryButton } from "../basic";
 import { IProduct } from "../../types";
 import ProductABI from "../../utils/constants/abis/SHProduct.json";
 import { useRouter } from "next/router";
 import Timeline from "../product/Timeline";
+import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
+import { DECIMAL } from "../../utils/constants/decimal";
 
 export const PositionCard = ({ position, enabled }: { position: IProduct; enabled: boolean }) => {
   const Router = useRouter();
   const { address } = useAccount();
   const { data: signer } = useSigner();
+  const { chain } = useNetwork();
 
   const [principal, setPrincipal] = useState<number>(0);
 
@@ -28,11 +31,16 @@ export const PositionCard = ({ position, enabled }: { position: IProduct; enable
     return new ethers.Contract(position.address, ProductABI, signer);
   }, [position, signer, address]);
 
+  const chainId = useMemo(() => {
+    if (chain) return chain.id;
+    return SUPPORT_CHAIN_IDS.GOERLI;
+  }, [chain]);
+
   useEffect(() => {
     (async () => {
       if (productInstance && address) {
         const balance = await productInstance.principalBalance(address);
-        setPrincipal(Number(ethers.utils.formatUnits(balance, 6)));
+        setPrincipal(Number(ethers.utils.formatUnits(balance, DECIMAL[chainId])));
       }
     })();
   }, [productInstance, address]);

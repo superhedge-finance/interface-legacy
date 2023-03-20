@@ -7,12 +7,15 @@ import { useRouter } from "next/router";
 import Timeline from "../product/Timeline";
 import { ethers } from "ethers";
 import ProductABI from "../../utils/constants/abis/SHProduct.json";
-import { useAccount, useSigner } from "wagmi";
+import { useAccount, useSigner, useNetwork } from "wagmi";
+import { DECIMAL } from "../../utils/constants/decimal";
+import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
 
 const PortfolioNFTCard = ({ product }: { product: IProduct }) => {
   const Router = useRouter();
   const { data: signer } = useSigner();
   const { address } = useAccount();
+  const { chain } = useNetwork();
 
   const { currency1, currency2 } = getCurrencyIcon(product.underlying);
   const [principal, setPrincipal] = useState<number>(0);
@@ -23,11 +26,16 @@ const PortfolioNFTCard = ({ product }: { product: IProduct }) => {
     else return null;
   }, [signer, product]);
 
+  const chainId = useMemo(() => {
+    if (chain) return chain.id;
+    return SUPPORT_CHAIN_IDS.GOERLI;
+  }, [chain]);
+
   useEffect(() => {
     (async () => {
       if (productInstance && address) {
         const balance = await productInstance.principalBalance(address);
-        setPrincipal(Number(ethers.utils.formatUnits(balance, 6)));
+        setPrincipal(Number(ethers.utils.formatUnits(balance, DECIMAL[chainId])));
       }
     })();
   }, [productInstance, address]);

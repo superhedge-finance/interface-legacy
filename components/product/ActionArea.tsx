@@ -46,6 +46,7 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
     try {
       if (currencyInstance && productInstance) {
         const decimal = await currencyInstance.decimals();
+        console.log("Decimal; ", decimal);
         const requestBalance = ethers.utils.parseUnits(depositAmount.toString(), decimal);
         const currentAllowance = await currencyInstance.allowance(address, productAddress);
         if (currentAllowance.lt(requestBalance)) {
@@ -168,16 +169,17 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
           const _currency = await _productInstance.currency();
           const _currencyInstance = new ethers.Contract(_currency, ERC20ABI, signer);
           setCurrencyInstance(_currencyInstance);
+          const _decimals = await _currencyInstance.decimals();
           const _couponBalance = await _productInstance.couponBalance(address);
-          setCouponBalance(Number(ethers.utils.formatUnits(_couponBalance, 6)));
+          setCouponBalance(Number(ethers.utils.formatUnits(_couponBalance, _decimals)));
           const _optionBalance = await _productInstance.optionBalance(address);
-          setOptionBalance(Number(ethers.utils.formatUnits(_optionBalance, 6)));
+          setOptionBalance(Number(ethers.utils.formatUnits(_optionBalance, _decimals)));
           const _principalBalance = await _productInstance.principalBalance(address);
-          setPrincipalBalance(Number(ethers.utils.formatUnits(_principalBalance, 6)));
+          setPrincipalBalance(Number(ethers.utils.formatUnits(_principalBalance, _decimals)));
 
           const currentCapacity = await _productInstance.currentCapacity();
           const maxCapacity = await _productInstance.maxCapacity();
-          setMaxLots(maxCapacity.toNumber() - Number(ethers.utils.formatUnits(currentCapacity, 6)));
+          setMaxLots(maxCapacity.toNumber() - Number(ethers.utils.formatUnits(currentCapacity, _decimals)));
         } catch (e) {
           console.error(e);
         }

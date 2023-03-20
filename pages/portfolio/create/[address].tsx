@@ -14,6 +14,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import ProductABI from "../../../utils/constants/abis/SHProduct.json";
 import NFTListedDialog from "../../../components/portfolio/NFTListedDialog";
 import { USDC_ADDRESS } from "../../../utils/constants/address";
+import { DECIMAL } from "../../../utils/constants/decimal";
 import { SUPPORT_CHAIN_IDS } from "../../../utils/enums";
 
 const PortfolioCreatePage = () => {
@@ -75,8 +76,8 @@ const PortfolioCreatePage = () => {
           product.address,
           currentTokenId,
           lots,
-          USDC_ADDRESS,
-          ethers.utils.parseUnits(price.toString(), 6),
+          USDC_ADDRESS[chainId],
+          ethers.utils.parseUnits(price.toString(), DECIMAL[chainId]),
           Math.floor(startingTime.getTime() / 1000)
         );
         await listTx.wait();

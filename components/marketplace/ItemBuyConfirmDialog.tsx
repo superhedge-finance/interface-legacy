@@ -34,14 +34,17 @@ const ItemBuyConfirmDialog = ({
     if (marketplaceInstance && currencyInstance && address) {
       try {
         setLoading(true);
-        const requestBalance = ethers.utils.parseUnits((offer.quantity * offer.price).toString(), 6);
-        const currentAllowance = await currencyInstance.allowance(address, MARKETPLACE_ADDRESS);
+        const decimal = await currencyInstance.decimals();
+        const requestBalance = ethers.utils.parseUnits(
+          (offer.quantity * offer.price).toString(), decimal
+        );
+        const currentAllowance = await currencyInstance.allowance(address, MARKETPLACE_ADDRESS[chainId]);
         if (currentAllowance.lt(requestBalance)) {
-          const approveTx = await currencyInstance.approve(MARKETPLACE_ADDRESS, requestBalance);
+          const approveTx = await currencyInstance.approve(MARKETPLACE_ADDRESS[chainId], requestBalance);
           await approveTx.wait();
         }
 
-        const tx = await marketplaceInstance.buyItem(listingId, USDC_ADDRESS, offer.seller);
+        const tx = await marketplaceInstance.buyItem(listingId, USDC_ADDRESS[chainId], offer.seller);
         await tx.wait();
         afterConfirm(true);
       } catch (e) {

@@ -11,6 +11,7 @@ import { MarketplaceItemFullType } from "../../../types";
 import { getMarketplaceInstance, getNFTInstance } from "../../../utils/contract";
 import ProductABI from "../../../utils/constants/abis/SHProduct.json";
 import { USDC_ADDRESS } from "../../../utils/constants/address";
+import { DECIMAL } from "../../../utils/constants/decimal";
 import "react-datepicker/dist/react-datepicker.css";
 import useToast from "../../../hooks/useToast";
 import { SUPPORT_CHAIN_IDS } from "../../../utils/enums";
@@ -66,7 +67,7 @@ const PortfolioCreatePage = () => {
         const updateTx = await marketplaceInstance.updateListing(
           listingId,
           USDC_ADDRESS[chainId],
-          ethers.utils.parseUnits(price.toString(), 6)
+          ethers.utils.parseUnits(price.toString(), DECIMAL[chainId])
         );
         await updateTx.wait();
         showToast("NFT CHANGES SUCCESSFULLY SAVED");
