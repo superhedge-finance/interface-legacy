@@ -1,9 +1,9 @@
 import { MarketplaceItemDetailType, MarketplaceItemFullType, MarketplaceItemType } from "../types";
 import axios from "./axios";
 
-export const getListedItems = async (): Promise<Array<MarketplaceItemType>> => {
+export const getListedItems = async (chainId?: number | null): Promise<Array<MarketplaceItemType>> => {
   try {
-    const { data } = await axios.get(`/marketplace`);
+    const { data } = await axios.get(`/marketplace?chainId=${chainId}`);
     return data;
   } catch (e) {
     console.error(e);
@@ -11,9 +11,9 @@ export const getListedItems = async (): Promise<Array<MarketplaceItemType>> => {
   }
 };
 
-export const getTokenItem = async (listing_id: string): Promise<MarketplaceItemDetailType | null> => {
+export const getTokenItem = async (listing_id: string, chainId?: number | null): Promise<MarketplaceItemDetailType | null> => {
   try {
-    const { data } = await axios.get(`/marketplace/token/${listing_id}`);
+    const { data } = await axios.get(`/marketplace/token/${listing_id}?chainId=${chainId}`);
     return data;
   } catch (e) {
     console.error(e);
@@ -21,9 +21,9 @@ export const getTokenItem = async (listing_id: string): Promise<MarketplaceItemD
   }
 };
 
-export const getUserListedItems = async (address: string): Promise<Array<MarketplaceItemType>> => {
+export const getUserListedItems = async (address: string, chainId?: number | null): Promise<Array<MarketplaceItemType>> => {
   try {
-    const { data } = await axios.get(`/marketplace/${address}`);
+    const { data } = await axios.get(`/marketplace/${address}?chainId=${chainId}`);
     return data;
   } catch (e) {
     console.error(e);
@@ -31,9 +31,9 @@ export const getUserListedItems = async (address: string): Promise<Array<Marketp
   }
 };
 
-export const getUserListedItem = async (listing_id: string): Promise<MarketplaceItemFullType | null> => {
+export const getUserListedItem = async (listing_id: string, chainId?: number | null): Promise<MarketplaceItemFullType | null> => {
   try {
-    const { data } = await axios.get(`/marketplace/item/${listing_id}`);
+    const { data } = await axios.get(`/marketplace/item/${listing_id}?chainId=${chainId}`);
     return data;
   } catch (e) {
     console.error(e);

@@ -6,19 +6,21 @@ import { useAccount, useSigner } from "wagmi";
 import { BigNumber, ethers } from "ethers";
 import { Logger } from "@ethersproject/logger";
 import toast from "react-hot-toast";
+import { useChainId } from "@rainbow-me/rainbowkit/dist/hooks/useChainId";
 import { PrimaryButton, SecondaryButton, TitleH2 } from "../../../components/basic";
 import { getProduct } from "../../../service";
 import { IProduct } from "../../../types";
 import { getMarketplaceInstance, getNFTInstance } from "../../../utils/contract";
 import "react-datepicker/dist/react-datepicker.css";
-import ProductABI from "../../../constants/abis/SHProduct.json";
+import ProductABI from "../../../utils/constants/abis/SHProduct.json";
 import NFTListedDialog from "../../../components/portfolio/NFTListedDialog";
-import { USDC_ADDRESS } from "../../../constants/address";
+import { USDC_ADDRESS } from "../../../utils/constants/address";
 
 const PortfolioCreatePage = () => {
   const router = useRouter();
   const { data: signer } = useSigner();
   const { address } = useAccount();
+  const chainId = useChainId();
   const { address: productAddress } = router.query;
 
   const [, setIsLoading] = useState(false);
@@ -110,11 +112,11 @@ const PortfolioCreatePage = () => {
   }, [productInstance, nftInstance, address]);
 
   useEffect(() => {
-    if (signer) {
-      setMarketplaceInstance(getMarketplaceInstance(signer));
-      setNFTInstance(getNFTInstance(signer));
+    if (signer && chainId) {
+      setMarketplaceInstance(getMarketplaceInstance(signer, chainId));
+      setNFTInstance(getNFTInstance(signer, chainId));
     }
-  }, [signer]);
+  }, [signer, chainId]);
 
   return (
     <div className={"py-[80px] flex justify-center"}>

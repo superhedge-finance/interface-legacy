@@ -6,8 +6,8 @@ import Image from "next/image";
 import { Dialog, Transition } from "@headlessui/react";
 import { ParaRegular18, PrimaryButton, SecondaryButton, SubtitleRegular16 } from "../basic";
 import { ethers } from "ethers";
-import ProductABI from "../../constants/abis/SHProduct.json";
-import ERC20ABI from "../../constants/abis/ERC20.json";
+import ProductABI from "../../utils/constants/abis/SHProduct.json";
+import ERC20ABI from "../../utils/constants/abis/ERC20.json";
 import { DEPOSIT_STATUS, IProduct, WITHDRAW_STATUS } from "../../types";
 import { truncateAddress } from "../../utils/helpers";
 

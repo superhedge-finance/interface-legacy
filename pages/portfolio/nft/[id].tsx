@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useSigner } from "wagmi";
+import { useChainId } from "@rainbow-me/rainbowkit/dist/hooks/useChainId";
 import useToast from "../../../hooks/useToast";
 import { TitleH2, TitleH3 } from "../../../components/basic";
 import { RecapCard } from "../../../components/commons/RecapCard";
@@ -16,6 +17,7 @@ const PortfolioNFTDetails = () => {
   const router = useRouter();
   const { showToast } = useToast();
   const { data: signer } = useSigner();
+  const chainId = useChainId();
   const { id: listingId } = router.query;
 
   const [item, setItem] = useState<MarketplaceItemFullType>();
@@ -41,8 +43,8 @@ const PortfolioNFTDetails = () => {
   }, [item]);
 
   const onDelete = async () => {
-    if (signer) {
-      const marketplaceInstance = getMarketplaceInstance(signer);
+    if (signer && chainId) {
+      const marketplaceInstance = getMarketplaceInstance(signer, chainId);
       try {
         const tx = await marketplaceInstance.cancelListing(listingId as string);
         await tx.wait();

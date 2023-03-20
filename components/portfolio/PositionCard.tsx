@@ -4,7 +4,7 @@ import { ethers } from "ethers";
 import { useAccount, useSigner } from "wagmi";
 import { PrimaryButton } from "../basic";
 import { IProduct } from "../../types";
-import ProductABI from "../../constants/abis/SHProduct.json";
+import ProductABI from "../../utils/constants/abis/SHProduct.json";
 import { useRouter } from "next/router";
 import Timeline from "../product/Timeline";
 

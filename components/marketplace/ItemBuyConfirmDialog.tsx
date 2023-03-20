@@ -6,7 +6,8 @@ import { PrimaryButton, SecondaryButton } from "../basic";
 import { OfferType } from "../../types";
 import { truncateAddress } from "../../utils/helpers";
 import { getERC20Instance, getMarketplaceInstance } from "../../utils/contract";
-import { MARKETPLACE_ADDRESS, USDC_ADDRESS } from "../../constants/address";
+import { MARKETPLACE_ADDRESS, USDC_ADDRESS } from "../../utils/constants/address";
+import { useChainId } from "@rainbow-me/rainbowkit/dist/hooks/useChainId";
 
 const ItemBuyConfirmDialog = ({
   offer,
@@ -23,6 +24,7 @@ const ItemBuyConfirmDialog = ({
 }) => {
   const { address } = useAccount();
   const { data: signer } = useSigner();
+  const chainId = useChainId();
 
   const [loading, setLoading] = useState(false);
   const [marketplaceInstance, setMarketplaceInstance] = useState<ethers.Contract>();
@@ -52,11 +54,11 @@ const ItemBuyConfirmDialog = ({
   };
 
   useEffect(() => {
-    if (signer) {
-      setMarketplaceInstance(getMarketplaceInstance(signer));
-      setCurrencyInstance(getERC20Instance(signer));
+    if (signer && chainId) {
+      setMarketplaceInstance(getMarketplaceInstance(signer, chainId));
+      setCurrencyInstance(getERC20Instance(signer, chainId));
     }
-  }, [signer]);
+  }, [signer, chainId]);
 
   return (
     <Transition appear show={open} as={Fragment}>

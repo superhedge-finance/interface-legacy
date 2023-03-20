@@ -6,7 +6,7 @@ import { RecapCard } from "../commons/RecapCard";
 import { useRouter } from "next/router";
 import Timeline from "../product/Timeline";
 import { ethers } from "ethers";
-import ProductABI from "../../constants/abis/SHProduct.json";
+import ProductABI from "../../utils/constants/abis/SHProduct.json";
 import { useAccount, useSigner } from "wagmi";
 
 const PortfolioNFTCard = ({ product }: { product: IProduct }) => {

@@ -8,7 +8,7 @@ import { ReturnsChart } from "../product/ReturnsChart";
 import { PrimaryButton, SubtitleLight12 } from "../basic";
 import { getCurrencyIcon, truncateAddress } from "../../utils/helpers";
 
-export const NFTProductCard = ({ product, lots }: { product: IProduct, lots: number }) => {
+export const NFTProductCard = ({ product, lots }: { product: IProduct; lots: number }) => {
   const router = useRouter();
   const { address } = useAccount();
 
@@ -34,7 +34,7 @@ export const NFTProductCard = ({ product, lots }: { product: IProduct, lots: num
       <span className={"text-blacknew-100 text-[32px] leading-[40px] mt-3"}>{product.name}</span>
 
       <div className={"mt-2 flex flex-col space-y-3"}>
-        <RecapCard label={"Principal Amount - Lot(s)"} value = { lots.toLocaleString() + (lots > 1 ? " Lots": " Lot")} />
+        <RecapCard label={"Principal Amount - Lot(s)"} value={lots.toLocaleString() + (lots > 1 ? " Lots" : " Lot")} />
         {/* <RecapCard label={"Market Price"} value={"10,809 USDC"} /> */}
       </div>
 

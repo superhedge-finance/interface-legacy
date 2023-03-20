@@ -5,12 +5,13 @@ import DatePicker from "react-datepicker";
 import { useAccount, useSigner } from "wagmi";
 import { ethers } from "ethers";
 import { Logger } from "@ethersproject/logger";
+import { useChainId } from "@rainbow-me/rainbowkit/dist/hooks/useChainId";
 import { PrimaryButton, SecondaryButton, TitleH2 } from "../../../components/basic";
 import { getUserListedItem } from "../../../service";
 import { MarketplaceItemFullType } from "../../../types";
 import { getMarketplaceInstance, getNFTInstance } from "../../../utils/contract";
-import ProductABI from "../../../constants/abis/SHProduct.json";
-import { USDC_ADDRESS } from "../../../constants/address";
+import ProductABI from "../../../utils/constants/abis/SHProduct.json";
+import { USDC_ADDRESS } from "../../../utils/constants/address";
 import "react-datepicker/dist/react-datepicker.css";
 import useToast from "../../../hooks/useToast";
 
@@ -19,6 +20,7 @@ const PortfolioCreatePage = () => {
   const { showToast } = useToast();
   const { data: signer } = useSigner();
   const { address } = useAccount();
+  const chainId = useChainId();
   const { id: listingId } = router.query;
 
   const [item, setItem] = useState<MarketplaceItemFullType>();
@@ -53,10 +55,14 @@ const PortfolioCreatePage = () => {
     if (productStatus !== 3) {
       return showToast("Your product is not issued yet. Please wait until issuance date to list your NFT.", "error");
     }
-    if (address && signer && marketplaceInstance && nftInstance) {
+    if (address && signer && marketplaceInstance && nftInstance && chainId) {
       try {
         setTxPending(true);
-        const updateTx = await marketplaceInstance.updateListing(listingId, USDC_ADDRESS, ethers.utils.parseUnits(price.toString(), 6));
+        const updateTx = await marketplaceInstance.updateListing(
+          listingId,
+          USDC_ADDRESS[chainId],
+          ethers.utils.parseUnits(price.toString(), 6)
+        );
         await updateTx.wait();
         showToast("NFT CHANGES SUCCESSFULLY SAVED");
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -82,16 +88,16 @@ const PortfolioCreatePage = () => {
 
   useEffect(() => {
     (async () => {
-      if (signer) {
-        setMarketplaceInstance(getMarketplaceInstance(signer));
-        setNFTInstance(getNFTInstance(signer));
+      if (signer && chainId) {
+        setMarketplaceInstance(getMarketplaceInstance(signer, chainId));
+        setNFTInstance(getNFTInstance(signer, chainId));
       }
     })();
-  }, [signer]);
+  }, [signer, chainId]);
 
   useEffect(() => {
     (async () => {
-      const _item = await getUserListedItem(listingId as string);
+      const _item = await getUserListedItem(listingId as string, chainId);
       if (_item) {
         setItem(_item);
         setPrice(_item.offerPrice);

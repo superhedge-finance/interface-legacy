@@ -8,7 +8,7 @@ import { ethers } from "ethers";
 import { getProduct } from "../../../service";
 import { RecapCard } from "../../../components/commons/RecapCard";
 import { NFTProductCard } from "../../../components/portfolio/NFTProductCard";
-import ProductABI from "../../../constants/abis/SHProduct.json";
+import ProductABI from "../../../utils/constants/abis/SHProduct.json";
 import { useAccount, useSigner } from "wagmi";
 import Timeline from "../../../components/product/Timeline";
 
