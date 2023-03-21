@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { RadioGroup } from "@headlessui/react";
-import { useAccount, useSigner } from "wagmi";
+import { useAccount, useSigner, useNetwork } from "wagmi";
 import Image from "next/image";
 import { Dialog, Transition } from "@headlessui/react";
 import { ParaRegular18, PrimaryButton, SecondaryButton, SubtitleRegular16 } from "../basic";
@@ -16,6 +16,8 @@ const pricePerLot = 1000;
 export const ActionArea = ({ productAddress, product }: { productAddress: string; product: IProduct }) => {
   const { address } = useAccount();
   const { data: signer } = useSigner();
+  const { chain } = useNetwork();
+
   const { openConnectModal } = useConnectModal();
 
   const [scrollY, setScrollY] = useState(0);
@@ -144,6 +146,11 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
     }
     return `DEPOSIT ${depositAmount.toLocaleString()} USDC`;
   }, [principalBalance, status, depositAmount]);
+
+  const chainExplorer = useMemo(() => {
+    if (chain) return chain.blockExplorers?.default.url;
+    return "https://goerli.etherscan.io";
+  }, [chain]);
 
   const isSticky = () => {
     const scrollTop = window.scrollY;
@@ -419,7 +426,7 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
           <div className={"hidden md:flex mt-7 items-center justify-center"}>
             <span className={"text-[#677079] mr-2"}>Contract:</span>
             <span className={"mr-2 bg-clip-text text-transparent bg-primary-gradient"}>{truncateAddress(productAddress)}</span>
-            <a href={`https://goerli.etherscan.io/address/${productAddress}`} target={"_blank"} rel='noreferrer'>
+            <a href={`${chainExplorer}/address/${productAddress}`} target={"_blank"} rel='noreferrer'>
               <Image src={"/icons/external.svg"} alt={"external"} width={20} height={20} />
             </a>
           </div>
@@ -467,7 +474,7 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
                       <span className={"bg-primary-gradient text-transparent bg-clip-text text-[20px]"}>
                         {truncateAddress(productAddress)}
                       </span>
-                      <a href={`https://goerli.etherscan.io/address/${productAddress}`} target={"_blank"} rel='noreferrer'>
+                      <a href={`${chainExplorer}/address/${productAddress}`} target={"_blank"} rel='noreferrer'>
                         <Image src={"/icons/external.svg"} alt={"external"} width={20} height={20} />
                       </a>
                     </div>

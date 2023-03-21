@@ -45,7 +45,7 @@ const MarketplaceDetail = () => {
     if (chain) return chain.id;
     return SUPPORT_CHAIN_IDS.GOERLI;
   }, [chain]);
-
+  
   useEffect(() => {
     (async () => {
       const _item = await getTokenItem(id as string, chainId);

@@ -3,7 +3,7 @@ import { Chain } from "wagmi";
 export const moonbeam_alpha = {
   id: 1287,
   name: "Moonbase Alpha",
-  network: "MOON",
+  network: "moonbase",
   nativeCurrency: {
     name: "Dev",
     symbol: "DEV",
@@ -17,7 +17,7 @@ export const moonbeam_alpha = {
   },
   blockExplorers: {
     default: {
-      name: "moonscan",
+      name: "Moonscan",
       url: "https://moonbase.moonscan.io"
     }
   }
