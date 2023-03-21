@@ -74,24 +74,24 @@ export default function WalletConnect() {
                         {account.displayName}
                         {account.displayBalance ? ` (${account.displayBalance})` : ""}
                       </div>
-                    </Menu.Button>
-                    <Menu.Items
-                      as={"div"}
-                      className={"absolute bg-[#161717] rounded-bl-lg rounded-br-lg w-full text-[13px] leading-[16px] z-[99]"}
-                    >
-                      <Menu.Item as={"div"} className={"h-[64px] border border-[1px] border-[#4B4B4B]"}>
-                        <Link href={"/profile"}>
-                          <div className={"flex items-center justify-center h-full text-grey-70 py-4 px-[10px]"}>PROFILE</div>
-                        </Link>
-                      </Menu.Item>
-                      <Menu.Item
+                      <Menu.Items
                         as={"div"}
-                        className={"flex items-center justify-center  text-grey-70 py-4 px-[10px] h-[64px]"}
-                        onClick={onDisconnect}
+                        className={"absolute bg-[#161717] rounded-bl-lg rounded-br-lg w-2/3 text-[13px] leading-[16px] z-[99]"}
                       >
-                        DISCONNECT WALLET
-                      </Menu.Item>
-                    </Menu.Items>
+                        <Menu.Item as={"div"} className={"h-[64px] border border-[1px] border-[#4B4B4B]"}>
+                          <Link href={"/profile"}>
+                            <div className={"flex items-center justify-center h-full text-grey-70 py-4 px-[10px]"}>PROFILE</div>
+                          </Link>
+                        </Menu.Item>
+                        <Menu.Item
+                          as={"div"}
+                          className={"flex items-center justify-center  text-grey-70 py-4 px-[10px] h-[64px]"}
+                          onClick={onDisconnect}
+                        >
+                          DISCONNECT WALLET
+                        </Menu.Item>
+                      </Menu.Items>
+                    </Menu.Button>
                   </Menu>
                 );
               })()}
