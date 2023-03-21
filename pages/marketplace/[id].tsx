@@ -2,7 +2,7 @@ import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import { RecapCard } from "../../components/commons/RecapCard";
-import { ParaLight16, SubtitleLight12, TagRegular12, TitleH2, TitleH3 } from "../../components/basic";
+import { ParaLight16, TagRegular12, TitleH2, TitleH3 } from "../../components/basic";
 import { ProductOffers } from "../../components/marketplace/ProductOffers";
 import { ReturnsChart } from "../../components/product/ReturnsChart";
 import { ActivityHeader, ActivityRow } from "../../components/commons/ActivityRow";
@@ -129,10 +129,10 @@ const MarketplaceDetail = () => {
               <TitleH3>Vault Strategy</TitleH3>
               <img src={"/products/vault_strategy.png"} alt={"vault strategy"} width={"100%"} />
               <ParaLight16>
-                The vault allocates the majority of investors deposits to a verified 'bluechip' yield-source, earning interests to ensure
+                The vault allocates the majority of investors deposits to a verified &apos;bluechip&apos; yield-source, earning interests to ensure
                 principal-protection and to pay weekly coupons. A small allocation is invested in a ETH/USDC Put-Spread option, which pays
-                additional profits, if the option expires 'in the money'. The profits earned from the coupons and options are reinvested in
-                additional NFT-SN in the next cycle, effectively compounding the investors' returns progressively.
+                additional profits, if the option expires &apos;in the money&apos;. The profits earned from the coupons and options are reinvested in
+                additional NFT-SN in the next cycle, effectively compounding the investors&apos; returns progressively.
               </ParaLight16>
             </div>
 

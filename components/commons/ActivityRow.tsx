@@ -13,7 +13,7 @@ export const ActivityHeader = () => {
   );
 };
 
-export const ActivityRow = ({ activity, className }: { activity: Activity; className: string }) => {
+export const ActivityRow = ({ activity, className, blockExplorer }: { activity: Activity; className: string; blockExplorer: string }) => {
   return (
     <div className={`py-3 px-6 h-[40px] grid grid-cols-4 rounded-[6px] ${className ?? ""}`}>
       <div className={"flex items-center space-x-2"}>
@@ -22,7 +22,7 @@ export const ActivityRow = ({ activity, className }: { activity: Activity; class
       <span className={"text-[12px] leading-[16px] text-grey-70"}>{activity.amount.toLocaleString()} USDC</span>
       <span className={"text-[12px] leading-[16px] text-grey-70"}>{activity.lots}</span>
       <span className={"text-[12px] leading-[16px] text-blacknew-100"}>
-        <a href={`https://goerli.etherscan.io/address/${activity.contract}`} target={"_blank"} rel={"noreferrer"}>
+        <a href={`${blockExplorer}/address/${activity.contract}`} target={"_blank"} rel={"noreferrer"}>
           <div className={"flex items-center"}>
             <span className={"bg-primary-gradient bg-clip-text text-transparent"}>{truncateAddress(activity.contract)}</span>&nbsp;
             <Image src={"/icons/external.svg"} alt={"external icon"} width={18} height={18} />
