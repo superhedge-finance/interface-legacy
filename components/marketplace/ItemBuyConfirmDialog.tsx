@@ -6,7 +6,7 @@ import { PrimaryButton, SecondaryButton } from "../basic";
 import { OfferType } from "../../types";
 import { truncateAddress } from "../../utils/helpers";
 import { getERC20Instance, getMarketplaceInstance } from "../../utils/contract";
-import { MARKETPLACE_ADDRESS, USDC_ADDRESS } from "../../utils/constants/address";
+import { MARKETPLACE_ADDRESS, USDC_ADDRESS } from "../../utils/address";
 import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
 
 const ItemBuyConfirmDialog = ({

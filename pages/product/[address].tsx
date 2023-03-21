@@ -12,7 +12,7 @@ import Timeline from "../../components/product/Timeline";
 import { getCurrencyIcon } from "../../utils/helpers";
 import { RecapCard } from "../../components/commons/RecapCard";
 import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
-import { DECIMAL } from "../../utils/constants/decimal";
+import { DECIMAL, EXPLORER } from "../../utils/constants";
 
 const activities = [
   {
@@ -251,7 +251,14 @@ const ProductDetail = () => {
                 <div className={"bg-white py-[30px] px-5 rounded-lg"}>
                   <ActivityHeader />
                   {activities.map((activity, index) => {
-                    return <ActivityRow key={index} activity={activity} className={index % 2 === 0 ? "bg-[#00000014]" : "bg-white"} />;
+                    return (
+                      <ActivityRow
+                        key={index}
+                        activity={activity}
+                        className={index % 2 === 0 ? "bg-[#00000014]" : "bg-white"}
+                        blockExplorer={EXPLORER[chainId]}
+                      />
+                    );
                   })}
                 </div>
               </div>

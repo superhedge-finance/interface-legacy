@@ -7,6 +7,7 @@ import { useEffect, useMemo, useState } from "react";
 import { getHistory } from "../../service";
 import { History } from "../../types";
 import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
+import { EXPLORER } from "../../utils/constants";
 
 const ConnectWalletCard = ({ onConnect }: { onConnect: () => void }) => {
   return (
@@ -65,7 +66,14 @@ export const PortfolioTransactionHistory = ({ order }: { order: number }) => {
         <div className={"bg-white py-[30px] px-5 rounded-lg"}>
           <TransactionHeader />
           {histories.map((history, index) => {
-            return <TransactionCard key={index} history={history} className={index % 2 === 0 ? "bg-[#00000014]" : "bg-white"} />;
+            return (
+              <TransactionCard
+                key={index}
+                history={history}
+                className={index % 2 === 0 ? "bg-[#00000014]" : "bg-white"}
+                blockExplorer={EXPLORER[chainId]}
+              />
+            );
           })}
         </div>
       )}

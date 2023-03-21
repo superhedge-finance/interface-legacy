@@ -1,4 +1,4 @@
-import { SUPPORT_CHAIN_IDS } from "../enums";
+import { SUPPORT_CHAIN_IDS } from "./enums";
 
 export const MARKETPLACE_ADDRESS: { [chainId: number]: string } = {
   [SUPPORT_CHAIN_IDS.GOERLI]: "0x9e46a406e38eB4e664B9F38b0809444C1d33FFa8",

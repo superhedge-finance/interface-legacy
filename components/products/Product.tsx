@@ -9,7 +9,7 @@ import { SubtitleRegular20, TitleH2 } from "../basic";
 import Countdown from "react-countdown";
 import { useNetwork } from "wagmi";
 import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
-import { DECIMAL } from "../../utils/constants/decimal";
+import { DECIMAL } from "../../utils/constants";
 
 export default function Product({ product }: { product: IProduct }) {
   const { chain } = useNetwork();

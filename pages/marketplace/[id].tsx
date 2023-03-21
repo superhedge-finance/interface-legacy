@@ -12,6 +12,7 @@ import { getCurrencyIcon } from "../../utils/helpers";
 import Timeline from "../../components/product/Timeline";
 import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
 import { useNetwork } from "wagmi";
+import { EXPLORER } from "../../utils/constants";
 
 const activities = [
   {
@@ -168,7 +169,14 @@ const MarketplaceDetail = () => {
               <div className={"bg-white py-[30px] px-5 rounded-lg"}>
                 <ActivityHeader />
                 {activities.map((activity, index) => {
-                  return <ActivityRow key={index} activity={activity} className={index % 2 === 0 ? "bg-[#00000014]" : "bg-white"} />;
+                  return (
+                    <ActivityRow
+                      key={index}
+                      activity={activity}
+                      className={index % 2 === 0 ? "bg-[#00000014]" : "bg-white"}
+                      blockExplorer={EXPLORER[chainId]}
+                    />
+                  );
                 })}
               </div>
             </div>

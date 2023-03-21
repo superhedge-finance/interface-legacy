@@ -1,8 +1,8 @@
 import { ethers } from "ethers";
-import SHMARKETPLACE_ABI from "./constants/abis/SHMarketplace.json";
-import NFT_ABI from "./constants/abis/NFT.json";
-import ERC20_ABI from "./constants/abis/ERC20.json";
-import { MARKETPLACE_ADDRESS, NFT_ADDRESS, USDC_ADDRESS } from "./constants/address";
+import SHMARKETPLACE_ABI from "./abis/SHMarketplace.json";
+import NFT_ABI from "./abis/NFT.json";
+import ERC20_ABI from "./abis/ERC20.json";
+import { MARKETPLACE_ADDRESS, NFT_ADDRESS, USDC_ADDRESS } from "./address";
 
 export const getMarketplaceInstance = (signer: ethers.Signer, chainId: number) => {
   return new ethers.Contract(MARKETPLACE_ADDRESS[chainId], SHMARKETPLACE_ABI, signer);

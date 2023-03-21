@@ -6,10 +6,12 @@ import Image from "next/image";
 import { Dialog, Transition } from "@headlessui/react";
 import { ParaRegular18, PrimaryButton, SecondaryButton, SubtitleRegular16 } from "../basic";
 import { ethers } from "ethers";
-import ProductABI from "../../utils/constants/abis/SHProduct.json";
-import ERC20ABI from "../../utils/constants/abis/ERC20.json";
+import ProductABI from "../../utils/abis/SHProduct.json";
+import ERC20ABI from "../../utils/abis/ERC20.json";
 import { DEPOSIT_STATUS, IProduct, WITHDRAW_STATUS } from "../../types";
 import { truncateAddress } from "../../utils/helpers";
+import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
+import { EXPLORER } from "../../utils/constants";
 
 const pricePerLot = 1000;
 
@@ -107,6 +109,11 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
     }
   };
 
+  const chainId = useMemo(() => {
+    if (chain) return chain.id;
+    return SUPPORT_CHAIN_IDS.GOERLI;
+  }, [chain]);
+
   const lotsCount = useMemo(() => {
     return (principalBalance + optionBalance + couponBalance) / pricePerLot;
   }, [principalBalance, optionBalance, couponBalance]);
@@ -146,11 +153,6 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
     }
     return `DEPOSIT ${depositAmount.toLocaleString()} USDC`;
   }, [principalBalance, status, depositAmount]);
-
-  const chainExplorer = useMemo(() => {
-    if (chain) return chain.blockExplorers?.default.url;
-    return "https://goerli.etherscan.io";
-  }, [chain]);
 
   const isSticky = () => {
     const scrollTop = window.scrollY;
@@ -426,7 +428,7 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
           <div className={"hidden md:flex mt-7 items-center justify-center"}>
             <span className={"text-[#677079] mr-2"}>Contract:</span>
             <span className={"mr-2 bg-clip-text text-transparent bg-primary-gradient"}>{truncateAddress(productAddress)}</span>
-            <a href={`${chainExplorer}/address/${productAddress}`} target={"_blank"} rel='noreferrer'>
+            <a href={`${EXPLORER[chainId]}/address/${productAddress}`} target={"_blank"} rel='noreferrer'>
               <Image src={"/icons/external.svg"} alt={"external"} width={20} height={20} />
             </a>
           </div>
@@ -474,7 +476,7 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
                       <span className={"bg-primary-gradient text-transparent bg-clip-text text-[20px]"}>
                         {truncateAddress(productAddress)}
                       </span>
-                      <a href={`${chainExplorer}/address/${productAddress}`} target={"_blank"} rel='noreferrer'>
+                      <a href={`${EXPLORER[chainId]}/address/${productAddress}`} target={"_blank"} rel='noreferrer'>
                         <Image src={"/icons/external.svg"} alt={"external"} width={20} height={20} />
                       </a>
                     </div>

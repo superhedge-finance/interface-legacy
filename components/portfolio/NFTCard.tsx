@@ -6,9 +6,9 @@ import { RecapCard } from "../commons/RecapCard";
 import { useRouter } from "next/router";
 import Timeline from "../product/Timeline";
 import { ethers } from "ethers";
-import ProductABI from "../../utils/constants/abis/SHProduct.json";
+import ProductABI from "../../utils/abis/SHProduct.json";
 import { useAccount, useSigner, useNetwork } from "wagmi";
-import { DECIMAL } from "../../utils/constants/decimal";
+import { DECIMAL } from "../../utils/constants";
 import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
 
 const PortfolioNFTCard = ({ product }: { product: IProduct }) => {

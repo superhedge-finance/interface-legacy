@@ -9,9 +9,9 @@ import { PrimaryButton, SecondaryButton, TitleH2 } from "../../../components/bas
 import { getUserListedItem } from "../../../service";
 import { MarketplaceItemFullType } from "../../../types";
 import { getMarketplaceInstance, getNFTInstance } from "../../../utils/contract";
-import ProductABI from "../../../utils/constants/abis/SHProduct.json";
-import { USDC_ADDRESS } from "../../../utils/constants/address";
-import { DECIMAL } from "../../../utils/constants/decimal";
+import ProductABI from "../../../utils/abis/SHProduct.json";
+import { USDC_ADDRESS } from "../../../utils/address";
+import { DECIMAL } from "../../../utils/constants";
 import "react-datepicker/dist/react-datepicker.css";
 import useToast from "../../../hooks/useToast";
 import { SUPPORT_CHAIN_IDS } from "../../../utils/enums";

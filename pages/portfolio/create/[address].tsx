@@ -11,10 +11,10 @@ import { getProduct } from "../../../service";
 import { IProduct } from "../../../types";
 import { getMarketplaceInstance, getNFTInstance } from "../../../utils/contract";
 import "react-datepicker/dist/react-datepicker.css";
-import ProductABI from "../../../utils/constants/abis/SHProduct.json";
+import ProductABI from "../../../utils/abis/SHProduct.json";
 import NFTListedDialog from "../../../components/portfolio/NFTListedDialog";
-import { USDC_ADDRESS } from "../../../utils/constants/address";
-import { DECIMAL } from "../../../utils/constants/decimal";
+import { USDC_ADDRESS } from "../../../utils/address";
+import { DECIMAL } from "../../../utils/constants";
 import { SUPPORT_CHAIN_IDS } from "../../../utils/enums";
 
 const PortfolioCreatePage = () => {

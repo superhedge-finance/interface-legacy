@@ -38,7 +38,11 @@ export default function WalletConnect() {
 
                 if (chain.unsupported) {
                   console.log("Unsupported chain");
-                  return <div onClick={openChainModal} className={"text-yellow-500"}>Wrong network</div>;
+                  return (
+                    <div onClick={openChainModal} className={"text-yellow-500"}>
+                      Wrong network
+                    </div>
+                  );
                 }
 
                 return (

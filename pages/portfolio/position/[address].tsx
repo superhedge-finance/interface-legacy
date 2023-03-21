@@ -8,11 +8,11 @@ import { ethers } from "ethers";
 import { getProduct } from "../../../service";
 import { RecapCard } from "../../../components/commons/RecapCard";
 import { NFTProductCard } from "../../../components/portfolio/NFTProductCard";
-import ProductABI from "../../../utils/constants/abis/SHProduct.json";
+import ProductABI from "../../../utils/abis/SHProduct.json";
 import { useAccount, useNetwork, useSigner } from "wagmi";
 import Timeline from "../../../components/product/Timeline";
 import { SUPPORT_CHAIN_IDS } from "../../../utils/enums";
-import { DECIMAL } from "../../../utils/constants/decimal";
+import { DECIMAL } from "../../../utils/constants";
 
 const PositionDetail = () => {
   const router = useRouter();

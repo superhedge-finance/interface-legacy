@@ -4,11 +4,11 @@ import { ethers } from "ethers";
 import { useAccount, useSigner, useNetwork } from "wagmi";
 import { PrimaryButton } from "../basic";
 import { IProduct } from "../../types";
-import ProductABI from "../../utils/constants/abis/SHProduct.json";
+import ProductABI from "../../utils/abis/SHProduct.json";
 import { useRouter } from "next/router";
 import Timeline from "../product/Timeline";
 import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
-import { DECIMAL } from "../../utils/constants/decimal";
+import { DECIMAL } from "../../utils/constants";
 
 export const PositionCard = ({ position, enabled }: { position: IProduct; enabled: boolean }) => {
   const Router = useRouter();

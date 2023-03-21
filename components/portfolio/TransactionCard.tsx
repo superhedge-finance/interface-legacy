@@ -13,11 +13,11 @@ export const TransactionHeader = () => {
   );
 };
 
-export const TransactionCard = ({ history, className }: { history: History; className: string }) => {
+export const TransactionCard = ({ history, className, blockExplorer }: { history: History; className: string; blockExplorer: string }) => {
   return (
     <div className={`py-3 px-6 h-[40px] grid grid-cols-6 rounded-[6px] ${className ?? ""}`}>
       <div className={"flex items-center space-x-2"}>
-        <a href={`https://goerli.etherscan.io/tx/${history.transactionHash}`} target={"_blank"} rel={"noreferrer"}>
+        <a href={`${blockExplorer}/tx/${history.transactionHash}`} target={"_blank"} rel={"noreferrer"}>
           <Image
             src={history.type === HISTORY_TYPE.DEPOSIT ? "/portfolio/withdraw_icon.svg" : "/portfolio/deposit_icon.svg"}
             alt={"withdraw icon"}
