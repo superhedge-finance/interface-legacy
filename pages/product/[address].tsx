@@ -209,10 +209,11 @@ const ProductDetail = () => {
                 <TitleH3>Vault Strategy</TitleH3>
                 <img src={"/products/vault_strategy.png"} alt={"vault strategy"} width={"100%"} />
                 <ParaLight16>
-                  The vault allocates the majority of investors deposits to a verified &apos;bluechip&apos; yield-source, earning interests to ensure
-                  principal-protection and to pay weekly coupons. A small allocation is invested in a ETH/USDC Put-Spread option, which pays
-                  additional profits, if the option expires &apos;in the money&apos;. The profits earned from the coupons and options are reinvested
-                  in additional NFT-SN in the next cycle, effectively compounding the investors&apos; returns progressively.
+                  The vault allocates the majority of investors deposits to a verified &apos;bluechip&apos; yield-source, earning interests
+                  to ensure principal-protection and to pay weekly coupons. A small allocation is invested in a ETH/USDC Put-Spread option,
+                  which pays additional profits, if the option expires &apos;in the money&apos;. The profits earned from the coupons and
+                  options are reinvested in additional NFT-SN in the next cycle, effectively compounding the investors&apos; returns
+                  progressively.
                 </ParaLight16>
               </div>
 

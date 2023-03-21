@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Menu } from "@headlessui/react";
 import { disconnect } from "@wagmi/core";
@@ -40,7 +41,30 @@ export default function WalletConnect() {
                 }
 
                 return (
-                  <Menu as={"div"} className={"relative"}>
+                  <Menu as={"div"} className={"relative flex items-center space-x-4"}>
+                    <button
+                      onClick={openChainModal}
+                      style={{ display: "flex", alignItems: "center" }}
+                      className={"text-white"}
+                      type='button'
+                    >
+                      {chain.hasIcon && (
+                        <div
+                          style={{
+                            background: chain.iconBackground,
+                            width: 12,
+                            height: 12,
+                            borderRadius: 999,
+                            overflow: "hidden",
+                            marginRight: 4
+                          }}
+                        >
+                          {chain.iconUrl && <Image alt={chain.name ?? "Chain icon"} src={chain.iconUrl} width={12} height={12} />}
+                        </div>
+                      )}
+                      {chain.id === 1287 && <Image src={"/icons/wallet.svg"} alt={"wallet"} width={12} height={12} />}
+                      {chain.name}
+                    </button>
                     <Menu.Button as={"div"}>
                       <div
                         className={

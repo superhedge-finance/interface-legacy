@@ -35,9 +35,7 @@ const ItemBuyConfirmDialog = ({
       try {
         setLoading(true);
         const decimal = await currencyInstance.decimals();
-        const requestBalance = ethers.utils.parseUnits(
-          (offer.quantity * offer.price).toString(), decimal
-        );
+        const requestBalance = ethers.utils.parseUnits((offer.quantity * offer.price).toString(), decimal);
         const currentAllowance = await currencyInstance.allowance(address, MARKETPLACE_ADDRESS[chainId]);
         if (currentAllowance.lt(requestBalance)) {
           const approveTx = await currencyInstance.approve(MARKETPLACE_ADDRESS[chainId], requestBalance);

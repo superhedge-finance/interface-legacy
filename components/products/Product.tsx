@@ -13,12 +13,12 @@ import { DECIMAL } from "../../utils/constants/decimal";
 
 export default function Product({ product }: { product: IProduct }) {
   const { chain } = useNetwork();
-  
+
   const chainId = useMemo(() => {
     if (chain) return chain.id;
     return SUPPORT_CHAIN_IDS.GOERLI;
   }, [chain]);
-  
+
   const capacity = useMemo(() => {
     return Number(ethers.utils.formatUnits(product.currentCapacity, DECIMAL[chainId]));
   }, [product]);
