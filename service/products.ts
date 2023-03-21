@@ -5,7 +5,7 @@ export const getProducts = async (chainId?: number | null) => {
     const { data } = await axios.get(`/products?chainId=${chainId}`);
     return data;
   } catch (e) {
-    console.error(e);
+    return [];
   }
 };
 
@@ -14,6 +14,6 @@ export const getProduct = async (address: string, chainId?: number | null) => {
     const { data } = await axios.get(`/products/${address}?chainId=${chainId}`);
     return data;
   } catch (e) {
-    console.error(e);
+    return null;
   }
 };

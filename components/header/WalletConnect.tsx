@@ -37,7 +37,8 @@ export default function WalletConnect() {
                 }
 
                 if (chain.unsupported) {
-                  return <div onClick={openChainModal}>Wrong network</div>;
+                  console.log("Unsupported chain");
+                  return <div onClick={openChainModal} className={"text-yellow-500"}>Wrong network</div>;
                 }
 
                 return (
@@ -52,17 +53,16 @@ export default function WalletConnect() {
                         <div
                           style={{
                             background: chain.iconBackground,
-                            width: 12,
-                            height: 12,
+                            width: 16,
+                            height: 16,
                             borderRadius: 999,
                             overflow: "hidden",
-                            marginRight: 4
+                            marginRight: 6
                           }}
                         >
-                          {chain.iconUrl && <Image alt={chain.name ?? "Chain icon"} src={chain.iconUrl} width={12} height={12} />}
+                          {chain.iconUrl && <Image alt={chain.name ?? "Chain icon"} src={chain.iconUrl} width={16} height={16} />}
                         </div>
                       )}
-                      {chain.id === 1287 && <Image src={"/icons/wallet.svg"} alt={"wallet"} width={12} height={12} />}
                       {chain.name}
                     </button>
                     <Menu.Button as={"div"}>
