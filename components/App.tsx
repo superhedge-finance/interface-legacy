@@ -38,16 +38,14 @@ type AppProps = {
 
 function App({ children }: AppProps) {
   return (
-    <React.StrictMode>
-      <WagmiConfig client={wagmiClient}>
-        <RainbowKitProvider appInfo={demoAppInfo} chains={chains}>
-          <ToastProvider>
-            <Layout>{children}</Layout>
-          </ToastProvider>
-          <Toaster position='top-right' />
-        </RainbowKitProvider>
-      </WagmiConfig>
-    </React.StrictMode>
+    <WagmiConfig client={wagmiClient}>
+      <RainbowKitProvider appInfo={demoAppInfo} chains={chains}>
+        <ToastProvider>
+          <Layout>{children}</Layout>
+        </ToastProvider>
+        <Toaster position='top-right' />
+      </RainbowKitProvider>
+    </WagmiConfig>
   );
 }
 

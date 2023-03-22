@@ -50,7 +50,6 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
     try {
       if (currencyInstance && productInstance) {
         const decimal = await currencyInstance.decimals();
-        console.log("Decimal; ", decimal);
         const requestBalance = ethers.utils.parseUnits(depositAmount.toString(), decimal);
         const currentAllowance = await currencyInstance.allowance(address, productAddress);
         if (currentAllowance.lt(requestBalance)) {
