@@ -78,7 +78,7 @@ const PortfolioCreatePage = () => {
           lots,
           USDC_ADDRESS[chainId],
           ethers.utils.parseUnits(price.toString(), DECIMAL[chainId]),
-          Math.floor(startingTime.getTime() / 1000)
+          Math.floor(startingTime.getTime() / 1000) + 300 // delta: 5 mins
         );
         await listTx.wait();
         setIsListed(true);
