@@ -15,7 +15,7 @@
 # Enable testnets(true or false)
 NEXT_PUBLIC_ENABLE_TESTNETS=
 
-# Alchemy provider key
+# Alchemy provider key for Goerli testnet
 NEXT_PUBLIC_ALCHEMY_KEY_GOERLI=
 
 # API Endpoint URL(f.g. http://localhost:3000/api or http://{IPv4}:{port}/api)
