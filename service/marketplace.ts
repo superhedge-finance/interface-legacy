@@ -11,9 +11,9 @@ export const getListedItems = async (chainId?: number | null): Promise<Array<Mar
   }
 };
 
-export const getTokenItem = async (listing_id: string, chainId?: number | null): Promise<MarketplaceItemDetailType | null> => {
+export const getTokenItem = async (productAddress: string, chainId?: number | null): Promise<MarketplaceItemDetailType | null> => {
   try {
-    const { data } = await axios.get(`/marketplace/token/${listing_id}?chainId=${chainId}`);
+    const { data } = await axios.get(`/marketplace/token/${productAddress}?chainId=${chainId}`);
     return data;
   } catch (e) {
     console.error(e);

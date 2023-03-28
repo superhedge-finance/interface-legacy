@@ -38,7 +38,7 @@ const activities = [
 const MarketplaceDetail = () => {
   const router = useRouter();
   const { chain } = useNetwork();
-  const { id } = router.query;
+  const { address } = router.query;
 
   const [item, setItem] = useState<MarketplaceItemDetailType>();
 
@@ -49,10 +49,10 @@ const MarketplaceDetail = () => {
 
   useEffect(() => {
     (async () => {
-      const _item = await getTokenItem(id as string, chainId);
+      const _item = await getTokenItem(address as string, chainId);
       if (_item) setItem(_item);
     })();
-  }, [id, chainId]);
+  }, [address, chainId]);
 
   const { currency1, currency2 } = useMemo(() => {
     if (item) return getCurrencyIcon(item.underlying);
