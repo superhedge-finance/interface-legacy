@@ -1,20 +1,20 @@
 import { Cycle } from "./interface";
 
 export type MarketplaceItemType = {
-  id: number;
-  tokenId: string;
   offerPrice: number;
-  listingId: string;
   mtmPrice: number;
   underlying: string;
   productAddress: string;
   name: string;
-  quantity: number;
   totalLots: number;
   issuanceCycle: Cycle;
 };
 
 export type MarketplaceItemFullType = MarketplaceItemType & {
+  id: number;
+  tokenId: string;
+  listingId: string;
+  quantity: number;
   startingTime: number;
   seller: string;
 };

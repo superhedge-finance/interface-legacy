@@ -37,7 +37,7 @@ const OfferCard = ({ offer, value, onValueChange }: { offer: OfferType; value: n
   );
 };
 
-export const ProductOffers = ({ offers, listingId }: { offers: OfferType[]; listingId: string }) => {
+export const ProductOffers = ({ offers }: { offers: OfferType[] }) => {
   const [offerId, setOfferId] = useState<number>(0);
   const [tab, setTab] = useState(0);
   const [open, setOpen] = useState(false);
@@ -70,7 +70,6 @@ export const ProductOffers = ({ offers, listingId }: { offers: OfferType[]; list
         <ItemBuyConfirmDialog
           open={open}
           offer={offer}
-          listingId={listingId}
           setOpen={(open) => setOpen(open)}
           afterConfirm={(success) => {
             setOpen(false);

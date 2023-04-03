@@ -12,13 +12,11 @@ import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
 const ItemBuyConfirmDialog = ({
   offer,
   open,
-  listingId,
   setOpen,
   afterConfirm
 }: {
   offer: OfferType;
   open: boolean;
-  listingId: string;
   setOpen: (open: boolean) => void;
   afterConfirm: (success: boolean) => void;
 }) => {
@@ -42,7 +40,7 @@ const ItemBuyConfirmDialog = ({
           await approveTx.wait();
         }
 
-        const tx = await marketplaceInstance.buyItem(listingId, USDC_ADDRESS[chainId], offer.seller);
+        const tx = await marketplaceInstance.buyItem(offer.listingId, USDC_ADDRESS[chainId], offer.seller);
         await tx.wait();
         afterConfirm(true);
       } catch (e) {

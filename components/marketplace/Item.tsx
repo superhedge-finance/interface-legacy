@@ -27,7 +27,6 @@ const MarketplaceItem = ({ item }: { item: MarketplaceItemType }) => {
         <span className={"text-grey-70 text-[12px] leading-[12px]"}>Best Offer Price</span>
         <div className={"flex items-center text-[16px] leading-[16px] space-x-2 uppercase"}>
           <span className={"bg-primary-gradient bg-clip-text text-transparent"}>{item.offerPrice.toLocaleString()} USDC</span>
-          <span className={"text-blacknew-100"}>({item.quantity} LOT)</span>
         </div>
       </div>
 
@@ -47,10 +46,10 @@ const MarketplaceItem = ({ item }: { item: MarketplaceItemType }) => {
       </div>
 
       <PrimaryButton
-        label={`${router.pathname.includes("portfolio") ? "VIEW DETAILS" : "BUY NOW"}`}
+        label={"BUY NOW"}
         className={"mt-4 uppercase"}
         onClick={() =>
-          router.push(router.pathname.includes("portfolio") ? `/portfolio/nft/${item.listingId}` : `/marketplace/${item.productAddress}`)
+          router.push(`/marketplace/${item.productAddress}`)
         }
       />
     </div>

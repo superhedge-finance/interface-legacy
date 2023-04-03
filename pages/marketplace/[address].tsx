@@ -59,14 +59,14 @@ const MarketplaceDetail = () => {
     return { currency1: "/currency/usdc.svg", currency2: "/currency/eth.svg" };
   }, [item]);
 
-  const bestOfferPrice = useMemo(() => {
+  /* const bestOfferPrice = useMemo(() => {
     if (item) {
       // get the best offer price from offers array
       const bestOffer = item.offers.reduce((prev, current) => (prev.price > current.price ? prev : current));
       return bestOffer.price;
     }
     return 0;
-  }, [item]);
+  }, [item]); */
 
   return (
     <div className={"py-[80px] flex justify-center"}>
@@ -103,14 +103,14 @@ const MarketplaceDetail = () => {
             </div>
 
             <div className={"flex items-center w-full mt-12 space-x-4"}>
-              <RecapCard label={"Best Offer Price"} value={`${bestOfferPrice.toLocaleString()} USDC`} />
+              <RecapCard label={"Best Offer Price"} value={`${item.offerPrice.toLocaleString()} USDC`} />
               <RecapCard label={"Total Lots"} value={`${item.totalLots} LOTS`} />
               <RecapCard label={"Market Price"} value={`${item.mtmPrice.toLocaleString()} USDC`} />
             </div>
 
             <div className={"flex flex-col w-full mt-[80px]"}>
               <TitleH3 className={"text-blacknew-100 mb-5"}>Choose product offer to buy</TitleH3>
-              <ProductOffers offers={item.offers} listingId={item.listingId} />
+              <ProductOffers offers={item.offers} />
             </div>
 
             <div className={"mt-[80px] w-full"}>
