@@ -30,7 +30,7 @@ const NoTransactionCard = () => {
   );
 };
 
-export const PortfolioTransactionHistory = ({ order }: { order: number }) => {
+export const PortfolioTransactions = ({ order }: { order: number }) => {
   const { address } = useAccount();
   const { chain } = useNetwork();
   const { openConnectModal } = useConnectModal();

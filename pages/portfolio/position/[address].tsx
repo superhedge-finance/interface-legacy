@@ -128,10 +128,10 @@ const PositionDetail = () => {
                   <RecapCard label={"Market Price"} value={"8,000 USDC"} />
                 </div>
                 <div className={"flex items-center justify-between space-x-2 mt-2"}>
-                  <RecapCard label={"Strike 1 price"} value={`${product.issuanceCycle.strikePrice1}`} />
-                  <RecapCard label={"Strike 2 price"} value={`${product.issuanceCycle.strikePrice2}`} />
-                  <RecapCard label={"Strike 3 price"} value={`${product.issuanceCycle.strikePrice3}`} />
-                  <RecapCard label={"Strike 4 price"} value={`${product.issuanceCycle.strikePrice4}`} />
+                  <RecapCard label={"Strike 1 price"} value={`${product.issuanceCycle.strikePrice1.toLocaleString()}`} />
+                  <RecapCard label={"Strike 2 price"} value={`${product.issuanceCycle.strikePrice2.toLocaleString()}`} />
+                  <RecapCard label={"Strike 3 price"} value={`${product.issuanceCycle.strikePrice3.toLocaleString()}`} />
+                  <RecapCard label={"Strike 4 price"} value={`${product.issuanceCycle.strikePrice4.toLocaleString()}`} />
                 </div>
               </div>
 

@@ -4,9 +4,9 @@ import { useAccount } from "wagmi";
 import { SubtitleRegular14, TitleH3 } from "../../components/basic";
 import { PortfolioSummary } from "../../components/portfolio/Summary";
 import { PortfolioPositions } from "../../components/portfolio/Positions";
-import { PortfolioTransactionHistory } from "../../components/portfolio/TransactionHistory";
+import { PortfolioTransactions } from "../../components/portfolio/Transactions";
 import { SuperHedgeTabs } from "../../components/commons/Tabs";
-import { PortfolioPositionList } from "../../components/portfolio/PositionList";
+import { PortfolioListings } from "../../components/portfolio/Listings";
 
 const Portfolio = () => {
   const { address } = useAccount();
@@ -64,14 +64,14 @@ const Portfolio = () => {
                     />
                   )}
                 </div>
-                <PortfolioTransactionHistory order={historyOrder} />
+                <PortfolioTransactions order={historyOrder} />
               </div>
             </div>
           )}
 
           {tab === 1 && (
             <div className={"flex flex-col w-full mt-12"}>
-              <PortfolioPositionList />
+              <PortfolioListings />
             </div>
           )}
         </div>

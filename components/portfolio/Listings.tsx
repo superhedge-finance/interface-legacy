@@ -3,9 +3,9 @@ import { useAccount, useNetwork } from "wagmi";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { ParaLight16, PrimaryButton, SkeletonCard, TitleH5 } from "../basic";
-import MarketplaceItem from "../marketplace/Item";
+import PortfolioListingItem from "../portfolio/Item";
 import { getUserInfo, getUserListedItems } from "../../service";
-import { MarketplaceItemType } from "../../types";
+import { MarketplaceItemFullType } from "../../types";
 import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
 
 const NoPositionCard = () => {
@@ -37,11 +37,11 @@ const NoListedNFTCard = () => {
   );
 };
 
-export const PortfolioPositionList = () => {
+export const PortfolioListings = () => {
   const { address } = useAccount();
   const { chain } = useNetwork();
 
-  const [items, setItems] = useState<Array<MarketplaceItemType>>([]);
+  const [items, setItems] = useState<Array<MarketplaceItemFullType>>([]);
   const [loading, setLoading] = useState(false);
   const [hasNoPosition, setHasNoPosition] = useState(true);
 
@@ -73,7 +73,7 @@ export const PortfolioPositionList = () => {
       {!loading && !hasNoPosition && items.length > 0 && (
         <div className={"grid grid-cols-1 md:grid-cols-3 mt-12 gap-x-0 md:gap-x-5 gap-y-5 md:gap-y-8"}>
           {items.map((item, index) => (
-            <MarketplaceItem key={index} item={item} />
+            <PortfolioListingItem key={index} item={item} />
           ))}
         </div>
       )}

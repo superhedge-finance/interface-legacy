@@ -21,7 +21,7 @@ export const getTokenItem = async (productAddress: string, chainId?: number | nu
   }
 };
 
-export const getUserListedItems = async (address: string, chainId?: number | null): Promise<Array<MarketplaceItemType>> => {
+export const getUserListedItems = async (address: string, chainId?: number | null): Promise<Array<MarketplaceItemFullType>> => {
   try {
     const { data } = await axios.get(`/marketplace/${address}?chainId=${chainId}`);
     return data;
