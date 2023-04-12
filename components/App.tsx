@@ -2,7 +2,7 @@ import React from "react";
 import { Toaster } from "react-hot-toast";
 import { RainbowKitProvider, getDefaultWallets } from "@rainbow-me/rainbowkit";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
-import { goerli, moonbaseAlpha } from "wagmi/chains";
+import { goerli, moonbaseAlpha, arbitrumGoerli } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import { Chart as ChartJS, Title, Tooltip, Legend, Filler, LineElement, CategoryScale, LinearScale, PointElement } from "chart.js";
@@ -12,8 +12,12 @@ import { ToastProvider } from "./providers/ToastProvider";
 ChartJS.register(Title, Tooltip, Legend, Filler, LineElement, CategoryScale, LinearScale, PointElement);
 
 const { chains, provider, webSocketProvider } = configureChains(
-  [...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS == "true" ? [goerli, moonbaseAlpha] : [])],
-  [alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY_GOERLI || "" }), publicProvider()]
+  [...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS == "true" ? [goerli, moonbaseAlpha, arbitrumGoerli] : [])],
+  [
+    alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY_GOERLI || "" }),
+    alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY_ARBITRUM_GOERLI || "" }),
+    publicProvider()
+  ]
 );
 
 const { connectors } = getDefaultWallets({
