@@ -50,8 +50,8 @@ export default function ProductList() {
       try {
         setIsProductLoading(true);
         const _products = await getProducts(chainId);
-        // setProducts(_products);
-        if (_products.length > 0) setProducts(_products);
+        setProducts(_products);
+        // if (_products.length > 0) setProducts(_products);
       } catch (e) {
         console.error(e);
       } finally {
