@@ -96,14 +96,12 @@ const PortfolioCreatePage = () => {
   };
 
   useEffect(() => {
-    return () => {
-      setIsLoading(true);
-      getProduct(productAddress as string, chainId)
-        .then((product) => {
-          setProduct(product);
-        })
-        .finally(() => setIsLoading(false));
-    };
+    setIsLoading(true);
+    getProduct(productAddress as string, chainId)
+      .then((product) => {
+        setProduct(product);
+      })
+      .finally(() => setIsLoading(false));
   }, [productAddress, chainId]);
 
   useEffect(() => {

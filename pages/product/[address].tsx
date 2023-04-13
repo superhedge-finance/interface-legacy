@@ -98,14 +98,12 @@ const ProductDetail = () => {
   }, [product]);
 
   useEffect(() => {
-    return () => {
-      setIsLoading(true);
-      getProduct(address as string, chainId)
-        .then((product) => {
-          setProduct(product);
-        })
-        .finally(() => setIsLoading(false));
-    };
+    setIsLoading(true);
+    getProduct(address as string, chainId)
+      .then((product) => {
+        setProduct(product);
+      })
+      .finally(() => setIsLoading(false));
   }, [address, chainId]);
 
   return (
