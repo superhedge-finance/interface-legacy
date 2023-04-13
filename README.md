@@ -21,6 +21,7 @@ NEXT_PUBLIC_ALCHEMY_KEY_GOERLI=
 # API Endpoint URL(f.g. http://localhost:3000/api or http://{IPv4}:{port}/api)
 NEXT_PUBLIC_API_BASE_URL=
 ```
+
 3. Install dependencies using 'yarn' package manager
 
 ```bash

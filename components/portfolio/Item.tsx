@@ -35,7 +35,9 @@ const PortfolioListingItem = ({ item }: { item: MarketplaceItemFullType }) => {
       <div className={"mt-2 py-3 px-4 w-full rounded-lg bg-[rgba(0,0,0,0.04)] flex flex-col items-center justify-center space-y-2"}>
         <span className={"text-grey-70 text-[12px] leading-[12px]"}>Price - Lots</span>
         <div className={"flex items-center text-[16px] leading-[16px] space-x-2 uppercase"}>
-          <span className={"bg-primary-gradient bg-clip-text text-transparent"}>{item.offerPrice.toLocaleString()} USDC {"(" + item.quantity + " LOTS)"}</span>
+          <span className={"bg-primary-gradient bg-clip-text text-transparent"}>
+            {item.offerPrice.toLocaleString()} USDC {"(" + item.quantity + " LOTS)"}
+          </span>
         </div>
       </div>
 
@@ -54,13 +56,7 @@ const PortfolioListingItem = ({ item }: { item: MarketplaceItemFullType }) => {
         />
       </div>
 
-      <PrimaryButton
-        label={"VIEW DETAILS"}
-        className={"mt-4 uppercase"}
-        onClick={() =>
-          router.push(`/portfolio/nft/${item.listingId}`)
-        }
-      />
+      <PrimaryButton label={"VIEW DETAILS"} className={"mt-4 uppercase"} onClick={() => router.push(`/portfolio/nft/${item.listingId}`)} />
     </div>
   );
 };

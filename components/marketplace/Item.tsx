@@ -45,13 +45,7 @@ const MarketplaceItem = ({ item }: { item: MarketplaceItemType }) => {
         />
       </div>
 
-      <PrimaryButton
-        label={"BUY NOW"}
-        className={"mt-4 uppercase"}
-        onClick={() =>
-          router.push(`/marketplace/${item.productAddress}`)
-        }
-      />
+      <PrimaryButton label={"BUY NOW"} className={"mt-4 uppercase"} onClick={() => router.push(`/marketplace/${item.productAddress}`)} />
     </div>
   );
 };
