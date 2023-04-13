@@ -39,7 +39,7 @@ const PortfolioCreatePage = () => {
   // eslint-disable-next-line react/display-name,@typescript-eslint/no-unused-vars
   const CustomInput = forwardRef(({ value, onClick }: { value?: string; onClick?: () => void }, ref) => (
     <div className={"relative flex items-center"}>
-      <div className={"w-full py-3 px-4 bg-[#FBFBFB] border border-[1px] border-[#E6E6E6] rounded focus:outline-none"} onClick={onClick}>
+      <div className={"w-full py-3 px-4 bg-[#FBFBFB] border-[1px] border-[#E6E6E6] rounded focus:outline-none"} onClick={onClick}>
         {value}
       </div>
       <span className={"absolute right-4 text-[#828A93]"}>
@@ -143,7 +143,7 @@ const PortfolioCreatePage = () => {
 
               <div className={"relative flex items-center"}>
                 <input
-                  className={"w-full py-3 px-4 bg-[#FBFBFB] border border-[1px] border-[#E6E6E6] rounded focus:outline-none"}
+                  className={"w-full py-3 px-4 bg-[#FBFBFB] border-[1px] border-[#E6E6E6] rounded focus:outline-none"}
                   value={lots}
                   onChange={(e) => setLots(Number(e.target.value))}
                   type='text'
@@ -173,7 +173,7 @@ const PortfolioCreatePage = () => {
 
               <div className={"relative flex items-center"}>
                 <input
-                  className={"w-full py-3 px-4 bg-[#FBFBFB] border border-[1px] border-[#E6E6E6] rounded focus:outline-none"}
+                  className={"w-full py-3 px-4 bg-[#FBFBFB] border-[1px] border-[#E6E6E6] rounded focus:outline-none"}
                   value={price}
                   onChange={(e) => setPrice(Number(e.target.value))}
                   type='text'

@@ -237,21 +237,18 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
 
         {address && tab === 0 && (
           <div className={"flex flex-col justify-between w-full"}>
-            <div
-              className={`${
-                expand ? "bg-[#EBEBEB]" : "bg-transparent"
-              } md:bg-[#EBEBEB] rounded-[6px] p-5 flex flex-col items-center mt-0 md:mt-10`}
-            >
-              {principalBalance === 0 ? (
-                <>
-                  <div className={"flex items-center"}>
-                    <span className={"text-[#677079] text-[16px] font-light"}>Current Deposit</span>
-                  </div>
-                  <div className={"flex items-center mt-2 py-[10px] text-[12px] px-3 rounded-[6px] bg-[#E89D45] justify-center text-white"}>
-                    You have no Deposit
-                  </div>
-                </>
-              ) : (
+            <div className={"bg-[#EBEBEB] p-5 rounded-[6px] flex flex-col items-center mt-[17px]"}>
+              <span className={"text-[#677079] text-[16px] leading-[16px]"}>Total Balance</span>
+              <span className={"text-[#161717] text-[22px] leading-[22px] mt-3"}>
+                {(principalBalance + optionBalance + couponBalance).toLocaleString()} USDC ({lotsCount} lots)
+              </span>
+            </div>
+            { principalBalance > 0 && (
+              <div
+                className={`${
+                  expand ? "bg-[#EBEBEB]" : "bg-transparent"
+                } md:bg-[#EBEBEB] rounded-[6px] p-5 flex flex-col items-center mt-0 md:mt-5`}
+              >
                 <div className={"flex flex-col items-center space-y-2"}>
                   <span className={"text-[16px] leading-[16px] font-light text-grey-70"}>You can Top-up with Profit</span>
                   <span className={"text-[22px] leading-[22px] font-medium text-black text-center"}>
@@ -285,15 +282,15 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
                     </RadioGroup.Option>
                   </RadioGroup>
                 </div>
-              )}
-            </div>
+              </div>
+            )}
 
             <div className={`${expand ? "" : "hidden"} md:block flex flex-col w-full`}>
               <div className={"mt-8 text-[#494D51] text-[16px]"}>No of lots</div>
 
               <div className={"relative flex items-center mt-2"}>
                 <input
-                  className={"w-full py-3 px-4 bg-[#FBFBFB] border border-[1px] border-[#E6E6E6] rounded focus:outline-none"}
+                  className={"w-full py-3 px-4 bg-[#FBFBFB] border-[1px] border-[#E6E6E6] rounded focus:outline-none"}
                   value={lots}
                   onChange={(e) => setLots(Number(e.target.value))}
                   type='text'
@@ -371,17 +368,16 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
 
         {address && tab === 1 && (
           <>
-            <div className={"hidden md:block flex flex-col w-full"}>
-              <div className={"text-[#677079] text-[16px] leading-[16px] text-center mt-[33px]"}>Withdraw info</div>
+            <div className={"md:block flex flex-col w-full"}>
 
-              <div className={"bg-[#0000000a] p-5 rounded-[6px] flex flex-col items-center mt-[17px]"}>
+              <div className={"bg-[#EBEBEB] p-5 rounded-[6px] flex flex-col items-center mt-[17px]"}>
                 <span className={"text-[#677079] text-[16px] leading-[16px]"}>Total Balance</span>
                 <span className={"text-[#161717] text-[22px] leading-[22px] mt-3"}>
-                  {(principalBalance + optionBalance + couponBalance).toLocaleString()} USDC ({lotsCount} lot)
+                  {(principalBalance + optionBalance + couponBalance).toLocaleString()} USDC ({lotsCount} lots)
                 </span>
               </div>
 
-              <div className={"bg-[#0000000a] p-5 rounded-[6px] flex flex-col items-center mt-[17px]"}>
+              <div className={"bg-[#EBEBEB] p-5 rounded-[6px] flex flex-col items-center mt-[17px]"}>
                 <span className={"text-[#677079] text-[16px] leading-[16px]"}>Withdrawable Balance</span>
                 <span className={"text-[#161717] text-[22px] leading-[22px] mt-3"}>{withdrawableBalance.toLocaleString()} USDC</span>
               </div>
@@ -485,14 +481,14 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
                   <div className='mt-8 flex items-center justify-between space-x-8 h-[50px]'>
                     <button
                       type='button'
-                      className='flex flex-1 items-center justify-center rounded-md border border-[#4B4B4B] border-[1px] px-4 py-2 text-sm font-medium text-black rounded-[8px] h-full'
+                      className='flex flex-1 items-center justify-center border-[#4B4B4B] border-[1px] px-4 py-2 text-sm font-medium text-black rounded-[8px] h-full'
                       onClick={() => setIsOpen(false)}
                     >
                       CANCEL
                     </button>
                     <button
                       type='button'
-                      className='flex flex-1 items-center justify-center rounded-md border border-transparent bg-[#292929] px-4 py-2 text-sm font-medium text-white rounded-[8px] h-full'
+                      className='flex flex-1 items-center justify-center border border-transparent bg-[#292929] px-4 py-2 text-sm font-medium text-white rounded-[8px] h-full'
                       onClick={onApprove}
                       disabled={depositStatus === DEPOSIT_STATUS.APPROVING}
                     >
@@ -567,7 +563,7 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
                   {withdrawStatus === WITHDRAW_STATUS.DONE ? (
                     <button
                       type='button'
-                      className='h-[50px] mt-8 flex flex-1 w-full items-center justify-center rounded-md border border-transparent bg-[#292929] px-4 py-2 text-sm font-medium text-white rounded-[8px] h-full'
+                      className='mt-8 flex flex-1 w-full items-center justify-center border border-transparent bg-[#292929] px-4 py-2 text-sm font-medium text-white rounded-[8px] h-full'
                       onClick={() => setWithdrawStatus(WITHDRAW_STATUS.NONE)}
                     >
                       CONTINUE
