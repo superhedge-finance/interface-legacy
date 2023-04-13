@@ -9,7 +9,7 @@ import { RecapCard } from "../../../components/commons/RecapCard";
 import Timeline from "../../../components/product/Timeline";
 import { MarketplaceItemFullType } from "../../../types";
 import { getUserListedItem } from "../../../service";
-import { getCurrencyIcon, truncateAddress } from "../../../utils/helpers";
+import { getCurrencyIcon, truncateAddress, formatStrikePrice } from "../../../utils/helpers";
 import { getMarketplaceInstance } from "../../../utils/contract";
 import { SUPPORT_CHAIN_IDS } from "../../../utils/enums";
 
@@ -112,10 +112,10 @@ const PortfolioNFTDetails = () => {
                 <RecapCard label={"Username"} value={truncateAddress(item.seller, 4)} />
               </div>
               <div className={"flex items-center justify-between space-x-2 mt-2"}>
-                <RecapCard label={"Strike 1 price"} value={`${item.issuanceCycle.strikePrice1.toLocaleString()}`} />
-                <RecapCard label={"Strike 2 price"} value={`${item.issuanceCycle.strikePrice2.toLocaleString()}`} />
-                <RecapCard label={"Strike 3 price"} value={`${item.issuanceCycle.strikePrice3.toLocaleString()}`} />
-                <RecapCard label={"Strike 4 price"} value={`${item.issuanceCycle.strikePrice4.toLocaleString()}`} />
+                <RecapCard label={"Strike 1 price"} value={formatStrikePrice(item.issuanceCycle.strikePrice1)} />
+                <RecapCard label={"Strike 2 price"} value={formatStrikePrice(item.issuanceCycle.strikePrice2)} />
+                <RecapCard label={"Strike 3 price"} value={formatStrikePrice(item.issuanceCycle.strikePrice3)} />
+                <RecapCard label={"Strike 4 price"} value={formatStrikePrice(item.issuanceCycle.strikePrice4)} />
               </div>
             </div>
 

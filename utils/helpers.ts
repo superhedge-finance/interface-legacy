@@ -14,3 +14,8 @@ export const getCurrencyIcon = (underlying: string): { currency1: string; curren
     currency2: "/currency/usdc.svg"
   };
 };
+
+export const formatStrikePrice = (strikePrice: number) => {
+  if (strikePrice > 0) return strikePrice.toLocaleString();
+  return "NA";
+};
