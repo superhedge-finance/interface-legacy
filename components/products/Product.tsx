@@ -21,7 +21,7 @@ export default function Product({ product }: { product: IProduct }) {
 
   const capacity = useMemo(() => {
     return Number(ethers.utils.formatUnits(product.currentCapacity, DECIMAL[chainId]));
-  }, [product]);
+  }, [product, chainId]);
 
   const categoryIndex = useMemo(() => {
     if (product.name.toLowerCase().includes("bullish")) {

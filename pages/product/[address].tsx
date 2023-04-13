@@ -37,7 +37,7 @@ const activities = [
 
 const RecapCardMobile = ({ label, value }: { label: string; value: string }) => {
   return (
-    <div className='flex md:flex-col w-full justify-between h-[40px] md:h-[66px] flex-1 items-center bg-[#0000000a] h-[66px] rounded-[7px] py-3 px-4'>
+    <div className='flex md:flex-col w-full justify-between h-[40px] md:h-[66px] flex-1 items-center bg-[#0000000a] rounded-[7px] py-3 px-4'>
       <p className='text-[16px] md:text-[12px] font-light text-gray-700'>{label}</p>
       <h3 className='text-[16px] md:text-[20px] font-light text-black'>{value}</h3>
     </div>
@@ -62,7 +62,7 @@ const ProductDetail = () => {
       return Number(ethers.utils.formatUnits(product.currentCapacity, DECIMAL[chainId]));
     }
     return 0;
-  }, [product]);
+  }, [product, chainId]);
 
   const currency1 = useMemo(() => {
     if (product) {

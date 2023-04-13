@@ -32,7 +32,7 @@ const PortfolioNFTDetails = () => {
       const _item = await getUserListedItem(listingId as string, chainId);
       if (_item) setItem(_item);
     })();
-  }, [listingId]);
+  }, [listingId, chainId]);
 
   const { currency1, currency2 } = useMemo(() => {
     if (item) return getCurrencyIcon(item.underlying);

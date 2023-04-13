@@ -78,7 +78,7 @@ const PositionDetail = () => {
         setPrincipal(Number(ethers.utils.formatUnits(balance, DECIMAL[chainId])));
       }
     })();
-  }, [productInstance, address]);
+  }, [productInstance, address, chainId]);
 
   return (
     <div>

@@ -43,7 +43,7 @@ export const PositionCard = ({ position, enabled }: { position: IProduct; enable
         setPrincipal(Number(ethers.utils.formatUnits(balance, DECIMAL[chainId])));
       }
     })();
-  }, [productInstance, address]);
+  }, [productInstance, address, chainId]);
 
   return (
     <>
