@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { ethers } from "ethers";
 import { ProductSpreads, ProductStatus, IProduct } from "../../types";
 import { ReturnsChart } from "../product/ReturnsChart";
-import { getCurrencyIcon } from "../../utils/helpers";
+import { getCurrencyIcon, formatDuration } from "../../utils/helpers";
 import { RecapCard } from "../commons/RecapCard";
 import { SubtitleRegular20, TitleH2 } from "../basic";
 import Countdown from "react-countdown";
@@ -50,17 +50,18 @@ export default function Product({ product }: { product: IProduct }) {
     completed: boolean;
   }) => {
     if (completed) {
-      return <span>{`${days * 24 + hours}H : ${minutes}M : ${seconds}S`}</span>;
+      return <span>{`${days}D : ${hours}H : ${minutes}M : ${seconds}S`}</span>;
     } else {
-      return <span>{`${days * 24 + hours}H : ${minutes}M : ${seconds}S`}</span>;
+      return <span>{`${days}D : ${hours}H : ${minutes}M : ${seconds}S`}</span>;
     }
   };
 
   const investment_duration = useMemo(() => {
     if (product) {
-      return Math.floor((product.issuanceCycle.maturityDate - product.issuanceCycle.issuanceDate) / 3600 / 24) + "D";
+      const duration = product.issuanceCycle.maturityDate - product.issuanceCycle.issuanceDate;
+      return formatDuration(duration);
     }
-    return "0D";
+    return "0D : 0H : 0M";
   }, [product]);
 
   return (

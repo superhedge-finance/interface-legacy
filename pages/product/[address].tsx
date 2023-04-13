@@ -9,7 +9,7 @@ import { getProduct } from "../../service";
 import { IProduct, ProductSpreads, ProductStatus } from "../../types";
 import { ActivityHeader, ActivityRow } from "../../components/commons/ActivityRow";
 import Timeline from "../../components/product/Timeline";
-import { getCurrencyIcon, formatStrikePrice } from "../../utils/helpers";
+import { getCurrencyIcon, formatStrikePrice, formatDuration } from "../../utils/helpers";
 import { RecapCard } from "../../components/commons/RecapCard";
 import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
 import { DECIMAL, EXPLORER } from "../../utils/constants";
@@ -91,9 +91,10 @@ const ProductDetail = () => {
 
   const investment_duration = useMemo(() => {
     if (product) {
-      return Math.floor((product.issuanceCycle.maturityDate - product.issuanceCycle.issuanceDate) / 3600 / 24) + "D";
+      const duration = product.issuanceCycle.maturityDate - product.issuanceCycle.issuanceDate;
+      return formatDuration(duration);
     }
-    return "0D";
+    return "0D : 0H : 0M";
   }, [product]);
 
   useEffect(() => {

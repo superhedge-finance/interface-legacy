@@ -19,3 +19,13 @@ export const formatStrikePrice = (strikePrice: number) => {
   if (strikePrice > 0) return strikePrice.toLocaleString();
   return "NA";
 };
+
+export const formatDuration = (duration: number) => {
+  if (duration > 0) {
+    const days = Math.floor(duration / 3600 / 24);
+    const hours = Math.floor((duration - (days * 3600 * 24)) / 3600);
+    const minutes = Math.floor((duration - (days * 3600 * 24) - (hours * 3600)) / 60);
+    return `${days}D : ${hours}H : ${minutes}M`;
+  }
+  return "0D : 0H : 0M";
+};
