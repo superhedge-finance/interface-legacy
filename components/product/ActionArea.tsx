@@ -148,7 +148,7 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
       return "Please await unlock to deposit";
     }
     if (principalBalance > 0) {
-      return `TOP-UP ON ${depositAmount.toLocaleString()} USDC`;
+      return `TOP-UP ${depositAmount.toLocaleString()} USDC`;
     }
     return `DEPOSIT ${depositAmount.toLocaleString()} USDC`;
   }, [principalBalance, status, depositAmount]);
@@ -250,7 +250,7 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
                 } md:bg-[#EBEBEB] rounded-[6px] p-5 flex flex-col items-center mt-0 md:mt-5`}
               >
                 <div className={"flex flex-col items-center space-y-2"}>
-                  <span className={"text-[16px] leading-[16px] font-light text-grey-70"}>Earnings:</span>
+                  <span className={"text-[16px] leading-[16px] font-light text-grey-70"}>Profit Balance</span>
                   <span className={"text-[22px] leading-[22px] font-medium text-black text-center"}>
                     {(optionBalance + couponBalance).toLocaleString()} USDC
                   </span>
@@ -264,7 +264,7 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
                               checked ? "bg-[#EBEBEB] border-4 border-black" : "border-[1px] border-black"
                             }`}
                           />
-                          <span className='text-[16px] leading-[16px] font-medium text-[#494D51]'>Include profit</span>
+                          <span className='text-[16px] leading-[16px] font-medium text-[#494D51]'>Deposit top-up to next Lot</span>
                         </>
                       )}
                     </RadioGroup.Option>
@@ -276,7 +276,7 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
                               checked ? "bg-[#EBEBEB] border-4 border-black" : "border-[1px] border-black"
                             }`}
                           />
-                          <span className='text-[16px] leading-[16px] font-medium text-[#494D51]'>Top-up without Profit</span>
+                          <span className='text-[16px] leading-[16px] font-medium text-[#494D51]'>Deposit absolute amount</span>
                         </>
                       )}
                     </RadioGroup.Option>
@@ -551,7 +551,7 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
 
                   {withdrawStatus === WITHDRAW_STATUS.DONE && (
                     <div className='mt-7 flex flex-col items-center'>
-                      The money will come to your wallet soon. Usually it takes 1-3 days.
+                      Funds have been withdrawn to your wallet.
                     </div>
                   )}
 
