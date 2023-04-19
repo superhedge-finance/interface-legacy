@@ -20,14 +20,14 @@ export const ReturnsChart = ({
         data={{
           labels:
             strikePrice3 > 0
-              ? [strikePrice1 / 100, strikePrice1 / 100, strikePrice2 / 100, strikePrice3 / 100, strikePrice3 / 100]
-              : ["", "", "", strikePrice1 / 100, strikePrice2 / 100, "", "", "", ""],
+              ? ["", strikePrice1 / 100, strikePrice2 / 100, strikePrice3 / 100, ""]
+              : ["", "", "", strikePrice1 / 100, strikePrice2 / 100, "", "", ""],
           datasets: [
             {
               data:
                 strikePrice3 > 0
                   ? [tr2 / 100, tr2 / 100, tr1 / 100, tr2 / 100, tr2 / 100]
-                  : [tr2 / 100, tr2 / 100, tr2 / 100, tr2 / 100, tr1 / 100, tr1 / 100, tr1 / 100, tr1 / 100, tr1 / 100],
+                  : [tr2 / 100, tr2 / 100, tr2 / 100, tr2 / 100, tr1 / 100, tr1 / 100, tr1 / 100, tr1 / 100],
               borderColor: "#11CB79",
               fill: false,
               pointStyle: false
@@ -38,14 +38,32 @@ export const ReturnsChart = ({
         height={150}
         options={{
           plugins: {
+            title: {
+              display: true,
+              text: 'Total Returns(%)',
+              align: 'start',
+              padding: {
+                bottom: 20
+              }
+            },
             legend: {
               display: false
             }
           },
           scales: {
             y: {
-              suggestedMin: 90,
-              suggestedMax: 130
+              min: tr1 > tr2 ? tr2 / 100 : tr1 / 100,
+              max: tr1 > tr2 ? tr1 / 100 : tr2 / 100,
+              ticks: {
+                stepSize: (Math.abs(tr1 - tr2)) / 100
+              }
+            },
+            x: {
+              title: {
+                display: true,
+                align: 'end',
+                text: "Final (`00)"
+              }
             }
           }
         }}
