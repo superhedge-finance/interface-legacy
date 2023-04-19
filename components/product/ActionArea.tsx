@@ -1,9 +1,8 @@
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
-import { RadioGroup } from "@headlessui/react";
 import { useAccount, useSigner, useNetwork } from "wagmi";
 import Image from "next/image";
-import { Dialog, Transition } from "@headlessui/react";
+import { Dialog, Transition, Switch } from "@headlessui/react";
 import { ParaRegular18, PrimaryButton, SecondaryButton, SubtitleRegular16 } from "../basic";
 import { ethers } from "ethers";
 import ProductABI from "../../utils/abis/SHProduct.json";
@@ -36,9 +35,12 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
   const [productInstance, setProductInstance] = useState<ethers.Contract | undefined>(undefined);
   const [currencyInstance, setCurrencyInstance] = useState<ethers.Contract | undefined>(undefined);
   const [maxLots, setMaxLots] = useState(0);
-  const [profit, setProfit] = useState(1);
+  // const [profit, setProfit] = useState(1);
+  const [enabled, setEnabled] = useState(false);
   // following state is for deposit modal
   const [expand, setExpand] = useState(false);
+
+  const [walletBalance, setWalletBalance] = useState(0);
 
   const onConnect = () => {
     if (!address && openConnectModal) {
@@ -58,7 +60,7 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
           await tx.wait();
         }
         setDepositStatus(DEPOSIT_STATUS.DEPOSIT);
-        const depositTx = await productInstance.deposit(requestBalance, principalBalance > 0 && profit === 1);
+        const depositTx = await productInstance.deposit(requestBalance, principalBalance > 0 && enabled == true);
         await depositTx.wait();
       }
     } catch (e) {
@@ -131,17 +133,17 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
       return 0;
     }
     if (principalBalance > 0) {
-      if (profit === 1) {
+      if (enabled == true) {
         if (pricePerLot * lots > optionBalance + couponBalance) {
           return pricePerLot * lots - (optionBalance + couponBalance);
         }
         return 0;
-      } else if (profit === 2) {
+      } else {
         return pricePerLot * lots;
       }
     }
     return pricePerLot * lots;
-  }, [principalBalance, status, lots, profit, optionBalance, couponBalance]);
+  }, [principalBalance, status, lots, enabled, optionBalance, couponBalance]);
 
   const depositButtonLabel = useMemo(() => {
     if (status !== 1) {
@@ -188,6 +190,10 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
           const currentCapacity = await _productInstance.currentCapacity();
           const maxCapacity = await _productInstance.maxCapacity();
           setMaxLots(maxCapacity.toNumber() - Number(ethers.utils.formatUnits(currentCapacity, _decimals)));
+
+          // wallet balance
+          const currencyBalance = await _currencyInstance.balanceOf(address);
+          setWalletBalance(Number(ethers.utils.formatUnits(currencyBalance, _decimals)));
         } catch (e) {
           console.error(e);
         }
@@ -239,7 +245,7 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
           <div className={"flex flex-col justify-between w-full"}>
             <div className={"bg-[#EBEBEB] p-5 rounded-[6px] flex flex-col items-center mt-[17px]"}>
               <span className={"text-[#677079] text-[16px] leading-[16px]"}>Total Balance</span>
-              <span className={"text-[#161717] text-[22px] leading-[22px] mt-3"}>
+              <span className={"text-[#161717] text-[22px] leading-[22px] font-medium mt-3"}>
                 {(principalBalance + optionBalance + couponBalance).toLocaleString()} USDC ({lotsCount} lots)
               </span>
             </div>
@@ -254,33 +260,6 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
                   <span className={"text-[22px] leading-[22px] font-medium text-black text-center"}>
                     {(optionBalance + couponBalance).toLocaleString()} USDC
                   </span>
-
-                  <RadioGroup className={"flex items-center justify-between space-x-3 mt-6"} value={profit} onChange={setProfit}>
-                    <RadioGroup.Option className={"flex items-center cursor-pointer space-x-2"} value={1}>
-                      {({ checked }) => (
-                        <>
-                          <div
-                            className={`w-4 h-4 rounded-full ${
-                              checked ? "bg-[#EBEBEB] border-4 border-black" : "border-[1px] border-black"
-                            }`}
-                          />
-                          <span className='text-[16px] leading-[16px] font-medium text-[#494D51]'>Deposit top-up to next Lot</span>
-                        </>
-                      )}
-                    </RadioGroup.Option>
-                    <RadioGroup.Option className={"flex items-center cursor-pointer space-x-2"} value={2}>
-                      {({ checked }) => (
-                        <>
-                          <div
-                            className={`w-4 h-4 rounded-full ${
-                              checked ? "bg-[#EBEBEB] border-4 border-black" : "border-[1px] border-black"
-                            }`}
-                          />
-                          <span className='text-[16px] leading-[16px] font-medium text-[#494D51]'>Deposit absolute amount</span>
-                        </>
-                      )}
-                    </RadioGroup.Option>
-                  </RadioGroup>
                 </div>
               </div>
             )}
@@ -353,8 +332,33 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
                 </div>
               </div>
             </div>
+            
+            <div className="flex justify-between mt-5">
+              <Switch.Group>
+                <div className="flex items-center">
+                  <Switch
+                    checked={enabled}
+                    onChange={setEnabled}
+                    className={`${
+                      enabled ? 'bg-blue-600' : 'bg-gray-400'
+                    } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-indigo-500`}
+                  >
+                    <span
+                      className={`${
+                        enabled ? 'translate-x-6' : 'translate-x-1'
+                      } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
+                    />
+                  </Switch>
+                  <Switch.Label className="ml-3">Top-up to next lot</Switch.Label>
+                </div>
+                <div>
+                  <span className={"mr-1"}>Wallet Balance: </span>
+                  <span className="font-medium">{walletBalance.toLocaleString()} USDC</span>
+                </div>
+              </Switch.Group>
+            </div>
 
-            <div className={`${expand ? "" : "hidden"} md:block mt-7`}>
+            <div className={`${expand ? "" : "hidden"} md:block mt-5`}>
               <PrimaryButton label={depositButtonLabel} disabled={status !== 1} onClick={() => setIsOpen(true)} />
             </div>
 
