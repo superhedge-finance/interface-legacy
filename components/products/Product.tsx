@@ -146,9 +146,13 @@ export default function Product({ product }: { product: IProduct }) {
 
       <div className={"flex-col md:flex-row md:flex space-y-3 md:space-y-0 items-center justify-between mt-5"}>
         <div className='flex md:flex-col items-center justify-between bg-[#0000000a] h-[40px] md:h-[66px] rounded-[7px] py-3 px-4'>
-          <p className='text-[16px] md:text-[12px] font-light text-gray-700'>Issuance date</p>
+          <p className='text-[16px] md:text-[12px] font-light text-gray-700'>{product.status == 3 ? "Maturity date" : "Issuance date"}</p>
           <h3 className='text-[16px] md:text-[20px] font-light text-black'>
-            <Countdown intervalDelay={1000} date={product.issuanceCycle.issuanceDate * 1000} renderer={issuance_date_renderer} />
+            <Countdown 
+              intervalDelay={1000} 
+              date={(product.status == 3 ? product.issuanceCycle.maturityDate : product.issuanceCycle.issuanceDate) * 1000} 
+              renderer={issuance_date_renderer} 
+            />
           </h3>
         </div>
         <div className='flex md:flex-col items-center justify-between bg-[#0000000a] h-[40px] md:h-[66px] rounded-[7px] py-3 px-4'>
