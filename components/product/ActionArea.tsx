@@ -256,7 +256,7 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
                 } md:bg-[#EBEBEB] rounded-[6px] p-5 flex flex-col items-center mt-0 md:mt-5`}
               >
                 <div className={"flex flex-col items-center space-y-2"}>
-                  <span className={"text-[16px] leading-[16px] font-light text-grey-70"}>Profit Balance</span>
+                  <span className={"text-[16px] leading-[16px] font-light text-grey-70"}>Total Profit</span>
                   <span className={"text-[22px] leading-[22px] font-medium text-black text-center"}>
                     {(optionBalance + couponBalance).toLocaleString()} USDC
                   </span>
@@ -349,7 +349,7 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
                       } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
                     />
                   </Switch>
-                  <Switch.Label className="ml-3">Top-up to next lot</Switch.Label>
+                  <Switch.Label className="ml-3">Include profits</Switch.Label>
                 </div>
                 <div>
                   <span className={"mr-1"}>Wallet Balance: </span>
