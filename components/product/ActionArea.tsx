@@ -479,7 +479,7 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
                         <Image src={"/icons/external.svg"} alt={"external"} width={20} height={20} />
                       </a>
                     </div>
-                    <p className='text-[16px] text-gray-500'>You'll receive the NFT Structured Note below representing your deposit</p>
+                    <p className='text-[16px] text-gray-500'>You will receive the NFT Structured Note below representing your deposit</p>
                     <img className={"mt-8"} src={product.issuanceCycle.image_uri || "/products/default_nft_image.png"} alt={"nft image"} />
                   </div>
 
