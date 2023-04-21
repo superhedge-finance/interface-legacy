@@ -467,7 +467,7 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
               >
                 <Dialog.Panel className='w-full max-w-[800px] transform overflow-hidden rounded-2xl bg-white py-[60px] px-[160px] text-left align-middle shadow-xl transition-all'>
                   <Dialog.Title className='text-[32px] font-medium leading-[40px] text-[#161717] text-center'>
-                    {depositStatus <= DEPOSIT_STATUS.APPROVING ? "Before depositing approve smart contract, please" : "Deposit USDC"}
+                    {depositStatus <= DEPOSIT_STATUS.APPROVING ? "Step 1/2: Approve USDC spend from your wallet" : "Step 2/2: Deposit USDC"}
                   </Dialog.Title>
                   <div className='mt-7 flex flex-col items-center'>
                     <p className='text-[16px] text-gray-500'>Smart contract link</p>
@@ -479,6 +479,7 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
                         <Image src={"/icons/external.svg"} alt={"external"} width={20} height={20} />
                       </a>
                     </div>
+                    <p className='text-[16px] text-gray-500'>You'll receive the NFT Structured Note below representing your deposit</p>
                     <img className={"mt-8"} src={product.issuanceCycle.image_uri || "/products/default_nft_image.png"} alt={"nft image"} />
                   </div>
 

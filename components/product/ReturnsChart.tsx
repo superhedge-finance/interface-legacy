@@ -62,7 +62,7 @@ export const ReturnsChart = ({
               title: {
                 display: true,
                 align: 'end',
-                text: "Final (`00)"
+                text: "ETH (`00)"
               }
             }
           }
