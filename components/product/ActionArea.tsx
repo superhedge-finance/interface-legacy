@@ -256,7 +256,7 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
                 } md:bg-[#EBEBEB] rounded-[6px] p-5 flex flex-col items-center mt-0 md:mt-5`}
               >
                 <div className={"flex flex-col items-center space-y-2"}>
-                  <span className={"text-[16px] leading-[16px] font-light text-grey-70"}>Total Profit</span>
+                  <span className={"text-[#677079] text-[16px] leading-[16px]"}>Total Profit</span>
                   <span className={"text-[22px] leading-[22px] font-medium text-black text-center"}>
                     {(optionBalance + couponBalance).toLocaleString()} USDC
                   </span>
