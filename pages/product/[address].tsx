@@ -13,6 +13,7 @@ import { getCurrencyIcon, formatStrikePrice, formatDuration } from "../../utils/
 import { RecapCard } from "../../components/commons/RecapCard";
 import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
 import { DECIMAL, EXPLORER } from "../../utils/constants";
+import Countdown from "react-countdown";
 
 const activities = [
   {
@@ -35,11 +36,29 @@ const activities = [
   }
 ];
 
+const issuance_date_renderer = ({
+  days,
+  hours,
+  minutes,
+  completed
+}: {
+  days: number;
+  hours: number;
+  minutes: number;
+  completed: boolean;
+}) => {
+  if (completed) {
+    return <span>{`${days}D : ${hours}H : ${minutes}M`}</span>;
+  } else {
+    return <span>{`${days}D : ${hours}H : ${minutes}M`}</span>;
+  }
+};
+
 const RecapCardMobile = ({ label, value }: { label: string; value: string }) => {
   return (
-    <div className='flex md:flex-col w-full justify-between h-[40px] md:h-[66px] flex-1 items-center bg-[#0000000a] rounded-[7px] py-3 px-4'>
-      <p className='text-[16px] md:text-[12px] font-light text-gray-700'>{label}</p>
-      <h3 className='text-[16px] md:text-[20px] font-light text-black'>{value}</h3>
+    <div className='flex md:flex-col w-full justify-between h-[40px] md:h-[66px] flex-1 items-center bg-[#0000000a] rounded-[7px] p-3'>
+      <p className='text-[12px] md:text-[12px] font-light text-gray-700'>{label}</p>
+      <h3 className='text-[14px] md:text-[18px] font-light text-black'>{value}</h3>
     </div>
   );
 };
@@ -94,7 +113,7 @@ const ProductDetail = () => {
       const duration = product.issuanceCycle.maturityDate - product.issuanceCycle.issuanceDate;
       return formatDuration(duration);
     }
-    return "0D : 0H : 0M";
+    return "0D : 0H";
   }, [product]);
 
   useEffect(() => {
@@ -181,6 +200,16 @@ const ProductDetail = () => {
                 <div
                   className={"flex flex-col md:flex-row items-center justify-between space-x-0 md:space-x-2 space-y-3 md:space-y-0 mt-5"}
                 >
+                  <div className='flex md:flex-col w-full justify-between h-[40px] md:h-[66px] flex-1 items-center bg-[#0000000a] rounded-[7px] p-3'>
+                    <p className='text-[12px] md:text-[12px] font-light text-gray-700'>{product.status == 3 ? "Time to Maturity" : "Time to Issuance"}</p>
+                    <h3 className='text-[14px] md:text-[18px] font-light text-black'>
+                      <Countdown 
+                        intervalDelay={60000} 
+                        date={(product.status == 3 ? product.issuanceCycle.maturityDate : product.issuanceCycle.issuanceDate) * 1000} 
+                        renderer={issuance_date_renderer} 
+                      />
+                    </h3>
+                  </div>
                   <RecapCardMobile label={"Investment Duration"} value={investment_duration} />
                   <RecapCardMobile label={"Coupon"} value={`${product.issuanceCycle.coupon / 100}% / WEEK`} />
                   <RecapCardMobile label={"Principal Protection"} value={"100%"} />

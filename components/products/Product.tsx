@@ -40,19 +40,17 @@ export default function Product({ product }: { product: IProduct }) {
     days,
     hours,
     minutes,
-    seconds,
     completed
   }: {
     days: number;
     hours: number;
     minutes: number;
-    seconds: number;
     completed: boolean;
   }) => {
     if (completed) {
-      return <span>{`${days}D : ${hours}H : ${minutes}M : ${seconds}S`}</span>;
+      return <span>{`${days}D : ${hours}H : ${minutes}M`}</span>;
     } else {
-      return <span>{`${days}D : ${hours}H : ${minutes}M : ${seconds}S`}</span>;
+      return <span>{`${days}D : ${hours}H : ${minutes}M`}</span>;
     }
   };
 
@@ -61,7 +59,7 @@ export default function Product({ product }: { product: IProduct }) {
       const duration = product.issuanceCycle.maturityDate - product.issuanceCycle.issuanceDate;
       return formatDuration(duration);
     }
-    return "0D : 0H : 0M";
+    return "0D : 0H";
   }, [product]);
 
   return (
@@ -146,10 +144,10 @@ export default function Product({ product }: { product: IProduct }) {
 
       <div className={"flex-col md:flex-row md:flex space-y-3 md:space-y-0 items-center justify-between mt-5"}>
         <div className='flex md:flex-col items-center justify-between bg-[#0000000a] h-[40px] md:h-[66px] rounded-[7px] py-3 px-4'>
-          <p className='text-[16px] md:text-[12px] font-light text-gray-700'>{product.status == 3 ? "Maturity date" : "Issuance date"}</p>
+          <p className='text-[16px] md:text-[12px] font-light text-gray-700'>{product.status == 3 ? "Time to Maturiy" : "Time to Issuance"}</p>
           <h3 className='text-[16px] md:text-[20px] font-light text-black'>
             <Countdown 
-              intervalDelay={1000} 
+              intervalDelay={60000} 
               date={(product.status == 3 ? product.issuanceCycle.maturityDate : product.issuanceCycle.issuanceDate) * 1000} 
               renderer={issuance_date_renderer} 
             />
