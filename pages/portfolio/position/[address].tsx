@@ -14,6 +14,25 @@ import Timeline from "../../../components/product/Timeline";
 import { SUPPORT_CHAIN_IDS } from "../../../utils/enums";
 import { DECIMAL } from "../../../utils/constants";
 import { formatStrikePrice } from "../../../utils/helpers";
+import Countdown from "react-countdown";
+
+const issuance_date_renderer = ({
+  days,
+  hours,
+  minutes,
+  completed
+}: {
+  days: number;
+  hours: number;
+  minutes: number;
+  completed: boolean;
+}) => {
+  if (completed) {
+    return <span>{`${days}D : ${hours}H : ${minutes}M`}</span>;
+  } else {
+    return <span>{`${days}D : ${hours}H : ${minutes}M`}</span>;
+  }
+};
 
 const PositionDetail = () => {
   const router = useRouter();
@@ -122,6 +141,20 @@ const PositionDetail = () => {
               <div className={"flex flex-col mt-[80px]"}>
                 <TitleH3>Product Recap</TitleH3>
                 <div className={"flex items-center justify-between space-x-2 mt-5"}>
+                  <div className={`flex flex-col flex-1 items-center bg-[#0000000a] h-[66px] rounded-[7px] py-3 px-4`}>
+                    <p className='text-[12px] font-light text-gray-700'>{product.status == 3 ? "Time to Maturity" : "Time to Issuance"}</p>
+                    <h3 className='text-[18px] font-light text-black'>
+                      <Countdown 
+                        intervalDelay={60000} 
+                        date={(product.status == 3 ? product.issuanceCycle.maturityDate : product.issuanceCycle.issuanceDate) * 1000} 
+                        renderer={issuance_date_renderer} 
+                      />
+                    </h3>
+                  </div>
+                  <RecapCard label={"Coupon"} value={`${product.issuanceCycle.coupon / 100}% / WEEK`} />
+                  <RecapCard label={"Principal Protection"} value={"100%"} />
+                </div>
+                <div className={"flex items-center justify-between space-x-2 mt-2"}>
                   <RecapCard label={"Principal Amount"} value={`${principal.toLocaleString()} USDC`} />
                   <RecapCard label={"Product Lots"} value={`${principal / 1000} LOTS`} />
                   <RecapCard label={"Market Price"} value={"8,000 USDC"} />
