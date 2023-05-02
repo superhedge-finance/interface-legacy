@@ -13,6 +13,25 @@ import Timeline from "../../components/product/Timeline";
 import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
 import { useNetwork } from "wagmi";
 import { EXPLORER } from "../../utils/constants";
+import Countdown from "react-countdown";
+
+const issuance_date_renderer = ({
+  days,
+  hours,
+  minutes,
+  completed
+}: {
+  days: number;
+  hours: number;
+  minutes: number;
+  completed: boolean;
+}) => {
+  if (completed) {
+    return <span>{`${days}D : ${hours}H : ${minutes}M`}</span>;
+  } else {
+    return <span>{`${days}D : ${hours}H : ${minutes}M`}</span>;
+  }
+};
 
 const activities = [
   {
@@ -50,6 +69,7 @@ const MarketplaceDetail = () => {
   useEffect(() => {
     (async () => {
       const _item = await getTokenItem(address as string, chainId);
+      console.log(_item);
       if (_item) setItem(_item);
     })();
   }, [address, chainId]);
@@ -103,6 +123,21 @@ const MarketplaceDetail = () => {
             </div>
 
             <div className={"flex items-center w-full mt-12 space-x-4"}>
+              <div className={`flex flex-col flex-1 items-center bg-[#0000000a] h-[66px] rounded-[7px] py-3 px-4`}>
+                <p className='text-[12px] font-light text-gray-700'>Time to Maturity</p>
+                <h3 className='text-[18px] font-light text-black'>
+                  <Countdown 
+                    intervalDelay={60000} 
+                    date={item.issuanceCycle.maturityDate * 1000} 
+                    renderer={issuance_date_renderer} 
+                  />
+                </h3>
+              </div>
+              <RecapCard label={"Coupon"} value={`${item.issuanceCycle.coupon / 100}% / WEEK`} />
+              <RecapCard label={"Principal Protection"} value={"100%"} />
+            </div>
+
+            <div className={"flex items-center w-full mt-3 space-x-4"}>
               <RecapCard label={"Best Offer Price"} value={`${item.offerPrice.toLocaleString()} USDC`} />
               <RecapCard label={"Total Lots"} value={`${item.totalLots} LOTS`} />
               <RecapCard label={"Market Price"} value={`${item.mtmPrice.toLocaleString()} USDC`} />
