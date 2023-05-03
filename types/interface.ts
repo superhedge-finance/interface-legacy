@@ -24,6 +24,10 @@ export interface IProduct {
   maxCapacity: BigNumber;
   currentCapacity: string;
   issuanceCycle: Cycle;
+  vaultStrategy: string;
+  risk: string;
+  fees: string;
+  counterparties: string;
 }
 
 export type History = {
