@@ -27,6 +27,7 @@ const PortfolioCreatePage = () => {
   const [, setIsLoading] = useState(false);
   const [isListed, setIsListed] = useState(false);
   const [maxBalance, setMaxBalance] = useState(0);
+  const [minBalance, setMinBalance] = useState(1);
   const [product, setProduct] = useState<IProduct | undefined>(undefined);
   const [marketplaceInstance, setMarketplaceInstance] = useState<ethers.Contract>();
   const [currentTokenId, setCurrentTokenId] = useState<BigNumber>();
@@ -60,7 +61,7 @@ const PortfolioCreatePage = () => {
 
   const onListNFT = async () => {
     if (product && product.status !== 3) {
-      return toast.error("Your product is not issued yet. Please wait until issuance date to list your NFT.");
+      return toast.error("Your product is not issued yet. Please wait until issuance date");
     }
     if (address && signer && marketplaceInstance && nftInstance && product) {
       try {
@@ -106,14 +107,17 @@ const PortfolioCreatePage = () => {
 
   useEffect(() => {
     (async () => {
-      if (productInstance && nftInstance && address) {
+      if (productInstance && nftInstance && marketplaceInstance && address) {
         const currentTokenId = await productInstance.currentTokenId();
         setCurrentTokenId(currentTokenId);
-        const maxBalance = await nftInstance.balanceOf(address, currentTokenId);
-        setMaxBalance(maxBalance.toNumber());
+        const _currentBalance = await nftInstance.balanceOf(address, currentTokenId);
+        const _listingCount = await marketplaceInstance.listingCount(address, currentTokenId);
+        const _maxBalance = _currentBalance.toNumber() - _listingCount.toNumber();
+        if (_maxBalance == 0) setMinBalance(0);
+        setMaxBalance(_maxBalance);
       }
     })();
-  }, [productInstance, nftInstance, address]);
+  }, [productInstance, nftInstance, marketplaceInstance, address]);
 
   useEffect(() => {
     if (signer && chainId) {
@@ -153,7 +157,7 @@ const PortfolioCreatePage = () => {
                     className={
                       "bg-grey-20 flex items-center justify-center px-3 h-[28px] w-[140px] rounded-[6px] text-[12px] leading-[12px] cursor-pointer"
                     }
-                    onClick={() => setLots(1)}
+                    onClick={() => setLots(minBalance)}
                   >
                     MIN
                   </span>
@@ -167,6 +171,9 @@ const PortfolioCreatePage = () => {
                   </span>
                 </div>
               </div>
+              { (lots < minBalance || lots > maxBalance) && 
+                <p className="text-red-500 text-[14px]">Should be a value between min and max</p>
+              }
             </div>
             <div className={"flex flex-col space-y-2"}>
               <div className={"text-[#494D51] text-[16px]"}>NFT Price (USDC)</div>
@@ -206,7 +213,7 @@ const PortfolioCreatePage = () => {
               <SecondaryButton label={"CANCEL"} onClick={() => router.push(`/portfolio/position/${product?.address}`)} />
               <PrimaryButton
                 label={"LIST NFT"}
-                disabled={!signer || !product || txPending || product.status !== 3 || price === 0}
+                disabled={!signer || txPending || price === 0 || (lots < minBalance || lots > maxBalance) || lots == 0}
                 loading={txPending}
                 className={"flex items-center justify-center"}
                 onClick={onListNFT}

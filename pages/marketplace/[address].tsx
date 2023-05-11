@@ -69,7 +69,6 @@ const MarketplaceDetail = () => {
   useEffect(() => {
     (async () => {
       const _item = await getTokenItem(address as string, chainId);
-      console.log(_item);
       if (_item) setItem(_item);
     })();
   }, [address, chainId]);

@@ -401,13 +401,13 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
                   onClick={() => setWithdrawStatus(WITHDRAW_STATUS.INITIATE)}
                 />
 
-                {(status === 3 || status === 4) && (
+                {/* {(status === 3 || status === 4) && (
                   <SecondaryButton
                     label={principalBalance > 0 ? "Request Withdrawal of Principal on Maturity" : "No principal to withdraw"}
                     className='mt-4 uppercase'
                     disabled={principalBalance === 0}
                   />
-                )}
+                )} */}
               </div>
             </div>
 

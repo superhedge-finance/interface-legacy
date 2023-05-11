@@ -10,6 +10,7 @@ import ProductABI from "../../utils/abis/SHProduct.json";
 import { useAccount, useSigner, useNetwork } from "wagmi";
 import { DECIMAL } from "../../utils/constants";
 import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
+import toast from "react-hot-toast";
 
 const PortfolioNFTCard = ({ product }: { product: IProduct }) => {
   const Router = useRouter();
@@ -31,6 +32,11 @@ const PortfolioNFTCard = ({ product }: { product: IProduct }) => {
     return SUPPORT_CHAIN_IDS.GOERLI;
   }, [chain]);
 
+  const onClick = async() => {
+    if (product.status != 3) return toast.error("Your product is not issued yet. Please wait until issuance date");
+    Router.push(`/portfolio/create/${product.address}`)
+  }
+
   useEffect(() => {
     (async () => {
       if (productInstance && address) {
@@ -45,7 +51,7 @@ const PortfolioNFTCard = ({ product }: { product: IProduct }) => {
       className={`flex flex-col space-y-6 p-6 md:py-11 md:px-12 rounded-[16px] bg-white cursor-pointer ${hover ? "gradient-border" : ""}`}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      onClick={() => Router.push(`/portfolio/create/${product.address}`)}
+      onClick={() => onClick()}
     >
       <div className={"flex justify-between items-start"}>
         <div className='flex flex-row'>
