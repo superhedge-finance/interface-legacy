@@ -8,9 +8,10 @@ import { ethers } from "ethers";
 import ProductABI from "../../utils/abis/SHProduct.json";
 import ERC20ABI from "../../utils/abis/ERC20.json";
 import { DEPOSIT_STATUS, IProduct, WITHDRAW_STATUS } from "../../types";
-import { truncateAddress } from "../../utils/helpers";
+import { truncateAddress, getTxErrorMessage } from "../../utils/helpers";
 import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
 import { EXPLORER } from "../../utils/constants";
+import toast from "react-hot-toast";
 
 const pricePerLot = 1000;
 
@@ -64,6 +65,7 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
         await depositTx.wait();
       }
     } catch (e) {
+      toast.error(getTxErrorMessage(e));
       console.log(`Error while approve and deposit: ${e}`);
     } finally {
       setDepositStatus(DEPOSIT_STATUS.NONE);

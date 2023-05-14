@@ -1,3 +1,5 @@
+import { Logger } from "ethers/lib/utils.js";
+
 export const truncateAddress = (address: string, digits: number = 8) => {
   return `${address.slice(0, digits + 2)}...${address.slice(-digits)}`;
 };
@@ -27,4 +29,24 @@ export const formatDuration = (duration: number) => {
     return `${days}D : ${hours}H`;
   }
   return "0D : 0H";
+};
+
+export const getTxErrorMessage = (error: any): string => {
+  const errMessage = error?.data?.message || error?.message;
+  if (error?.code === Logger.errors.ACTION_REJECTED) {
+    return "User denied transaction";
+  } else if (errMessage && /insufficient funds/.test(errMessage)) {
+    return "Not enough balance";
+  }
+
+  const regex = /execution reverted: (?<target>[a-zA-Z0-9 ]+)/;
+  const result = errMessage.match(regex);
+  const reason = result?.groups?.target;
+
+  // will make some message translation here.
+  if (reason === "Product is full") {
+    return "Your deposit results in excess of max capacity.";
+  }
+
+  return `${reason}` || "Transaction reverted in some reason.";
 };
