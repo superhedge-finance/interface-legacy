@@ -56,6 +56,10 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
       if (currencyInstance && productInstance) {
         const decimal = await currencyInstance.decimals();
         const requestBalance = ethers.utils.parseUnits(depositAmount.toString(), decimal);
+        const _currentCapacity = await productInstance.currentCapacity();
+        if (depositAmount + Number(ethers.utils.formatUnits(_currentCapacity, decimal)) > Number(product.maxCapacity)) {
+          return toast.error("Your deposit results in excess of max capacity.");
+        }
         const currentAllowance = await currencyInstance.allowance(address, productAddress);
         if (currentAllowance.lt(requestBalance)) {
           const tx = await currencyInstance.approve(productAddress, requestBalance);
@@ -193,7 +197,7 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
 
           const currentCapacity = await _productInstance.currentCapacity();
           const maxCapacity = await _productInstance.maxCapacity();
-          setMaxLots(maxCapacity.toNumber() - Number(ethers.utils.formatUnits(currentCapacity, _decimals)));
+          setMaxLots((maxCapacity.toNumber() - Number(ethers.utils.formatUnits(currentCapacity, _decimals))) / pricePerLot);
 
           // wallet balance
           const currencyBalance = await _currencyInstance.balanceOf(address);
