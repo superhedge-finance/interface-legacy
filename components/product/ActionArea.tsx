@@ -12,6 +12,7 @@ import { truncateAddress, getTxErrorMessage } from "../../utils/helpers";
 import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
 import { EXPLORER } from "../../utils/constants";
 import toast from "react-hot-toast";
+import axios from "../../service/axios";
 
 const pricePerLot = 1000;
 
@@ -42,6 +43,7 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
   const [expand, setExpand] = useState(false);
 
   const [walletBalance, setWalletBalance] = useState(0);
+  const [imageURL, setImageURL] = useState("");
 
   const onConnect = () => {
     if (!address && openConnectModal) {
@@ -202,6 +204,19 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
       }
     })();
   }, [productAddress, signer, address]);
+
+  useEffect(() => {
+    (async () => {
+      if (product) {
+        try {
+          const { data } = await axios.get(product.issuanceCycle.url);
+          setImageURL(data.image);
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    })();
+  }, [product]);
 
   return (
     <>
@@ -482,7 +497,7 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
                       </a>
                     </div>
                     <p className='text-[16px] text-gray-500 mt-7 flex flex-col items-center'>You&#39;ll receive this Structured Note NFT, representing your deposit</p>
-                    <img className={"mt-8"} src={product.issuanceCycle.image_uri || "/products/default_nft_image.png"} alt={"nft image"} />
+                    <img className={"mt-8"} src={imageURL || "/products/default_nft_image.png"} alt={"nft image"} />
                   </div>
 
                   <div className='mt-8 flex items-center justify-between space-x-8 h-[50px]'>

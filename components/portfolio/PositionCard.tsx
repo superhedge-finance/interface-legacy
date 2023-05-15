@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import Timeline from "../product/Timeline";
 import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
 import { DECIMAL } from "../../utils/constants";
+import axios from "../../service/axios";
 
 export const PositionCard = ({ position, enabled }: { position: IProduct; enabled: boolean }) => {
   const Router = useRouter();
@@ -17,6 +18,7 @@ export const PositionCard = ({ position, enabled }: { position: IProduct; enable
   const { chain } = useNetwork();
 
   const [principal, setPrincipal] = useState<number>(0);
+  const [imageURL, setImageURL] = useState("");
 
   const currency1 = useMemo(() => {
     return "/currency/" + position.underlying.split("/")[1].toLowerCase() + ".svg";
@@ -44,6 +46,19 @@ export const PositionCard = ({ position, enabled }: { position: IProduct; enable
       }
     })();
   }, [productInstance, address, chainId]);
+
+  useEffect(() => {
+    (async () => {
+      if (position) {
+        try {
+          const { data } = await axios.get(position.issuanceCycle.url);
+          setImageURL(data.image);
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    })();
+  }, [position]);
 
   return (
     <>
@@ -84,7 +99,7 @@ export const PositionCard = ({ position, enabled }: { position: IProduct; enable
 
       {enabled && (
         <div className={"mt-6"}>
-          <img src={position.issuanceCycle.image_uri || "/products/default_nft_image.png"} width={"100%"} alt={""} />
+          <img src={imageURL || "/products/default_nft_image.png"} width={"100%"} alt={""} />
         </div>
       )}
     </>

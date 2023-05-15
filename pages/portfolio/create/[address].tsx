@@ -16,6 +16,7 @@ import NFTListedDialog from "../../../components/portfolio/NFTListedDialog";
 import { USDC_ADDRESS } from "../../../utils/address";
 import { DECIMAL } from "../../../utils/constants";
 import { SUPPORT_CHAIN_IDS } from "../../../utils/enums";
+import axios from "../../../service/axios";
 
 const PortfolioCreatePage = () => {
   const router = useRouter();
@@ -36,6 +37,7 @@ const PortfolioCreatePage = () => {
   const [lots, setLots] = useState(1);
   const [price, setPrice] = useState(0);
   const [startingTime, setStartingTime] = useState<Date>(new Date());
+  const [imageURL, setImageURL] = useState("");
 
   // eslint-disable-next-line react/display-name,@typescript-eslint/no-unused-vars
   const CustomInput = forwardRef(({ value, onClick }: { value?: string; onClick?: () => void }, ref) => (
@@ -99,8 +101,10 @@ const PortfolioCreatePage = () => {
   useEffect(() => {
     setIsLoading(true);
     getProduct(productAddress as string, chainId)
-      .then((product) => {
+      .then(async (product) => {
         setProduct(product);
+        const { data } = await axios.get(product.issuanceCycle.url);
+        setImageURL(data.image);
       })
       .finally(() => setIsLoading(false));
   }, [productAddress, chainId]);
@@ -135,7 +139,7 @@ const PortfolioCreatePage = () => {
               <TitleH2 className={"text-white"}>Create NFT</TitleH2>
             </div>
             <img
-              src={product ? product.issuanceCycle.image_uri || "/products/default_nft_image.png" : "/products/default_nft_image.png"}
+              src={product ? imageURL || "/products/default_nft_image.png" : "/products/default_nft_image.png"}
               width={"100%"}
               alt={""}
             />

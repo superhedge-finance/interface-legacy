@@ -15,6 +15,7 @@ import { DECIMAL } from "../../../utils/constants";
 import "react-datepicker/dist/react-datepicker.css";
 import useToast from "../../../hooks/useToast";
 import { SUPPORT_CHAIN_IDS } from "../../../utils/enums";
+import axios from "../../../service/axios";
 
 const PortfolioCreatePage = () => {
   const router = useRouter();
@@ -32,6 +33,7 @@ const PortfolioCreatePage = () => {
   const [price, setPrice] = useState(0);
   const [startingTime, setStartingTime] = useState<Date>(new Date());
   const [productStatus, setProductStatus] = useState(0);
+  const [imageURL, setImageURL] = useState("");
 
   // eslint-disable-next-line react/display-name,@typescript-eslint/no-unused-vars
   const CustomInput = forwardRef(({ value, onClick }: { value?: string; onClick?: () => void }, ref) => (
@@ -109,6 +111,8 @@ const PortfolioCreatePage = () => {
         setPrice(_item.offerPrice);
         setLots(_item.quantity);
         setStartingTime(new Date(_item.startingTime * 1000));
+        const { data } = await axios.get(_item.issuanceCycle.url);
+        setImageURL(data.image);
       }
     })();
   }, [listingId, chainId]);
@@ -122,7 +126,7 @@ const PortfolioCreatePage = () => {
               <TitleH2 className={"text-white"}>Edit NFT</TitleH2>
             </div>
             <img
-              src={item ? item.issuanceCycle.image_uri || "/products/default_nft_image.png" : "/products/default_nft_image.png"}
+              src={item ? imageURL || "/products/default_nft_image.png" : "/products/default_nft_image.png"}
               width={"100%"}
               alt={""}
             />

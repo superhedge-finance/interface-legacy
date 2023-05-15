@@ -120,6 +120,7 @@ const ProductDetail = () => {
     setIsLoading(true);
     getProduct(address as string, chainId)
       .then((product) => {
+        console.log(product);
         setProduct(product);
       })
       .finally(() => setIsLoading(false));
