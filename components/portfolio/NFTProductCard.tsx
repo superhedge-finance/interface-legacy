@@ -16,7 +16,7 @@ export const NFTProductCard = ({ product, lots }: { product: IProduct; lots: num
 
   const onListNFT = async () => {
     if (product.status !== 3) {
-      return toast.error("Your product is not issued yet. Please wait until issuance date to list your NFT.");
+      return toast.error("Your product is not issued yet. Please wait until issuance date.");
     }
     await router.push(`/portfolio/create/${product.address}`);
   };

@@ -61,7 +61,7 @@ const PortfolioCreatePage = () => {
 
   const onUpdateNFT = async () => {
     if (productStatus !== 3) {
-      return showToast("Your product is not issued yet. Please wait until issuance date to list your NFT.", "error");
+      return showToast("Your product is not issued yet. Please wait until issuance date", "error");
     }
     if (address && signer && marketplaceInstance && nftInstance && chainId) {
       try {
