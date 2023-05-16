@@ -37,7 +37,7 @@ const OfferCard = ({ offer, value, onValueChange }: { offer: OfferType; value: n
   );
 };
 
-export const ProductOffers = ({ offers }: { offers: OfferType[] }) => {
+export const ProductOffers = ({ offers, imageUrl }: { offers: OfferType[]; imageUrl: string }) => {
   const [offerId, setOfferId] = useState<number>(0);
   const [tab, setTab] = useState(0);
   const [open, setOpen] = useState(false);
@@ -70,6 +70,7 @@ export const ProductOffers = ({ offers }: { offers: OfferType[] }) => {
         <ItemBuyConfirmDialog
           open={open}
           offer={offer}
+          imageUrl={imageUrl}
           setOpen={(open) => setOpen(open)}
           afterConfirm={(success) => {
             setOpen(false);

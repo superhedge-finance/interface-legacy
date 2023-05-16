@@ -14,6 +14,7 @@ import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
 import { useNetwork } from "wagmi";
 import { EXPLORER } from "../../utils/constants";
 import Countdown from "react-countdown";
+import axios from "../../service/axios";
 
 const issuance_date_renderer = ({
   days,
@@ -60,6 +61,7 @@ const MarketplaceDetail = () => {
   const { address } = router.query;
 
   const [item, setItem] = useState<MarketplaceItemDetailType>();
+  const [imageURL, setImageURL] = useState("");
 
   const chainId = useMemo(() => {
     if (chain) return chain.id;
@@ -69,7 +71,11 @@ const MarketplaceDetail = () => {
   useEffect(() => {
     (async () => {
       const _item = await getTokenItem(address as string, chainId);
-      if (_item) setItem(_item);
+      if (_item) { 
+        setItem(_item);
+        const { data } = await axios.get(_item.issuanceCycle.url);
+        setImageURL(data.image);
+      }
     })();
   }, [address, chainId]);
 
@@ -144,7 +150,7 @@ const MarketplaceDetail = () => {
 
             <div className={"flex flex-col w-full mt-[80px]"}>
               <TitleH3 className={"text-blacknew-100 mb-5"}>Choose product offer to buy</TitleH3>
-              <ProductOffers offers={item.offers} />
+              <ProductOffers offers={item.offers} imageUrl={imageURL} />
             </div>
 
             <div className={"mt-[80px] w-full"}>

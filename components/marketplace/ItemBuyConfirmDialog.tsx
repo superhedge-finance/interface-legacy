@@ -11,11 +11,13 @@ import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
 
 const ItemBuyConfirmDialog = ({
   offer,
+  imageUrl,
   open,
   setOpen,
   afterConfirm
 }: {
   offer: OfferType;
+  imageUrl: string;
   open: boolean;
   setOpen: (open: boolean) => void;
   afterConfirm: (success: boolean) => void;
@@ -101,7 +103,7 @@ const ItemBuyConfirmDialog = ({
                   <span className={"bg-primary-gradient text-transparent bg-clip-text text-[20px]"}>
                     {(offer.quantity * offer.price).toLocaleString()} USDC
                   </span>
-                  <img className={"mt-8"} src={"/products/default_nft_image.png"} alt={"nft image"} />
+                  <img className={"mt-8"} src={imageUrl || "/products/default_nft_image.png"} alt={"nft image"} />
                 </div>
 
                 <div className='mt-8 flex items-center justify-between space-x-8 h-[50px]'>
