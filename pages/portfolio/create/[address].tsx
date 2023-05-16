@@ -17,6 +17,7 @@ import { SUPPORT_CHAIN_IDS } from "../../../utils/enums";
 import axios from "../../../service/axios";
 import { Dialog, Transition } from "@headlessui/react";
 import { getTxErrorMessage } from "../../../utils/helpers";
+import NFTListedDialog from "../../../components/portfolio/NFTListedDialog";
 
 const PortfolioCreatePage = () => {
   const router = useRouter();
@@ -27,6 +28,7 @@ const PortfolioCreatePage = () => {
 
   const [, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [isListed, setIsListed] = useState(false);
   const [listingStatus, setListingStatus] = useState(LISTING_STATUS.NONE);
   const [maxBalance, setMaxBalance] = useState(0);
   const [minBalance, setMinBalance] = useState(1);
@@ -69,8 +71,8 @@ const PortfolioCreatePage = () => {
       try {
         const isApprovedForAll = await nftInstance.isApprovedForAll(address, marketplaceInstance.address);
         if (!isApprovedForAll) {
-          const approveTx = await nftInstance.setApprovalForAll(marketplaceInstance.address, true);
           setListingStatus(LISTING_STATUS.APPROVING);
+          const approveTx = await nftInstance.setApprovalForAll(marketplaceInstance.address, true);
           await approveTx.wait();
         }
         setListingStatus(LISTING_STATUS.PENDING);
@@ -84,20 +86,15 @@ const PortfolioCreatePage = () => {
           Math.floor(startingTime.getTime() / 1000) + 300 // delta: 5 mins
         );
         await listTx.wait();
-        setListingStatus(LISTING_STATUS.DONE);
+        setIsListed(true);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (e: any) {
+        toast.error(getTxErrorMessage(e));
+      } finally {
         setListingStatus(LISTING_STATUS.NONE);
         setIsOpen(false);
-        return toast.error(getTxErrorMessage(e));
       }
     }
-  };
-
-  const onConfirm = async() => {
-    setIsOpen(false);
-    setListingStatus(LISTING_STATUS.NONE);
-    router.push("/portfolio");
   };
 
   useEffect(() => {
@@ -255,18 +252,17 @@ const PortfolioCreatePage = () => {
               >
                 <Dialog.Panel className='w-full max-w-[800px] transform overflow-hidden rounded-2xl bg-white py-[60px] px-[120px] text-left align-middle shadow-xl transition-all'>
                   <Dialog.Title className='text-[32px] font-medium leading-[40px] text-[#161717] text-center'>
-                    {listingStatus <= LISTING_STATUS.APPROVING && "Step 1/2: Approve marketplace contract to list your NFTs"}
-                    {listingStatus == LISTING_STATUS.PENDING && "Step 2/2: List your NFTs into marketplace"}
-                    {listingStatus == LISTING_STATUS.DONE && "Your NFT successfully listed on Marketplace"}
+                    {listingStatus <= LISTING_STATUS.APPROVING ? "Step 1/2: Approve marketplace contract to list your NFTs"
+                    : "Step 2/2: List your NFTs into marketplace"}
                   </Dialog.Title>
 
-                  {listingStatus < LISTING_STATUS.DONE && <div className='mt-8 flex items-center justify-between space-x-8 h-[50px]'>
+                  <div className='mt-8 flex items-center justify-between space-x-8 h-[50px]'>
                     <button
                       type='button'
                       className='flex flex-1 items-center justify-center border-[#4B4B4B] border-[1px] px-4 py-2 text-sm font-medium text-black rounded-[8px] h-full'
                       onClick={() => setIsOpen(false)}
                     >
-                      CANCEL
+                      CLOSE
                     </button>
                     <button
                       type='button'
@@ -292,18 +288,14 @@ const PortfolioCreatePage = () => {
                       {listingStatus === LISTING_STATUS.PENDING ? "LISTING" : "APPROVE"}
                     </button>
                   </div>
-                  }
-                  {listingStatus == LISTING_STATUS.DONE && 
-                    <div className='mt-8 flex items-center justify-between space-x-8 h-[50px]'>
-                      <PrimaryButton label={"GO TO MY LISTING"} onClick={onConfirm} />
-                    </div>
-                  }
                 </Dialog.Panel>
               </Transition.Child>
             </div>
           </div>
         </Dialog>
       </Transition>
+
+      <NFTListedDialog open={isListed} setOpen={setIsListed} onConfirm={() => router.push("/portfolio")} />
     </div>
   );
 };

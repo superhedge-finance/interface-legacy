@@ -15,8 +15,7 @@ export enum WITHDRAW_STATUS {
 export enum LISTING_STATUS {
   NONE,
   APPROVING,
-  PENDING,
-  DONE
+  PENDING
 }
 
 export enum HISTORY_TYPE {
