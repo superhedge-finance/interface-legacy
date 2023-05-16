@@ -12,6 +12,13 @@ export enum WITHDRAW_STATUS {
   DONE
 }
 
+export enum LISTING_STATUS {
+  NONE,
+  APPROVING,
+  PENDING,
+  DONE
+}
+
 export enum HISTORY_TYPE {
   DEPOSIT = "DEPOSIT",
   WITHDRAW = "WITHDRAW"

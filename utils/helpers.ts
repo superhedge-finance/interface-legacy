@@ -46,6 +46,8 @@ export const getTxErrorMessage = (error: any): string => {
   // will make some message translation here.
   if (reason === "Product is full") {
     return "Your deposit results in excess of max capacity.";
+  } else if (reason === undefined) {
+    return "There is already a pending transaction.";
   }
 
   return `${reason}` || "Transaction reverted in some reason.";

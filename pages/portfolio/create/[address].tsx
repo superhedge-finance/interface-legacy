@@ -1,22 +1,22 @@
-import { forwardRef, useEffect, useMemo, useState } from "react";
+import { forwardRef, useEffect, useMemo, useState, Fragment } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import DatePicker from "react-datepicker";
 import { useAccount, useNetwork, useSigner } from "wagmi";
 import { BigNumber, ethers } from "ethers";
-import { Logger } from "@ethersproject/logger";
 import toast from "react-hot-toast";
 import { PrimaryButton, SecondaryButton, TitleH2 } from "../../../components/basic";
 import { getProduct } from "../../../service";
-import { IProduct } from "../../../types";
+import { IProduct, LISTING_STATUS } from "../../../types";
 import { getMarketplaceInstance, getNFTInstance } from "../../../utils/contract";
 import "react-datepicker/dist/react-datepicker.css";
 import ProductABI from "../../../utils/abis/SHProduct.json";
-import NFTListedDialog from "../../../components/portfolio/NFTListedDialog";
 import { USDC_ADDRESS } from "../../../utils/address";
 import { DECIMAL } from "../../../utils/constants";
 import { SUPPORT_CHAIN_IDS } from "../../../utils/enums";
 import axios from "../../../service/axios";
+import { Dialog, Transition } from "@headlessui/react";
+import { getTxErrorMessage } from "../../../utils/helpers";
 
 const PortfolioCreatePage = () => {
   const router = useRouter();
@@ -26,13 +26,13 @@ const PortfolioCreatePage = () => {
   const { address: productAddress } = router.query;
 
   const [, setIsLoading] = useState(false);
-  const [isListed, setIsListed] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [listingStatus, setListingStatus] = useState(LISTING_STATUS.NONE);
   const [maxBalance, setMaxBalance] = useState(0);
   const [minBalance, setMinBalance] = useState(1);
   const [product, setProduct] = useState<IProduct | undefined>(undefined);
   const [marketplaceInstance, setMarketplaceInstance] = useState<ethers.Contract>();
   const [currentTokenId, setCurrentTokenId] = useState<BigNumber>();
-  const [txPending, setTxPending] = useState(false);
   const [nftInstance, setNFTInstance] = useState<ethers.Contract>();
   const [lots, setLots] = useState(1);
   const [price, setPrice] = useState(0);
@@ -61,19 +61,19 @@ const PortfolioCreatePage = () => {
     else return null;
   }, [signer, productAddress]);
 
-  const onListNFT = async () => {
+  const onListNFT = async() => {
     if (product && product.status !== 3) {
       return toast.error("Your product is not issued yet. Please wait until issuance date");
     }
     if (address && signer && marketplaceInstance && nftInstance && product) {
       try {
-        setTxPending(true);
         const isApprovedForAll = await nftInstance.isApprovedForAll(address, marketplaceInstance.address);
         if (!isApprovedForAll) {
           const approveTx = await nftInstance.setApprovalForAll(marketplaceInstance.address, true);
+          setListingStatus(LISTING_STATUS.APPROVING);
           await approveTx.wait();
         }
-
+        setListingStatus(LISTING_STATUS.PENDING);
         const listTx = await marketplaceInstance.listItem(
           nftInstance.address,
           product.address,
@@ -84,18 +84,20 @@ const PortfolioCreatePage = () => {
           Math.floor(startingTime.getTime() / 1000) + 300 // delta: 5 mins
         );
         await listTx.wait();
-        setIsListed(true);
+        setListingStatus(LISTING_STATUS.DONE);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (e: any) {
-        if (e && e.code && e.code === Logger.errors.ACTION_REJECTED) {
-          return toast.error("Transaction rejected");
-        } else {
-          return toast.error(e.error.message);
-        }
-      } finally {
-        setTxPending(false);
+        setListingStatus(LISTING_STATUS.NONE);
+        setIsOpen(false);
+        return toast.error(getTxErrorMessage(e));
       }
     }
+  };
+
+  const onConfirm = async() => {
+    setIsOpen(false);
+    setListingStatus(LISTING_STATUS.NONE);
+    router.push("/portfolio");
   };
 
   useEffect(() => {
@@ -217,17 +219,91 @@ const PortfolioCreatePage = () => {
               <SecondaryButton label={"CANCEL"} onClick={() => router.push(`/portfolio/position/${product?.address}`)} />
               <PrimaryButton
                 label={"LIST NFT"}
-                disabled={!signer || txPending || price === 0 || (lots < minBalance || lots > maxBalance) || lots == 0}
-                loading={txPending}
+                disabled={!signer || price === 0 || (lots < minBalance || lots > maxBalance) || lots == 0}
                 className={"flex items-center justify-center"}
-                onClick={onListNFT}
+                onClick={() => setIsOpen(true)}
               />
             </div>
           </div>
         </div>
       </div>
 
-      <NFTListedDialog open={isListed} setOpen={setIsListed} onConfirm={() => router.push("/portfolio")} />
+      <Transition appear show={isOpen} as={Fragment}>
+        <Dialog as='div' className='relative z-10' onClose={() => setIsOpen(false)}>
+          <Transition.Child
+            as={Fragment}
+            enter='ease-out duration-300'
+            enterFrom='opacity-0'
+            enterTo='opacity-100'
+            leave='ease-in duration-200'
+            leaveFrom='opacity-100'
+            leaveTo='opacity-0'
+          >
+            <div className='fixed inset-0 bg-black bg-opacity-25' />
+          </Transition.Child>
+
+          <div className='fixed inset-0 overflow-y-auto'>
+            <div className='flex min-h-full items-center justify-center p-4 text-center'>
+              <Transition.Child
+                as={Fragment}
+                enter='ease-out duration-300'
+                enterFrom='opacity-0 scale-95'
+                enterTo='opacity-100 scale-100'
+                leave='ease-in duration-200'
+                leaveFrom='opacity-100 scale-100'
+                leaveTo='opacity-0 scale-95'
+              >
+                <Dialog.Panel className='w-full max-w-[800px] transform overflow-hidden rounded-2xl bg-white py-[60px] px-[120px] text-left align-middle shadow-xl transition-all'>
+                  <Dialog.Title className='text-[32px] font-medium leading-[40px] text-[#161717] text-center'>
+                    {listingStatus <= LISTING_STATUS.APPROVING && "Step 1/2: Approve marketplace contract to list your NFTs"}
+                    {listingStatus == LISTING_STATUS.PENDING && "Step 2/2: List your NFTs into marketplace"}
+                    {listingStatus == LISTING_STATUS.DONE && "Your NFT successfully listed on Marketplace"}
+                  </Dialog.Title>
+
+                  {listingStatus < LISTING_STATUS.DONE && <div className='mt-8 flex items-center justify-between space-x-8 h-[50px]'>
+                    <button
+                      type='button'
+                      className='flex flex-1 items-center justify-center border-[#4B4B4B] border-[1px] px-4 py-2 text-sm font-medium text-black rounded-[8px] h-full'
+                      onClick={() => setIsOpen(false)}
+                    >
+                      CANCEL
+                    </button>
+                    <button
+                      type='button'
+                      className='flex flex-1 items-center justify-center border border-transparent bg-[#292929] px-4 py-2 text-sm font-medium text-white rounded-[8px] h-full'
+                      onClick={onListNFT}
+                      disabled={listingStatus === LISTING_STATUS.APPROVING}
+                    >
+                      {listingStatus >= LISTING_STATUS.APPROVING && (
+                        <svg
+                          className='animate-spin -ml-1 mr-3 h-5 w-5 text-white'
+                          xmlns='http://www.w3.org/2000/svg'
+                          fill='none'
+                          viewBox='0 0 24 24'
+                        >
+                          <circle className='opacity-25' cx='12' cy='12' r='10' stroke='currentColor' strokeWidth='4'></circle>
+                          <path
+                            className='opacity-75'
+                            fill='currentColor'
+                            d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'
+                          ></path>
+                        </svg>
+                      )}
+                      {listingStatus === LISTING_STATUS.PENDING ? "LISTING" : "APPROVE"}
+                    </button>
+                  </div>
+                  }
+                  {listingStatus == LISTING_STATUS.DONE && 
+                    <div className='mt-8 flex items-center justify-between space-x-8 h-[50px]'>
+                      <PrimaryButton label={"GO TO MY LISTING"} onClick={onConfirm} />
+                    </div>
+                  }
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
     </div>
   );
 };
