@@ -116,7 +116,10 @@ export default function ProductList() {
         <div className='md:mt-[60px] mt-8 flex flex-col'>
           <h1 className='text-[44px] text-grey-80'>Bullish Products</h1>
           <p className='max-w-md text-[16px] leading-[24px] text-grey-70'>
-            We try to provide the most accurate and up-to-date list of cryptos with the most accurate rates and information.
+            Invest in these vaults if you feel that Ethereum will increase in price over the next month.
+          </p>
+          <p className='max-w-md text-[16px] leading-[24px] text-grey-70'>
+            You will receive NFTs representing your investment, each redeemable for USDC 1000 on maturity. You can also trade them on our marketplace with other users ahead of maturity, at any price you set yourself.
           </p>
           <div className='grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mt-6'>
             {!isProductLoading && bullishProducts.map((product, idx) => <Product key={idx} product={product} />)}
@@ -129,7 +132,10 @@ export default function ProductList() {
         <div className='md:mt-[100px] mt-8 flex flex-col'>
           <h1 className='text-[44px] text-grey-80'>Bearish Products</h1>
           <p className='max-w-md text-[16px] leading-[24px] text-grey-70'>
-            We try to provide the most accurate and up-to-date list of cryptos with the most accurate rates and information.
+            Invest in these vaults if you feel that Ethereum will decrease in price over the next month.
+          </p>
+          <p className='max-w-md text-[16px] leading-[24px] text-grey-70'>
+            You will receive NFTs representing your investment, each redeemable for USDC 1000 on maturity. You can also trade them on our marketplace with other users ahead of maturity, at any price you set yourself.
           </p>
           <div className='grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mt-6'>
             {!isProductLoading && bearishProducts.map((product, idx) => <Product key={idx} product={product} />)}
@@ -142,7 +148,10 @@ export default function ProductList() {
         <div className='md:mt-[100px] mt-8 flex flex-col'>
           <h1 className='text-[44px] text-grey-80'>Range Products</h1>
           <p className='max-w-md text-[16px] leading-[24px] text-grey-70'>
-            We try to provide the most accurate and up-to-date list of cryptos with the most accurate rates and information.
+            Invest in these vaults if you feel that Ethereum will range in price over the next month.
+          </p>
+          <p className='max-w-md text-[16px] leading-[24px] text-grey-70'>
+            You will receive NFTs representing your investment, each redeemable for USDC 1000 on maturity. You can also trade them on our marketplace with other users ahead of maturity, at any price you set yourself.
           </p>
           <div className='grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mt-6'>
             {!isProductLoading && rangeProducts.map((product, idx) => <Product key={idx} product={product} />)}
