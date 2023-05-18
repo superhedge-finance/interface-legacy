@@ -5,7 +5,7 @@ import { ProductSpreads, ProductStatus, IProduct } from "../../types";
 import { ReturnsChart } from "../product/ReturnsChart";
 import { getCurrencyIcon, formatDuration } from "../../utils/helpers";
 import { RecapCard } from "../commons/RecapCard";
-import { SubtitleRegular20, TitleH2 } from "../basic";
+import { SubtitleRegular16, TitleH3 } from "../basic";
 import Countdown from "react-countdown";
 import { useNetwork } from "wagmi";
 import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
@@ -63,7 +63,7 @@ export default function Product({ product }: { product: IProduct }) {
   }, [product]);
 
   return (
-    <div className='flex flex-col p-6 md:py-11 md:px-12 rounded-[12px] md:rounded-[16px] bg-white'>
+    <div className='flex flex-col p-5 md:p-6 rounded-[12px] md:rounded-[16px] bg-white w-[340px] md:w-[500px]'>
       <div className={"flex justify-between"}>
         <div className={"inline-block"}>
           <span className={`text-white text-sm py-2 px-3 rounded-lg ${ProductStatus[product.status].className}`}>
@@ -75,11 +75,11 @@ export default function Product({ product }: { product: IProduct }) {
             </span>
           )}
         </div>
-        <div className={"w-[46px] md:w-[80px] h-[41px] md:h-[72px]"}>
+        <div className={"w-[40px] md:w-[60px] h-[36px] md:h-[54px]"}>
           <img src={"/icons/social_logo.svg"} alt={"social logo"} width={"100%"} height={"100% "} />
         </div>
       </div>
-      <div className='my-5 flex flex-row'>
+      <div className='my-4 flex flex-row'>
         <div className={"relative flex items-center mr-[40px]"}>
           <img
             src={currency1}
@@ -97,11 +97,11 @@ export default function Product({ product }: { product: IProduct }) {
           />
         </div>
         <div className='flex flex-col justify-around ml-3'>
-          <TitleH2 className='text-black'>{product.underlying}</TitleH2>
-          <SubtitleRegular20>{product.name}</SubtitleRegular20>
+          <TitleH3 className='text-black'>{product.underlying}</TitleH3>
+          <SubtitleRegular16>{product.name}</SubtitleRegular16>
         </div>
       </div>
-      <div className={"flex justify-between items-center space-x-12"}>
+      <div className={"flex justify-between items-center space-x-8"}>
         <div className={"flex flex-col flex-1"}>
           <div className='flex justify-between my-1'>
             <span className='text-sm text-gray-700'>Amount deposited</span>
@@ -142,10 +142,10 @@ export default function Product({ product }: { product: IProduct }) {
         />
       </div>
 
-      <div className={"flex-col md:flex-row md:flex space-y-3 md:space-y-0 items-center justify-between mt-5"}>
-        <div className='flex md:flex-col items-center justify-between bg-[#0000000a] h-[40px] md:h-[66px] rounded-[7px] py-3 px-4'>
+      <div className={"flex-col md:flex-row md:flex space-y-3 md:space-y-0 items-center justify-between mt-3"}>
+        <div className='flex md:flex-col items-center justify-between bg-[#0000000a] h-[40px] md:h-[66px] rounded-[7px] p-3'>
           <p className='text-[16px] md:text-[12px] font-light text-gray-700'>{product.status == 3 ? "Time to Maturiy" : "Time to Issuance"}</p>
-          <h3 className='text-[16px] md:text-[20px] font-light text-black'>
+          <h3 className='text-[16px] md:text-[18px] font-light text-black'>
             <Countdown 
               intervalDelay={60000} 
               date={(product.status == 3 ? product.issuanceCycle.maturityDate : product.issuanceCycle.issuanceDate) * 1000} 
@@ -153,13 +153,13 @@ export default function Product({ product }: { product: IProduct }) {
             />
           </h3>
         </div>
-        <div className='flex md:flex-col items-center justify-between bg-[#0000000a] h-[40px] md:h-[66px] rounded-[7px] py-3 px-4'>
+        <div className='flex md:flex-col items-center justify-between bg-[#0000000a] h-[40px] md:h-[66px] rounded-[7px] p-3'>
           <span className='text-[16px] md:text-[12px] font-light text-gray-700'>Investment Duration</span>
-          <span className='text-[16px] md:text-[20px] font-light text-black'>{investment_duration}</span>
+          <span className='text-[16px] md:text-[18px] font-light text-black'>{investment_duration}</span>
         </div>
-        <div className='flex md:flex-col items-center justify-between bg-[#0000000a] h-[40px] md:h-[66px] rounded-[7px] py-3 px-4'>
+        <div className='flex md:flex-col items-center justify-between bg-[#0000000a] h-[40px] md:h-[66px] rounded-[7px] p-3'>
           <span className='text-[16px] md:text-[12px] font-light text-gray-700'>Principal Protection</span>
-          <span className='text-[16px] md:text-[20px] font-light text-black'>100%</span>
+          <span className='text-[16px] md:text-[18px] font-light text-black'>100%</span>
         </div>
       </div>
       <Link href={`/product/${product.address}`}>

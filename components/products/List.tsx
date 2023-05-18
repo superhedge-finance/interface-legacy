@@ -120,7 +120,7 @@ export default function ProductList() {
               Invest in these vaults if you feel that Ethereum will increase in price over the next month.
             </p>
           </div>
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mt-6'>
+          <div className='flex flex-wrap gap-6 md:gap-8 mt-6'>
             {!isProductLoading && bullishProducts.map((product, idx) => <Product key={idx} product={product} />)}
           </div>
         </div>
@@ -135,7 +135,7 @@ export default function ProductList() {
               Invest in these vaults if you feel that Ethereum will decrease in price over the next month.
             </p>
           </div>
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mt-6'>
+          <div className='flex flex-wrap gap-6 md:gap-8 mt-6'>
             {!isProductLoading && bearishProducts.map((product, idx) => <Product key={idx} product={product} />)}
           </div>
         </div>
@@ -150,7 +150,7 @@ export default function ProductList() {
               Invest in these vaults if you feel that Ethereum will range in price over the next month.
             </p>
           </div>
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mt-6'>
+          <div className='flex flex-wrap gap-6 md:gap-8 mt-6'>
             {!isProductLoading && rangeProducts.map((product, idx) => <Product key={idx} product={product} />)}
           </div>
         </div>
