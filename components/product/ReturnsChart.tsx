@@ -15,7 +15,7 @@ export const ReturnsChart = ({
   strikePrice3: number;
 }) => {
   return (
-    <div className={"mt-5"}>
+    <div className={"mt-4 w-100"}>
       <Line
         data={{
           labels:
@@ -34,8 +34,7 @@ export const ReturnsChart = ({
             }
           ]
         }}
-        width={400}
-        height={150}
+        height={200}
         options={{
           plugins: {
             title: {
@@ -65,7 +64,9 @@ export const ReturnsChart = ({
                 text: "ETH (`00)"
               }
             }
-          }
+          },
+          responsive: true,
+          maintainAspectRatio: false
         }}
       />
     </div>
