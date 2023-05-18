@@ -31,10 +31,7 @@ const Marketplace = () => {
   }, [chainId]);
 
   return (
-    <div className={"py-10"}>
-      <span className={"text-[44px] md:text-[68px] leading-[48px] md:leading-[76px] bg-primary-gradient bg-clip-text text-transparent"}>
-        Marketplace
-      </span>
+    <div className={"py-12"}>
       {items.length === 0 && (
         <div className={"flex items-center justify-center py-[110px]"}>
           <div className={"flex flex-col items-center space-y-5"}>
@@ -58,7 +55,7 @@ const Marketplace = () => {
         </div>
       )}
       {items.length > 0 && (
-        <div className={"flex flex-col mt-4 md:mt-9"}>
+        <div className={"flex flex-col"}>
           <div className={"grid grid-cols-1 md:flex space-y-3 md:space-y-0 space-x-0 md:space-x-7"}>
             <Tab.Group>
               <Tab.List className='flex space-x-1 rounded-xl bg-[#EBEBEB] p-1'>

@@ -16,7 +16,7 @@ const Portfolio = () => {
   const [enabled, setEnabled] = useState(false);
 
   return (
-    <div className={"py-[80px] flex justify-center"}>
+    <div className={"py-12 flex justify-center"}>
       <div className={`${tab === 0 ? "max-w-[650px]" : ""} w-full`}>
         <div className={"flex flex-col items-center w-full"}>
           <SuperHedgeTabs labels={["OVERVIEW", "MY LISTING"]} tab={tab} setTab={(tab) => setTab(tab)} width={200} />
