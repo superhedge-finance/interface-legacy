@@ -33,16 +33,6 @@ export default function NavMenu() {
             Marketplace
           </Link>
         </li>
-        <li>
-          <Link href='#' className='block p-0 dark:hover:text-white text-[#f8f8f880]'>
-            Faq
-          </Link>
-        </li>
-        <li>
-          <Link href='#' className='block p-0 dark:hover:text-white text-[#f8f8f880]'>
-            Blog
-          </Link>
-        </li>
       </ul>
     </div>
   );
