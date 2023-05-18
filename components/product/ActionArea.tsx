@@ -23,7 +23,7 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
 
   const { openConnectModal } = useConnectModal();
 
-  const [scrollY, setScrollY] = useState(0);
+  const [, setScrollY] = useState(0);
   const [tab, setTab] = useState(0);
   const [lots, setLots] = useState(1);
   const [isOpen, setIsOpen] = useState(false);
@@ -225,9 +225,7 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
   return (
     <>
       <div
-        className={`col-span-1 ${
-          scrollY >= 200 ? "md:sticky md:right-[96px] md:top-[40px]" : ""
-        } w-full fixed z-30 md:sticky bottom-0 bg-white -m-5 md:m-0 p-5 md:py-[60px] md:px-[84px] rounded ${
+        className={`col-span-1 sticky md:right-[96px] md:top-[130px] w-full z-30 bottom-0 bg-white md:m-0 p-5 md:py-[45px] md:px-[63px] rounded ${
           expand ? "h-screen" : "h-fit"
         } ${!address ? "justify-between space-y-[100px]" : ""}`}
       >

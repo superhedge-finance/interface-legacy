@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className='bg-[#161717] px-12 py-[30px] md:py-[60px]'>
+    <footer className='bg-[#161717] px-10 py-[20px] md:py-[35px]'>
       <div className='flex flex-col md:flex-row items-center justify-between h-full'>
         <Link href='/' className='flex items-center pt-1.5'>
           <img src={"/icons/logo.svg"} alt={"logo"} />
