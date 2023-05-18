@@ -113,11 +113,13 @@ export default function ProductList() {
 
       {/** BULLISH PRODUCTS **/}
       {(category === "All" || category === "BULLISH") && (
-        <div className='md:mt-[60px] mt-8 flex flex-col'>
-          <h1 className='text-[44px] text-grey-80'>Bullish Products</h1>
-          <p className='max-w-md text-[16px] leading-[24px] text-grey-70'>
-            Invest in these vaults if you feel that Ethereum will increase in price over the next month.
-          </p>
+        <div className='md:mt-[50px] mt-8 flex flex-col'>
+          <div>
+            <span className='bg-clip-text text-transparent bg-primary-gradient text-[40px]'>Bullish Products</span>
+            <p className='max-w-md text-[16px] leading-[24px] text-grey-70'>
+              Invest in these vaults if you feel that Ethereum will increase in price over the next month.
+            </p>
+          </div>
           <div className='grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mt-6'>
             {!isProductLoading && bullishProducts.map((product, idx) => <Product key={idx} product={product} />)}
           </div>
@@ -127,10 +129,12 @@ export default function ProductList() {
       {/** BEARISH PRODUCTS **/}
       {(category === "All" || category === "BEARISH") && (
         <div className='md:mt-[100px] mt-8 flex flex-col'>
-          <h1 className='text-[44px] text-grey-80'>Bearish Products</h1>
-          <p className='max-w-md text-[16px] leading-[24px] text-grey-70'>
-            Invest in these vaults if you feel that Ethereum will decrease in price over the next month.
-          </p>
+          <div>
+            <span className='bg-clip-text text-transparent bg-primary-gradient text-[40px]'>Bearish Products</span>
+            <p className='max-w-md text-[16px] leading-[24px] text-grey-70'>
+              Invest in these vaults if you feel that Ethereum will decrease in price over the next month.
+            </p>
+          </div>
           <div className='grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mt-6'>
             {!isProductLoading && bearishProducts.map((product, idx) => <Product key={idx} product={product} />)}
           </div>
@@ -140,10 +144,12 @@ export default function ProductList() {
       {/** RANGE PRODUCTS **/}
       {(category === "All" || category === "RANGE") && (
         <div className='md:mt-[100px] mt-8 flex flex-col'>
-          <h1 className='text-[44px] text-grey-80'>Range Products</h1>
-          <p className='max-w-md text-[16px] leading-[24px] text-grey-70'>
-            Invest in these vaults if you feel that Ethereum will range in price over the next month.
-          </p>
+          <div>
+            <span className='bg-clip-text text-transparent bg-primary-gradient text-[40px]'>Range Products</span>
+            <p className='max-w-md text-[16px] leading-[24px] text-grey-70'>
+              Invest in these vaults if you feel that Ethereum will range in price over the next month.
+            </p>
+          </div>
           <div className='grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mt-6'>
             {!isProductLoading && rangeProducts.map((product, idx) => <Product key={idx} product={product} />)}
           </div>
