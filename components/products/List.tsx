@@ -3,7 +3,7 @@ import { Tab } from "@headlessui/react";
 import Product from "./Product";
 import { SkeletonCard } from "../basic";
 import { getProducts } from "../../service";
-import { ProductCategoryList, ProductUnderlyingList, IProduct } from "../../types";
+import { ProductCategoryList, IProduct } from "../../types";
 import { classNames } from "../../styles/helper";
 import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
 import { useNetwork } from "wagmi";
@@ -13,20 +13,15 @@ export default function ProductList() {
 
   const [products, setProducts] = useState<IProduct[]>([]);
   const [isProductLoading, setIsProductLoading] = useState(false);
-  const [underlying, setUnderlying] = useState("All");
   const [category, setCategory] = useState("All");
 
   const filteredProducts = useMemo(() => {
     return products
       .filter((product) => {
-        if (underlying === "All") return true;
-        return product.underlying === underlying;
-      })
-      .filter((product) => {
         if (category === "All") return true;
         return product.name.toLowerCase().includes(category.toLowerCase());
       });
-  }, [products, underlying, category]);
+  }, [products, category]);
 
   const bullishProducts = useMemo(() => {
     return filteredProducts.filter((product) => product.name.toLowerCase().includes("bullish"));
@@ -70,26 +65,7 @@ export default function ProductList() {
 
   return (
     <div className='w-4/5 px-2 sm:px-0 mx-auto'>
-      <div className='flex-col md:flex-row md:flex md:space-x-7 space-y-3 md:space-y-0'>
-        <Tab.Group>
-          <Tab.List className='flex space-x-1 rounded-xl bg-[#EBEBEB] p-1'>
-            {ProductUnderlyingList.map((underlying, index) => (
-              <Tab
-                key={index}
-                className={({ selected }) =>
-                  classNames(
-                    "w-[140px] rounded-lg py-2.5 text-sm font-medium leading-5 text-black",
-                    "focus:outline-none uppercase",
-                    selected ? "bg-white" : ""
-                  )
-                }
-                onClick={() => setUnderlying(underlying)}
-              >
-                {underlying}
-              </Tab>
-            ))}
-          </Tab.List>
-        </Tab.Group>
+      <div className='flex justify-center'>
         <Tab.Group>
           <Tab.List className='flex space-x-1 rounded-xl bg-[#EBEBEB] p-1'>
             {ProductCategoryList.map((category, index) => (
