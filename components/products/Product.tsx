@@ -63,7 +63,7 @@ export default function Product({ product }: { product: IProduct }) {
   }, [product]);
 
   return (
-    <div className='flex flex-col p-5 md:p-6 rounded-[12px] md:rounded-[16px] bg-white w-[340px] md:w-[500px]'>
+    <div className='flex flex-col p-5 md:p-6 rounded-[12px] bg-white w-[340px] md:w-[500px] drop-shadow hover:drop-shadow-[7px_7px_3px_rgba(17,116,16,0.4)]'>
       <div className={"flex justify-between"}>
         <div className={"inline-block"}>
           <span className={`text-white text-sm py-2 px-3 rounded-lg ${ProductStatus[product.status].className}`}>
