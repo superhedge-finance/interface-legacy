@@ -69,7 +69,7 @@ export default function ProductList() {
   }
 
   return (
-    <div className='w-full mr-8 px-2 sm:px-0'>
+    <div className='w-4/5 px-2 sm:px-0 mx-auto'>
       <div className='flex-col md:flex-row md:flex md:space-x-7 space-y-3 md:space-y-0'>
         <Tab.Group>
           <Tab.List className='flex space-x-1 rounded-xl bg-[#EBEBEB] p-1'>
