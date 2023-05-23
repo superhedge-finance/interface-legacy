@@ -235,7 +235,6 @@ const ProductDetail = () => {
 
               <div className={"mt-[80px] flex flex-col space-y-5"}>
                 <TitleH3>Vault Strategy</TitleH3>
-                <img src={"/products/vault_strategy.png"} alt={"vault strategy"} width={"100%"} />
                 <ParaLight16>{product.vaultStrategy}</ParaLight16>
               </div>
 

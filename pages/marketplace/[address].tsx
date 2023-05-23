@@ -167,7 +167,6 @@ const MarketplaceDetail = () => {
 
             <div className={"mt-[80px] flex flex-col space-y-5"}>
               <TitleH3>Vault Strategy</TitleH3>
-              <img src={"/products/vault_strategy.png"} alt={"vault strategy"} width={"100%"} />
               <ParaLight16>
                 The vault allocates the majority of investors deposits to a verified &apos;bluechip&apos; yield-source, earning interests to
                 ensure principal-protection and to pay weekly coupons. A small allocation is invested in a ETH/USDC Put-Spread option, which
