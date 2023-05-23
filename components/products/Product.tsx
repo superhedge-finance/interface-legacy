@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { useMemo } from "react";
 import { ethers } from "ethers";
-import { ProductSpreads, ProductStatus, IProduct } from "../../types";
+import { ProductSpreads, ProductStatus, ProductCategoryList, IProduct } from "../../types";
 import { ReturnsChart } from "../product/ReturnsChart";
 import { getCurrencyIcon, formatDuration } from "../../utils/helpers";
 import { RecapCard } from "../commons/RecapCard";
+import { RecapCardMobile } from "../commons/RecapCardMobile";
+
 import { SubtitleRegular16, TitleH3 } from "../basic";
 import Countdown from "react-countdown";
 import { useNetwork } from "wagmi";
@@ -63,7 +65,7 @@ export default function Product({ product }: { product: IProduct }) {
   }, [product]);
 
   return (
-    <div className='flex flex-col p-5 md:p-6 rounded-[12px] bg-white w-[340px] md:w-[500px] drop-shadow hover:drop-shadow-[7px_7px_3px_rgba(17,116,16,0.4)]'>
+    <div className='flex flex-col p-5 rounded-[12px] bg-white w-[340px] sm:w-[470px] drop-shadow hover:outline outline-2 outline-[#11CB79]'>
       <div className={"flex justify-between"}>
         <div className={"inline-block"}>
           <span className={`text-white text-sm py-2 px-3 rounded-lg ${ProductStatus[product.status].className}`}>
@@ -74,51 +76,37 @@ export default function Product({ product }: { product: IProduct }) {
               {ProductSpreads[categoryIndex].label}
             </span>
           )}
+          {categoryIndex >= 0 && (
+            <span className={`text-white text-sm ml-3 py-2 px-3 rounded-lg ${ProductSpreads[categoryIndex].className}`}>
+              {ProductCategoryList[categoryIndex + 1]}
+            </span>
+          )}
         </div>
         <div className={"w-[40px] md:w-[60px] h-[36px] md:h-[54px]"}>
           <img src={"/icons/social_logo.svg"} alt={"social logo"} width={"100%"} height={"100% "} />
         </div>
       </div>
-      <div className='my-4 flex flex-row'>
-        <div className={"relative flex items-center mr-[40px]"}>
-          <img
-            src={currency1}
-            className='rounded-full w-[40px] md:w-[60px] h-[40px] md:h-[60px]'
-            alt='Product Logo'
-            width={"100%"}
-            height={"100%"}
-          />
-          <img
-            src={currency2}
-            className='rounded-full w-[40px] md:w-[60px] h-[40px] md:h-[60px] absolute left-[30px] md:left-[40px]'
-            alt='Product Logo'
-            width={"100%"}
-            height={"100%"}
-          />
-        </div>
-        <div className='flex flex-col justify-around ml-3'>
-          <TitleH3 className='text-black'>{product.underlying}</TitleH3>
-          <SubtitleRegular16>{product.name}</SubtitleRegular16>
-        </div>
-      </div>
-      <div className={"flex justify-between items-center space-x-8"}>
-        <div className={"flex flex-col flex-1"}>
-          <div className='flex justify-between my-1'>
-            <span className='text-sm text-gray-700'>Amount deposited</span>
-            <span className='text-sm text-gray-700'>USDC {capacity.toLocaleString()}</span>
+      <div className={"flex justify-between items-end my-4"}>
+        <div className='flex flex-row'>
+          <div className={"relative flex items-center mr-[40px]"}>
+            <img
+              src={currency1}
+              className='rounded-full w-[40px] md:w-[60px] h-[40px] md:h-[60px]'
+              alt='Product Logo'
+              width={"100%"}
+              height={"100%"}
+            />
+            <img
+              src={currency2}
+              className='rounded-full w-[40px] md:w-[60px] h-[40px] md:h-[60px] absolute left-[30px] md:left-[40px]'
+              alt='Product Logo'
+              width={"100%"}
+              height={"100%"}
+            />
           </div>
-          <div className='w-full bg-[#00000014] rounded my-1'>
-            <div
-              className='bg-gray-600 h-2 rounded'
-              style={{
-                width: (capacity / Number(product.maxCapacity)) * 100 + "%",
-                background: "linear-gradient(267.56deg, #11CB79 14.55%, #11A692 68.45%, #002366 136.67%)"
-              }}
-            ></div>
-          </div>
-          <div className='flex justify-between mb-2'>
-            <span className='text-sm text-gray-700'>Max</span>
-            <span className='text-sm text-gray-700'>USDC {Number(product.maxCapacity.toString()).toLocaleString()}</span>
+          <div className='flex flex-col justify-around ml-3'>
+            <TitleH3 className='text-black'>{product.underlying}</TitleH3>
+            <SubtitleRegular16>{product.name}</SubtitleRegular16>
           </div>
         </div>
         <div className={"hidden md:flex flex-col items-center"}>
@@ -126,6 +114,25 @@ export default function Product({ product }: { product: IProduct }) {
           <h3 className='font-medium leading-tight text-3xl bg-clip-text text-transparent bg-primary-gradient'>
             {product.issuanceCycle.apy}
           </h3>
+        </div>
+      </div>
+      <div className={"flex flex-col"}>
+        <div className='flex justify-between my-1'>
+          <span className='text-sm text-gray-700'>Amount deposited</span>
+          <span className='text-sm text-gray-700'>USDC {capacity.toLocaleString()}</span>
+        </div>
+        <div className='w-full bg-[#00000014] rounded my-1'>
+          <div
+            className='bg-gray-600 h-2 rounded'
+            style={{
+              width: (capacity / Number(product.maxCapacity)) * 100 + "%",
+              background: "linear-gradient(267.56deg, #11CB79 14.55%, #11A692 68.45%, #002366 136.67%)"
+            }}
+          ></div>
+        </div>
+        <div className='flex justify-between mb-2'>
+          <span className='text-sm text-gray-700'>Max</span>
+          <span className='text-sm text-gray-700'>USDC {Number(product.maxCapacity.toString()).toLocaleString()}</span>
         </div>
       </div>
       <div className={"block md:hidden"}>
@@ -142,25 +149,16 @@ export default function Product({ product }: { product: IProduct }) {
         />
       </div>
 
-      <div className={"flex-col md:flex-row md:flex space-y-3 md:space-y-0 items-center justify-between mt-3"}>
-        <div className='flex md:flex-col items-center justify-between bg-[#0000000a] h-[40px] md:h-[66px] rounded-[7px] p-3'>
-          <p className='text-[16px] md:text-[12px] font-light text-gray-700'>{product.status == 3 ? "Time to Maturiy" : "Time to Issuance"}</p>
-          <h3 className='text-[16px] md:text-[18px] font-light text-black'>
-            <Countdown 
-              intervalDelay={60000} 
-              date={(product.status == 3 ? product.issuanceCycle.maturityDate : product.issuanceCycle.issuanceDate) * 1000} 
-              renderer={issuance_date_renderer} 
-            />
-          </h3>
-        </div>
-        <div className='flex md:flex-col items-center justify-between bg-[#0000000a] h-[40px] md:h-[66px] rounded-[7px] p-3'>
-          <span className='text-[16px] md:text-[12px] font-light text-gray-700'>Investment Duration</span>
-          <span className='text-[16px] md:text-[18px] font-light text-black'>{investment_duration}</span>
-        </div>
-        <div className='flex md:flex-col items-center justify-between bg-[#0000000a] h-[40px] md:h-[66px] rounded-[7px] p-3'>
-          <span className='text-[16px] md:text-[12px] font-light text-gray-700'>Principal Protection</span>
-          <span className='text-[16px] md:text-[18px] font-light text-black'>100%</span>
-        </div>
+      <div className={"flex-col md:flex-row md:flex space-y-3 md:space-y-0 md:space-x-2 items-center justify-between mt-3"}>
+        <RecapCardMobile label={product.status == 3 ? "Time to Maturiy" : "Time to Issuance"} value={
+          <Countdown 
+            intervalDelay={60000} 
+            date={(product.status == 3 ? product.issuanceCycle.maturityDate : product.issuanceCycle.issuanceDate) * 1000} 
+            renderer={issuance_date_renderer} 
+          />
+        }></RecapCardMobile>
+        <RecapCardMobile label={"Investment Duration"} value={investment_duration}></RecapCardMobile>
+        <RecapCardMobile label={"Principal Protection"} value={"100%"}></RecapCardMobile>
       </div>
       <Link href={`/product/${product.address}`}>
         <div className='py-3 px-5 text-base font-medium rounded-lg text-white focus:outline-none bg-black hover:bg-gray-600 focus:z-10 focus:ring-4 focus:ring-gray-200 flex items-center justify-center cursor-pointer mt-8'>
