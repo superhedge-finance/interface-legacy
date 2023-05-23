@@ -14,4 +14,4 @@ export const ProductSpreads = [
 
 export const ProductUnderlyingList = ["All", "ETH/USDC", "BTC/USDC"];
 
-export const ProductCategoryList = ["All", "BULLISH", "BEARISH", "RANGE"];
+export const ProductCategoryList = ["All", "Bullish", "Bearish", "Range"];
