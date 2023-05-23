@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useMemo } from "react";
 import { ethers } from "ethers";
-import { ProductSpreads, ProductStatus, ProductCategoryList, IProduct } from "../../types";
+import { ProductSpreads, ProductStatus, IProduct } from "../../types";
 import { ReturnsChart } from "../product/ReturnsChart";
 import { getCurrencyIcon, formatDuration } from "../../utils/helpers";
 import { RecapCard } from "../commons/RecapCard";
@@ -65,7 +65,7 @@ export default function Product({ product }: { product: IProduct }) {
   }, [product]);
 
   return (
-    <div className='flex flex-col p-5 rounded-[12px] bg-white w-[340px] sm:w-[470px] drop-shadow hover:outline outline-2 outline-[#11CB79]'>
+    <div className='flex flex-col p-5 m-[15px] rounded-[12px] bg-white w-[340px] sm:w-[470px] drop-shadow hover:outline outline-2 outline-[#11CB79]'>
       <div className={"flex justify-between"}>
         <div className={"inline-block"}>
           <span className={`text-white text-sm py-2 px-3 rounded-lg ${ProductStatus[product.status].className}`}>
@@ -76,11 +76,11 @@ export default function Product({ product }: { product: IProduct }) {
               {ProductSpreads[categoryIndex].label}
             </span>
           )}
-          {categoryIndex >= 0 && (
+          {/* {categoryIndex >= 0 && (
             <span className={`text-white text-sm ml-3 py-2 px-3 rounded-lg ${ProductSpreads[categoryIndex].className}`}>
               {ProductCategoryList[categoryIndex + 1]}
             </span>
-          )}
+          )} */}
         </div>
         <div className={"w-[40px] md:w-[60px] h-[36px] md:h-[54px]"}>
           <img src={"/icons/social_logo.svg"} alt={"social logo"} width={"100%"} height={"100% "} />
