@@ -10,7 +10,7 @@ export default function WalletConnect() {
   };
 
   return (
-    <div className={"hidden md:block flex items-end p-3"}>
+    <div className={"hidden lg:flex items-end p-3"}>
       <ConnectButton.Custom>
         {({ account, chain, openChainModal, openConnectModal, mounted }) => {
           return (

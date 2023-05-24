@@ -9,7 +9,7 @@ const Header = () => {
   const { toast, type } = useToast();
   return (
     <header className={"bg-[#F7F7F7] sticky z-50 top-0"}>
-      <nav className='px-10 py-5 rounded-br-[16px] rounded-bl-[16px] bg-[#161717]'>
+      <nav className='p-5 md:px-10 rounded-br-[16px] rounded-bl-[16px] bg-[#161717]'>
         <div className='container flex flex-wrap items-center justify-between mx-auto'>
           <Link href='/' className='flex items-center pt-1.5'>
             <img src={"/icons/logo.svg"} alt={"logo"} />
