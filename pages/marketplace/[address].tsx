@@ -97,7 +97,7 @@ const MarketplaceDetail = () => {
     <div className={"py-[80px] flex justify-center"}>
       <div className={"max-w-[650px] w-full"}>
         {item && (
-          <div className={"flex flex-col items-center w-full"}>
+          <div className={"flex flex-col w-full"}>
             <div className={"flex items-center w-full justify-between"}>
               <TitleH2>
                 <span className={"bg-clip-text text-transparent bg-primary-gradient"}>NFT details</span>
@@ -167,12 +167,7 @@ const MarketplaceDetail = () => {
 
             <div className={"mt-[80px] flex flex-col space-y-5"}>
               <TitleH3>Vault Strategy</TitleH3>
-              <ParaLight16>
-                The vault allocates the majority of investors deposits to a verified &apos;bluechip&apos; yield-source, earning interests to
-                ensure principal-protection and to pay weekly coupons. A small allocation is invested in a ETH/USDC Put-Spread option, which
-                pays additional profits, if the option expires &apos;in the money&apos;. The profits earned from the coupons and options are
-                reinvested in additional NFT-SN in the next cycle, effectively compounding the investors&apos; returns progressively.
-              </ParaLight16>
+              <ParaLight16>{item.vaultStrategy}</ParaLight16>
             </div>
 
             <div className={"mt-[80px] w-full flex flex-col space-y-5"}>
@@ -182,25 +177,17 @@ const MarketplaceDetail = () => {
 
             <div className={"mt-[80px] flex flex-col space-y-5"}>
               <TitleH3>Risk</TitleH3>
-              <ParaLight16>
-                The primary risk is the smart contract risk of yield-protocols that have majority allocations. The secondary risk is
-                counterparty risk from market makers who are the underwriters of the options.
-              </ParaLight16>
+              <ParaLight16>{item.risk}</ParaLight16>
             </div>
 
             <div className={"mt-[80px] flex flex-col space-y-5"}>
               <TitleH3>Fees</TitleH3>
-              <ParaLight16>
-                The vault applies a charge of 10% on profits between cycles, where profits include the coupons and option profits, if any.
-                There are no management fees.
-              </ParaLight16>
+              <ParaLight16>{item.fees}</ParaLight16>
             </div>
 
             <div className={"mt-[80px] flex flex-col space-y-5"}>
               <TitleH3>Counterparties</TitleH3>
-              <ParaLight16>
-                Counterparties for the options are either fully margined on Deribit exchange, or fully verified market makers.
-              </ParaLight16>
+              <ParaLight16>{item.counterparties}</ParaLight16>
             </div>
 
             <div className={"mt-[80px] w-full flex flex-col space-y-5"}>
