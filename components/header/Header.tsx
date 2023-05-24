@@ -15,7 +15,7 @@ const Header = () => {
             <img src={"/icons/logo.svg"} alt={"logo"} />
           </Link>
           <NavMenu />
-          <WalletConnect />
+          <WalletConnect isMobile={false}/>
           <NavMenuMobile />
         </div>
       </nav>

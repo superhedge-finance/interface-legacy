@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import WalletConnect from "./WalletConnect";
 
 export default function NavMenuMobile() {
     const router = useRouter();
@@ -30,6 +31,9 @@ export default function NavMenuMobile() {
                             <Link href="/marketplace" className={`block p-0 hover:text-white ${router.pathname === '/marketplace' ? 'text-white' : 'text-[#f8f8f880]'}`}>
                                 Marketplace
                             </Link>
+                        </li>
+                        <li className="md:hidden pt-10">
+                            <WalletConnect isMobile={true} />
                         </li>
                     </ul>
                 </div>
