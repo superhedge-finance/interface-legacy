@@ -8,7 +8,7 @@ export default function NavMenuMobile() {
     return (
         <>
             <img
-                className="block lg:hidden cursor-pointer"
+                className="block lg:hidden cursor-pointer ml-6"
                 src={!isClicked ? "/layouts/nav_menu.svg" : "/layouts/nav_menu_close.svg"}
                 alt={"nav menu"}
                 onClick={() => setIsClicked(!isClicked)}

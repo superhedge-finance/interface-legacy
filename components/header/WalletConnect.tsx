@@ -10,7 +10,7 @@ export default function WalletConnect() {
   };
 
   return (
-    <div className={"hidden lg:flex items-end p-3"}>
+    <div className={"hidden md:flex items-end p-3"}>
       <ConnectButton.Custom>
         {({ account, chain, openChainModal, openConnectModal, mounted }) => {
           return (
@@ -82,7 +82,7 @@ export default function WalletConnect() {
                         as={"div"}
                         className={"absolute bg-[#161717] rounded-bl-lg rounded-br-lg w-2/3 text-[13px] leading-[16px] z-[99]"}
                       >
-                        <Menu.Item as={"div"} className={"h-[64px] border border-[1px] border-[#4B4B4B]"}>
+                        <Menu.Item as={"div"} className={"h-[64px] border-[1px] border-[#4B4B4B]"}>
                           <Link href={"/profile"}>
                             <div className={"flex items-center justify-center h-full text-grey-70 py-4 px-[10px]"}>PROFILE</div>
                           </Link>
