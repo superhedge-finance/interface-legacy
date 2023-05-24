@@ -75,7 +75,7 @@ export default function ProductList() {
         </Tab.Group>
       </div>
       
-      <div className='md:mt-[50px] mt-8 flex flex-wrap justify-center sm:w-[500px] sm:justify-start lg:w-[1000px] 2xl:w-[1500px]'>
+      <div className={`md:mt-[50px] mt-8 flex flex-wrap justify-center sm:w-[500px] lg:w-[1000px] 2xl:w-[1500px] ${filteredProducts.length > 2 ? "sm:justify-start" : ""}`}>
         {!isProductLoading && filteredProducts.map((product, idx) => <Product key={idx} product={product} />)}
       </div>
     </div>
