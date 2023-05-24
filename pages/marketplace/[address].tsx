@@ -8,7 +8,7 @@ import { ReturnsChart } from "../../components/product/ReturnsChart";
 import { ActivityHeader, ActivityRow } from "../../components/commons/ActivityRow";
 import { MarketplaceItemDetailType } from "../../types";
 import { getTokenItem } from "../../service";
-import { getCurrencyIcon } from "../../utils/helpers";
+import { getCurrencyIcon, truncateAddress } from "../../utils/helpers";
 import Timeline from "../../components/product/Timeline";
 import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
 import { useNetwork } from "wagmi";
@@ -146,6 +146,14 @@ const MarketplaceDetail = () => {
               <RecapCard label={"Best Offer Price"} value={`${item.offerPrice.toLocaleString()} USDC`} />
               <RecapCard label={"Total Lots"} value={`${item.totalLots} LOTS`} />
               <RecapCard label={"Market Price"} value={`${item.mtmPrice.toLocaleString()} USDC`} />
+            </div>
+
+            <div className={"flex items-center justify-center mt-8 text-lg"}>
+              <span className={"text-[#677079] mr-2"}>Product&nbsp;:</span>
+              <span className={"mr-2 bg-clip-text text-transparent bg-primary-gradient"}>{truncateAddress(item.productAddress)}</span>
+              <a href={`${EXPLORER[chainId]}/address/${item.productAddress}`} target={"_blank"} rel='noreferrer'>
+                <Image src={"/icons/external.svg"} alt={"external"} width={20} height={20} />
+              </a>
             </div>
 
             <div className={"flex flex-col w-full mt-[80px]"}>
