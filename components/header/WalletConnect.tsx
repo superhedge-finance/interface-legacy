@@ -28,7 +28,7 @@ export default function WalletConnect({ isMobile }: { isMobile: boolean}) {
                 if (!mounted || !account || !chain) {
                   return (
                     <div
-                      className='uppercase text-[#161717] text-[14px] text-center font-semibold leading-[14px] bg-white py-[18px] cursor-pointer px-8 rounded-[8px]'
+                      className='uppercase text-[#161717] text-[16px] md:text-[14px] text-center font-semibold bg-white py-[15px] cursor-pointer px-8 rounded-[8px]'
                       onClick={openConnectModal}
                     >
                       Connect Wallet
@@ -71,7 +71,7 @@ export default function WalletConnect({ isMobile }: { isMobile: boolean}) {
                     <Menu.Button as={"div"} className={"flex-1 text-center"}>
                       <div
                         className={
-                          "text-[#F8F6F5] uppercase text-[16px] font-medium bg-[#161717] border-[1px] border-[#CFD1D3] rounded-[8px] cursor-pointer py-[12px] px-6"
+                          "text-[#F8F6F5] uppercase text-lg md:text-[16px] font-medium bg-[#161717] border-[1px] border-[#CFD1D3] rounded-[8px] cursor-pointer py-[10px] px-6"
                         }
                       >
                         {account.displayName}
