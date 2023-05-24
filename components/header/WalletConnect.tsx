@@ -4,13 +4,13 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Menu } from "@headlessui/react";
 import { disconnect } from "@wagmi/core";
 
-export default function WalletConnect() {
+export default function WalletConnect({ isMobile }: { isMobile: boolean}) {
   const onDisconnect = async () => {
     await disconnect();
   };
 
   return (
-    <div className={"hidden md:block flex items-end p-3"}>
+    <div className={`${isMobile ? "block": "hidden"} md:flex`}>
       <ConnectButton.Custom>
         {({ account, chain, openChainModal, openConnectModal, mounted }) => {
           return (
@@ -28,7 +28,7 @@ export default function WalletConnect() {
                 if (!mounted || !account || !chain) {
                   return (
                     <div
-                      className='uppercase text-[#161717] text-[14px] font-semibold leading-[14px] bg-white py-[18px] cursor-pointer px-8 rounded-[8px]'
+                      className='uppercase text-[#161717] text-[16px] md:text-[14px] text-center font-semibold bg-white py-[15px] cursor-pointer px-8 rounded-[8px]'
                       onClick={openConnectModal}
                     >
                       Connect Wallet
@@ -39,18 +39,17 @@ export default function WalletConnect() {
                 if (chain.unsupported) {
                   console.log("Unsupported chain");
                   return (
-                    <div onClick={openChainModal} className={"text-yellow-500"}>
+                    <div onClick={openChainModal} className={"text-yellow-500 text-center"}>
                       Wrong network
                     </div>
                   );
                 }
 
                 return (
-                  <Menu as={"div"} className={"relative flex items-center space-x-4"}>
+                  <Menu as={"div"} className={"relative flex items-center justify-center md:justify-start"}>
                     <button
                       onClick={openChainModal}
-                      style={{ display: "flex", alignItems: "center" }}
-                      className={"text-white"}
+                      className={"sm:flex items-center text-white hidden mr-4"}
                       type='button'
                     >
                       {chain.hasIcon && (
@@ -69,10 +68,10 @@ export default function WalletConnect() {
                       )}
                       {chain.name}
                     </button>
-                    <Menu.Button as={"div"}>
+                    <Menu.Button as={"div"} className={"flex-1 text-center"}>
                       <div
                         className={
-                          "text-[#F8F6F5] uppercase text-[14px] leading-[14px] h-[50px] font-semibold bg-[#161717] border-[1px] border-[#CFD1D3] rounded-[8px] cursor-pointer py-[15px] px-8"
+                          "text-[#F8F6F5] uppercase text-lg md:text-[16px] font-medium bg-[#161717] border-[1px] border-[#CFD1D3] rounded-[8px] cursor-pointer py-[10px] px-6"
                         }
                       >
                         {account.displayName}
@@ -80,16 +79,19 @@ export default function WalletConnect() {
                       </div>
                       <Menu.Items
                         as={"div"}
-                        className={"absolute bg-[#161717] rounded-bl-lg rounded-br-lg w-2/3 text-[13px] leading-[16px] z-[99]"}
+                        className={"absolute bg-[#161717] rounded-bl-lg rounded-br-lg text-xl md:text-[16px] leading-[16px] z-[99] w-full left-0 md:w-2/3 md:left-auto"}
                       >
-                        <Menu.Item as={"div"} className={"h-[64px] border border-[1px] border-[#4B4B4B]"}>
+                        <Menu.Item 
+                          as={"div"} 
+                          className={"border-[1px] border-[#4B4B4B]"}
+                        >
                           <Link href={"/profile"}>
-                            <div className={"flex items-center justify-center h-full text-grey-70 py-4 px-[10px]"}>PROFILE</div>
+                            <div className={"flex items-center justify-center h-full text-grey-70 py-6 px-[10px]"}>PROFILE</div>
                           </Link>
                         </Menu.Item>
                         <Menu.Item
                           as={"div"}
-                          className={"flex items-center justify-center  text-grey-70 py-4 px-[10px] h-[64px]"}
+                          className={"flex items-center justify-center cursor-pointer text-grey-70 py-6 px-[10px]"}
                           onClick={onDisconnect}
                         >
                           DISCONNECT WALLET

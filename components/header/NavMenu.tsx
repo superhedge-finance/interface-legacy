@@ -5,7 +5,7 @@ export default function NavMenu() {
   const router = useRouter();
 
   return (
-    <div className='hidden w-full md:block md:w-auto' id='navbar-default'>
+    <div className='hidden w-full lg:block lg:w-auto' id='navbar-default'>
       <ul className='uppercase flex flex-col p-4 mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-base md:font-medium bg-transparent'>
         <li>
           <Link

@@ -8,6 +8,10 @@ export type MarketplaceItemType = {
   name: string;
   totalLots: number;
   issuanceCycle: Cycle;
+  vaultStrategy: string;
+  risk: string;
+  fees: string;
+  counterparties: string;
 };
 
 export type MarketplaceItemFullType = MarketplaceItemType & {

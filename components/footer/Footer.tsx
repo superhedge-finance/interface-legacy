@@ -3,18 +3,18 @@ import Link from "next/link";
 export default function Footer() {
   return (
     <footer className='bg-[#161717] px-10 py-[20px] md:py-[35px]'>
-      <div className='flex flex-col md:flex-row items-center justify-between h-full'>
+      <div className='container mx-auto flex flex-col md:flex-row items-center justify-between h-full'>
         <Link href='/' className='flex items-center pt-1.5'>
           <img src={"/icons/logo.svg"} alt={"logo"} />
         </Link>
         <ul className='flex flex-col md:flex-row items-center text-base text-[#f8f8f880] dark:text-gray-400 space-y-6 md:space-y-0 my-10 md:my-0'>
           <li>
-            <Link href='https://docs.superhedge.com/' target="_blank" className='text-[14px] leading-[16px] uppercase hover:underline mr-0 md:mr-8'>
+            <Link href='https://docs.superhedge.com/' target="_blank" className='text-[16px] leading-[16px] uppercase hover:underline mr-0 md:mr-8'>
               DOCS
             </Link>
           </li>
           <li>
-            <Link href='https://docsend.com/view/p654g6zexs3wvdnm' target="_blank" className='text-[14px] leading-[16px] uppercase hover:underline'>
+            <Link href='https://docsend.com/view/p654g6zexs3wvdnm' target="_blank" className='text-[16px] leading-[16px] uppercase hover:underline'>
               WHITE PAPER
             </Link>
           </li>
