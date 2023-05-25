@@ -16,7 +16,7 @@ const Layout = ({ children }: LayoutProps) => {
       </Head>
       <main className='w-full bg-[#161717]'>
         <Header />
-        <div className='bg-[#F7F7F7] min-h-[calc(100vh-228px)] py-4 md:py-8 rounded-bl-[12px] rounded-br-[12px] px-5 md:px-12'>
+        <div className='bg-[#F7F7F7] min-h-[calc(100vh-210px)] py-4 md:py-8 rounded-bl-[12px] rounded-br-[12px] px-5 md:px-12'>
           {children}
         </div>
         <Footer />
