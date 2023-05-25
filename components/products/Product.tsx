@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { useMemo } from "react";
+import { useRouter } from "next/router";
 import { ethers } from "ethers";
 import { ProductSpreads, ProductStatus, ProductCategoryList, IProduct } from "../../types";
 import { ReturnsChart } from "../product/ReturnsChart";
@@ -14,6 +14,9 @@ import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
 import { DECIMAL } from "../../utils/constants";
 
 export default function Product({ product }: { product: IProduct }) {
+
+  const router = useRouter();
+
   const { chain } = useNetwork();
 
   const chainId = useMemo(() => {
@@ -65,7 +68,10 @@ export default function Product({ product }: { product: IProduct }) {
   }, [product]);
 
   return (
-    <div className='flex flex-col p-5 m-[15px] rounded-[12px] bg-white w-[340px] sm:w-[470px] drop-shadow hover:outline outline-2 outline-[#11CB79]'>
+    <div 
+      className='flex flex-col p-5 cursor-pointer m-[15px] rounded-[12px] bg-white w-[340px] sm:w-[470px] drop-shadow hover:outline outline-2 outline-[#11CB79]' 
+      onClick={() => {router.push(`/product/${product.address}`)}}
+    >
       <div className={"flex justify-between"}>
         <div className={"inline-block"}>
           <span className={`text-white text-sm py-2 px-3 rounded-lg ${ProductStatus[product.status].className}`}>
@@ -82,11 +88,11 @@ export default function Product({ product }: { product: IProduct }) {
             </span>
           )}
         </div>
-        <div className={"w-[40px] md:w-[60px] h-[36px] md:h-[54px]"}>
+        <div className={"hidden sm:block w-[40px] md:w-[60px] h-[36px] md:h-[54px]"}>
           <img src={"/icons/social_logo.svg"} alt={"social logo"} width={"100%"} height={"100% "} />
         </div>
       </div>
-      <div className={"flex justify-between items-end my-4"}>
+      <div className={"flex justify-between items-end my-5 md:my-4"}>
         <div className='flex flex-row'>
           <div className={"relative flex items-center mr-[40px]"}>
             <img
@@ -160,11 +166,6 @@ export default function Product({ product }: { product: IProduct }) {
         <RecapCardMobile label={"Investment Duration"} value={investment_duration}></RecapCardMobile>
         <RecapCardMobile label={"Principal Protection"} value={"100%"}></RecapCardMobile>
       </div>
-      <Link href={`/product/${product.address}`}>
-        <div className='py-3 px-5 text-base font-medium rounded-lg text-white focus:outline-none bg-black hover:bg-gray-600 focus:z-10 focus:ring-4 focus:ring-gray-200 flex items-center justify-center cursor-pointer mt-8'>
-          Invest in this Vault
-        </div>
-      </Link>
     </div>
   );
 }

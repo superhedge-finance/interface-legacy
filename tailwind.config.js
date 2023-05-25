@@ -31,8 +31,8 @@ module.exports = {
         success: '#70B877',
         indicative: '#4BA6A0',
         active: '#68AC6F',
-        callSpread: '#7991DA',
-        putSpread: '#95B221',
+        callSpread: '#95B221',
+        putSpread: '#7991DA',
         butterFly: '#8B78CB'
       },
       backgroundImage: {
