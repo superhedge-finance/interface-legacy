@@ -52,7 +52,7 @@ export default function ProductList() {
   }
 
   return (
-    <div className='container mx-auto flex flex-col sm:items-center'>
+    <div className='flex flex-col sm:items-center'>
       <div className='md:flex justify-center'>
         <Tab.Group>
           <Tab.List className='flex space-x-1 rounded-xl bg-[#EBEBEB] p-1'>
