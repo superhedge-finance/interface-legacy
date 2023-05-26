@@ -9,13 +9,10 @@ import MarketplaceList from "../../components/marketplace/List";
 import { getListedItems } from "../../service";
 import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
 
-const underlyingList = ["ALL", "ETH/USDC", "BTC/USDC"];
-
 const Marketplace = () => {
   const { chain } = useNetwork();
 
   const [items, setItems] = useState<Array<MarketplaceItemType>>([]);
-  const [, setUnderlying] = useState("ALL");
   const [, setCategory] = useState("All");
 
   const chainId = useMemo(() => {
@@ -56,26 +53,7 @@ const Marketplace = () => {
       )}
       {items.length > 0 && (
         <div className={"flex flex-col"}>
-          <div className={"grid grid-cols-1 md:flex space-y-3 md:space-y-0 space-x-0 md:space-x-7"}>
-            <Tab.Group>
-              <Tab.List className='flex space-x-1 rounded-xl bg-[#EBEBEB] p-1'>
-                {underlyingList.map((underlying, index) => (
-                  <Tab
-                    key={index}
-                    className={({ selected }) =>
-                      classNames(
-                        "w-[140px] rounded-lg py-2.5 text-sm font-medium leading-5 text-black",
-                        "focus:outline-none uppercase",
-                        selected ? "bg-white" : ""
-                      )
-                    }
-                    onClick={() => setUnderlying(underlying)}
-                  >
-                    {underlying}
-                  </Tab>
-                ))}
-              </Tab.List>
-            </Tab.Group>
+          <div className={"md:flex justify-center"}>
             <Tab.Group>
               <Tab.List className='flex space-x-1 rounded-xl bg-[#EBEBEB] p-1'>
                 {ProductCategoryList.map((category, index) => (
