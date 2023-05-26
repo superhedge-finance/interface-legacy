@@ -8,8 +8,8 @@ import useToast from "../../hooks/useToast";
 const Header = () => {
   const { toast, type } = useToast();
   return (
-    <header className={"bg-[#F7F7F7] sticky z-50 top-0"}>
-      <nav className='p-5 md:px-10 rounded-br-[16px] rounded-bl-[16px] bg-[#161717]'>
+    <header className={"bg-blacknew-100 sticky z-50 top-0 rounded-br-[16px] rounded-bl-[16px]"}>
+      <nav className='p-5 md:px-10'>
         <div className='container flex flex-wrap items-center justify-between mx-auto'>
           <Link href='/' className='flex grow lg:grow-0 items-center pt-1.5'>
             <img src={"/icons/logo.svg"} alt={"logo"} />

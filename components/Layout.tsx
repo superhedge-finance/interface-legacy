@@ -14,9 +14,9 @@ const Layout = ({ children }: LayoutProps) => {
         <title>Superhedge</title>
         <link rel='icon' href='/favicon.ico' key='favicon' />
       </Head>
-      <main className='w-full bg-[#161717]'>
+      <main className='w-full bg-[#F7F7F7]'>
         <Header />
-        <div className='bg-[#F7F7F7] min-h-[calc(100vh-210px)] py-4 md:py-8 rounded-bl-[12px] rounded-br-[12px] px-5 md:px-12'>
+        <div className='container mx-auto min-h-[calc(100vh-210px)] p-5 md:p-8'>
           {children}
         </div>
         <Footer />
