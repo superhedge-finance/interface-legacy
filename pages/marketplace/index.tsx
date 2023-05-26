@@ -5,7 +5,7 @@ import { useNetwork } from "wagmi";
 import { classNames } from "../../styles/helper";
 import { ProductCategoryList } from "../../types";
 import { MarketplaceItemType } from "../../types";
-import MarketplaceList from "../../components/marketplace/List";
+import MarketplaceItem from "../../components/marketplace/Item";
 import { getListedItems } from "../../service";
 import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
 
@@ -13,12 +13,20 @@ const Marketplace = () => {
   const { chain } = useNetwork();
 
   const [items, setItems] = useState<Array<MarketplaceItemType>>([]);
-  const [, setCategory] = useState("All");
+  const [category, setCategory] = useState("All");
 
   const chainId = useMemo(() => {
     if (chain) return chain.id;
     return SUPPORT_CHAIN_IDS.GOERLI;
   }, [chain]);
+
+  const filteredItems = useMemo(() => {
+    return items
+      .filter((item) => {
+        if (category === "All") return true;
+        return item.name.toLowerCase().includes(category.toLowerCase());
+      });
+  }, [items, category]);
 
   useEffect(() => {
     (async () => {
@@ -75,7 +83,13 @@ const Marketplace = () => {
             </Tab.Group>
           </div>
 
-          <MarketplaceList items={items} />
+          <div className={"flex flex-col"}>
+            <div className={"grid grid-cols-1 md:grid-cols-3 mt-12 gap-x-0 md:gap-x-5 gap-y-5 md:gap-y-8"}>
+              {filteredItems.map((item, index) => (
+                <MarketplaceItem key={index} item={item} />
+              ))}
+            </div>
+          </div>
         </div>
       )}
     </div>
