@@ -33,7 +33,8 @@ module.exports = {
         active: '#68AC6F',
         callSpread: '#95B221',
         putSpread: '#7991DA',
-        butterFly: '#8B78CB'
+        butterFly: '#8B78CB',
+        greenHover: '#11CB79'
       },
       backgroundImage: {
         'primary-gradient': 'linear-gradient(267.79deg, #11CB79 42.5%, #11A692 67.51%, #002366 99.18%)',

@@ -60,7 +60,7 @@ const Marketplace = () => {
         </div>
       )}
       {items.length > 0 && (
-        <div className={"flex flex-col"}>
+        <div className={"flex flex-col sm:items-center"}>
           <div className={"md:flex justify-center"}>
             <Tab.Group>
               <Tab.List className='flex space-x-1 rounded-xl bg-[#EBEBEB] p-1'>
@@ -83,12 +83,11 @@ const Marketplace = () => {
             </Tab.Group>
           </div>
 
-          <div className={"flex flex-col"}>
-            <div className={"grid grid-cols-1 md:grid-cols-3 mt-12 gap-x-0 md:gap-x-5 gap-y-5 md:gap-y-8"}>
-              {filteredItems.map((item, index) => (
-                <MarketplaceItem key={index} item={item} />
-              ))}
-            </div>
+          <div className={`md:mt-[50px] mt-8 flex flex-wrap justify-center sm:w-[500px] lg:w-[1000px] 2xl:w-[1500px] ${filteredItems.length > 2 ? "sm:justify-start" : ""}`}>
+                    
+            {filteredItems.map((item, index) => (
+              <MarketplaceItem key={index} item={item} />
+            ))}
           </div>
         </div>
       )}

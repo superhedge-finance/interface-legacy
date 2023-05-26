@@ -1,39 +1,113 @@
-import Image from "next/image";
+import { useMemo } from "react";
 import { useRouter } from "next/router";
-import { PrimaryButton } from "../basic";
 import { RecapCard } from "../commons/RecapCard";
 import { ReturnsChart } from "../product/ReturnsChart";
-import { MarketplaceItemType } from "../../types";
+import { MarketplaceItemType, ProductSpreads, ProductCategoryList } from "../../types";
 import { getCurrencyIcon } from "../../utils/helpers";
+import { SubtitleRegular16, TitleH3 } from "../basic";
+import Countdown from "react-countdown";
+
+const dateRenderer = ({
+  days,
+  hours,
+  minutes,
+  completed
+}: {
+  days: number;
+  hours: number;
+  minutes: number;
+  completed: boolean;
+}) => {
+  if (completed) {
+    return <span>{`${days}D : ${hours}H : ${minutes}M`}</span>;
+  } else {
+    return <span>{`${days}D : ${hours}H : ${minutes}M`}</span>;
+  }
+};
 
 const MarketplaceItem = ({ item }: { item: MarketplaceItemType }) => {
   const router = useRouter();
 
   const { currency1, currency2 } = getCurrencyIcon(item.underlying);
 
+  const categoryIndex = useMemo(() => {
+    if (item.name.toLowerCase().includes("bullish")) {
+      return 0;
+    } else if (item.name.toLowerCase().includes("bearish")) {
+      return 1;
+    } else if (item.name.toLowerCase().includes("range")) {
+      return 2;
+    }
+    return -1;
+  }, [item]);
+
   return (
-    <div className={"flex flex-col p-6 md:py-11 md:px-12 rounded-[16px] bg-white"}>
-      <div className={"flex items-center space-x-2"}>
-        <div className={"relative flex items-center mr-[10px]"}>
-          <Image src={currency1} className='rounded-full' alt='Product Logo' width={20} height={20} />
-          <Image src={currency2} className='rounded-full absolute left-[10px]' alt='Product Logo' width={20} height={20} />
+    <div 
+      className={"flex flex-col p-5 cursor-pointer m-[15px] rounded-[12px] bg-white w-[350px] sm:w-[470px] drop-shadow hover:outline outline-2 outline-greenHover"}
+      onClick={() => router.push(`/marketplace/${item.productAddress}`)}
+    >
+      <div className={"flex justify-between"}>
+        <div className={"inline-block"}>
+          {categoryIndex >= 0 && (
+            <span className={`text-white text-sm mr-2 py-2 px-3 rounded-lg ${ProductSpreads[categoryIndex].className}`}>
+              {ProductSpreads[categoryIndex].label}
+            </span>
+          )}
+          {categoryIndex >= 0 && (
+            <span className={`text-white text-sm py-2 px-3 rounded-lg ${ProductSpreads[categoryIndex].className}`}>
+              {ProductCategoryList[categoryIndex + 1]}
+            </span>
+          )}
         </div>
-        <span className={"text-grey-70 text-[20px]"}>{item.name}</span>
+        <div className={"hidden sm:block w-[40px] md:w-[60px] h-[36px] md:h-[54px]"}>
+          <img src={"/icons/social_logo.svg"} alt={"social logo"} width={"100%"} height={"100% "} />
+        </div>
+      </div>
+      <div className='flex flex-row my-5 md:my-4'>
+        <div className={"relative flex items-center mr-[40px]"}>
+          <img
+            src={currency1}
+            className='rounded-full w-[40px] md:w-[60px] h-[40px] md:h-[60px]'
+            alt='currency1 logo'
+            width={"100%"}
+            height={"100%"}
+          />
+          <img
+            src={currency2}
+            className='rounded-full w-[40px] md:w-[60px] h-[40px] md:h-[60px] absolute left-[30px] md:left-[40px]'
+            alt='currency2 logo'
+            width={"100%"}
+            height={"100%"}
+          />
+        </div>
+        <div className='flex flex-col justify-around ml-3'>
+          <TitleH3 className='text-black'>{item.underlying}</TitleH3>
+          <SubtitleRegular16>{item.name}</SubtitleRegular16>
+        </div>
       </div>
 
-      <span className={"text-blacknew-100 text-[32px] leading-[40px] mt-3"}>{item.underlying}</span>
+      <div className={"mb-3 flex items-center space-x-3"}>
+        <RecapCard label={"MTM Price"} value={item.mtmPrice.toLocaleString() + " USDC"} />
+        <RecapCard label={"Time to Maturity"} value={
+          <Countdown 
+            intervalDelay={60000} 
+            date={item.issuanceCycle.maturityDate * 1000} 
+            renderer={dateRenderer} 
+          />}
+        />
+      </div>
 
-      <div className={"mt-2 py-3 px-4 w-full rounded-lg bg-[rgba(0,0,0,0.04)] flex flex-col items-center justify-center space-y-2"}>
+      <div className={"mb-3 flex items-center space-x-3"}>
+        <RecapCard label={"Best Offer Price"} value={item.offerPrice.toLocaleString() + " USDC"} />
+        <RecapCard label={"Total Lots Offered"} value={item.totalLots.toLocaleString() + " Lots"} />
+      </div>
+
+      {/* <div className={"mt-2 py-3 px-4 w-full rounded-lg bg-[rgba(0,0,0,0.04)] flex flex-col items-center justify-center space-y-2"}>
         <span className={"text-grey-70 text-[12px] leading-[12px]"}>Best Offer Price</span>
         <div className={"flex items-center text-[16px] leading-[16px] space-x-2 uppercase"}>
           <span className={"bg-primary-gradient bg-clip-text text-transparent"}>{item.offerPrice.toLocaleString()} USDC</span>
         </div>
-      </div>
-
-      <div className={"mt-3 flex items-center space-x-3"}>
-        <RecapCard label={"MTM Price"} value={item.mtmPrice.toLocaleString() + " USDC"} />
-        <RecapCard label={"Total Lots"} value={item.totalLots.toLocaleString() + " Lots"} />
-      </div>
+      </div> */}
 
       <div>
         <ReturnsChart
@@ -44,8 +118,6 @@ const MarketplaceItem = ({ item }: { item: MarketplaceItemType }) => {
           strikePrice3={item.issuanceCycle.strikePrice3}
         />
       </div>
-
-      <PrimaryButton label={"BUY NOW"} className={"mt-4 uppercase"} onClick={() => router.push(`/marketplace/${item.productAddress}`)} />
     </div>
   );
 };
