@@ -145,7 +145,7 @@ const MarketplaceDetail = () => {
             <div className={"flex items-center w-full mt-3 space-x-4"}>
               <RecapCard label={"Best Offer Price"} value={`${item.offerPrice.toLocaleString()} USDC`} />
               <RecapCard label={"Total Lots"} value={`${item.totalLots} LOTS`} />
-              <RecapCard label={"Market Price"} value={`${item.mtmPrice.toLocaleString()} USDC`} />
+              <RecapCard label={"Market Price"} value={`${item.mtmPrice ? item.mtmPrice.toLocaleString() : 0 } USDC`} />
             </div>
 
             <div className={"flex items-center justify-center mt-8 text-lg"}>

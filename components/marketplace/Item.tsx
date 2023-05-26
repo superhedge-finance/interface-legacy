@@ -87,7 +87,7 @@ const MarketplaceItem = ({ item }: { item: MarketplaceItemType }) => {
       </div>
 
       <div className={"mb-3 flex items-center space-x-3"}>
-        <RecapCard label={"MTM Price"} value={item.mtmPrice.toLocaleString() + " USDC"} />
+        <RecapCard label={"MTM Price"} value={`${item.mtmPrice ? item.mtmPrice.toLocaleString() : 0 } USDC`} />
         <RecapCard label={"Time to Maturity"} value={
           <Countdown 
             intervalDelay={60000} 

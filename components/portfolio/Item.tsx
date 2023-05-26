@@ -42,7 +42,7 @@ const PortfolioListingItem = ({ item }: { item: MarketplaceItemFullType }) => {
       </div>
 
       <div className={"mt-3 flex items-center space-x-3"}>
-        <RecapCard label={"Market Price"} value={item.mtmPrice.toLocaleString() + " USDC"} />
+        <RecapCard label={"Market Price"} value={`${item.mtmPrice ? item.mtmPrice.toLocaleString() : 0} USDC`} />
         <RecapCard label={"Offer start since"} value={offerStartSince} />
       </div>
 

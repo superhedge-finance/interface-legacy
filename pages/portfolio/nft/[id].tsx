@@ -101,7 +101,7 @@ const PortfolioNFTDetails = () => {
             <div className={"flex items-center w-full mt-12 space-x-4"}>
               <RecapCard label={"Price"} value={`${item.offerPrice.toLocaleString()} USDC`} />
               <RecapCard label={"Product Lots"} value={`${item.totalLots} LOTS`} />
-              <RecapCard label={"Market Price"} value={`${item.mtmPrice.toLocaleString()} USDC`} />
+              <RecapCard label={"Market Price"} value={`${item.mtmPrice ? item.mtmPrice.toLocaleString() : 0 } USDC`} />
             </div>
 
             <div className={"w-full mt-[80px]"}>
