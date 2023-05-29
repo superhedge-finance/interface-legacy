@@ -8,11 +8,13 @@ import { MarketplaceItemType } from "../../types";
 import MarketplaceItem from "../../components/marketplace/Item";
 import { getListedItems } from "../../service";
 import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
+import { SkeletonCard } from "../../components/basic";
 
 const Marketplace = () => {
   const { chain } = useNetwork();
 
   const [items, setItems] = useState<Array<MarketplaceItemType>>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [category, setCategory] = useState("All");
 
   const chainId = useMemo(() => {
@@ -30,14 +32,29 @@ const Marketplace = () => {
 
   useEffect(() => {
     (async () => {
-      const _items = await getListedItems(chainId);
-      setItems(_items);
+      try {
+        setIsLoading(true);
+        const _items = await getListedItems(chainId);
+        setItems(_items);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setIsLoading(false);
+      }
     })();
   }, [chainId]);
 
+  if (isLoading) {
+    return (
+      <div className={"col-span-2"}>
+        <SkeletonCard />
+      </div>
+    );
+  }
+
   return (
     <div className={"py-12"}>
-      {items.length === 0 && (
+      {!isLoading && items.length === 0 && (
         <div className={"flex items-center justify-center py-[110px]"}>
           <div className={"flex flex-col items-center space-y-5"}>
             <img src={"/icons/noNFT.svg"} alt={"noNFT"} />
@@ -59,7 +76,7 @@ const Marketplace = () => {
           </div>
         </div>
       )}
-      {items.length > 0 && (
+      {!isLoading && items.length > 0 && (
         <div className={"flex flex-col sm:items-center"}>
           <div className={"md:flex justify-center"}>
             <Tab.Group>

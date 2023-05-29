@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useRouter } from "next/router";
 import { RecapCard } from "../commons/RecapCard";
+import { RecapCardMobile } from "../commons/RecapCardMobile";
 import { ReturnsChart } from "../product/ReturnsChart";
 import { MarketplaceItemType, ProductSpreads, ProductCategoryList } from "../../types";
 import { getCurrencyIcon } from "../../utils/helpers";
@@ -97,9 +98,14 @@ const MarketplaceItem = ({ item }: { item: MarketplaceItemType }) => {
         />
       </div>
 
-      <div className={"mb-3 flex items-center space-x-3"}>
-        <RecapCard label={"Best Offer Price"} value={item.offerPrice.toLocaleString() + " USDC"} />
+      <div className={"hidden sm:flex items-center space-x-3 mb-3"}>
+        <RecapCard label={"Best Offer Price"} value={`${item.offerPrice.toLocaleString()} USDC(${item.offerLots} lots)`} />
         <RecapCard label={"Total Lots Offered"} value={item.totalLots.toLocaleString() + " Lots"} />
+      </div>
+
+      <div className={"sm:hidden items-center space-y-3 mb-3"}>
+        <RecapCardMobile label={"Best Offer Price"} value={`${item.offerPrice.toLocaleString()} USDC(${item.offerLots} lots)`} />
+        <RecapCardMobile label={"Total Lots Offered"} value={item.totalLots.toLocaleString() + " Lots"} />
       </div>
 
       {/* <div className={"mt-2 py-3 px-4 w-full rounded-lg bg-[rgba(0,0,0,0.04)] flex flex-col items-center justify-center space-y-2"}>
