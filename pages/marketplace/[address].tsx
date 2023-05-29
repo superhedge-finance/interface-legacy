@@ -2,7 +2,7 @@ import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import { RecapCard } from "../../components/commons/RecapCard";
-import { ParaLight16, TagRegular12, TitleH2, TitleH3 } from "../../components/basic";
+import { ParaLight16, TitleH3 } from "../../components/basic";
 import { ProductOffers } from "../../components/marketplace/ProductOffers";
 import { ReturnsChart } from "../../components/product/ReturnsChart";
 import { ActivityHeader, ActivityRow } from "../../components/commons/ActivityRow";
@@ -15,6 +15,7 @@ import { useNetwork } from "wagmi";
 import { EXPLORER } from "../../utils/constants";
 import Countdown from "react-countdown";
 import axios from "../../service/axios";
+import { ProductSpreads, ProductCategoryList } from "../../types";
 
 const issuance_date_renderer = ({
   days,
@@ -84,6 +85,17 @@ const MarketplaceDetail = () => {
     return { currency1: "/currency/usdc.svg", currency2: "/currency/eth.svg" };
   }, [item]);
 
+  const categoryIndex = useMemo(() => {
+    if (item && item.name.toLowerCase().includes("bullish")) {
+      return 0;
+    } else if (item && item.name.toLowerCase().includes("bearish")) {
+      return 1;
+    } else if (item && item.name.toLowerCase().includes("range")) {
+      return 2;
+    }
+    return -1;
+  }, [item]);
+
   /* const bestOfferPrice = useMemo(() => {
     if (item) {
       // get the best offer price from offers array
@@ -98,14 +110,22 @@ const MarketplaceDetail = () => {
       <div className={"max-w-[650px] w-full"}>
         {item && (
           <div className={"flex flex-col w-full"}>
-            <div className={"flex items-center w-full justify-between"}>
-              <TitleH2>
-                <span className={"bg-clip-text text-transparent bg-primary-gradient"}>NFT details</span>
-              </TitleH2>
+            <div className={"flex sm:items-center w-full flex-col sm:flex-row sm:justify-between"}>
+              <TitleH3 className={"bg-clip-text text-transparent bg-primary-gradient mb-3 sm:mb-0"}>
+                NFT details
+              </TitleH3>
 
-              <div className={"flex items-center py-[10px] px-4 bg-callSpread rounded-[6px]"}>
-                <TagRegular12 className={"text-whitenew-100"}>Bullish Invest</TagRegular12>
-              </div>
+              {categoryIndex >= 0 && (
+                <div>
+                  <span className={`text-white text-sm mr-2 py-2 px-3 rounded-lg ${ProductSpreads[categoryIndex].className}`}>
+                    {ProductSpreads[categoryIndex].label}
+                  </span>
+                
+                  <span className={`text-white text-sm py-2 px-3 rounded-lg ${ProductSpreads[categoryIndex].className}`}>
+                    {ProductCategoryList[categoryIndex + 1]}
+                  </span>
+                </div>
+              )}
             </div>
 
             <div className={"flex justify-between w-full mt-12 items-end"}>
