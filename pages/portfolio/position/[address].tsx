@@ -1,5 +1,5 @@
-import { ParaLight16, SkeletonCard, TitleH2, TitleH3 } from "../../../components/basic";
-import { IProduct, ProductSpreads } from "../../../types";
+import { ParaLight16, SkeletonCard, TitleH3 } from "../../../components/basic";
+import { IProduct, ProductSpreads, ProductStatus } from "../../../types";
 import Image from "next/image";
 import { ActionArea } from "../../../components/product/ActionArea";
 import { useRouter } from "next/router";
@@ -105,13 +105,18 @@ const PositionDetail = () => {
         <div className={"col-span-1"}>
           {!isLoading && product && (
             <div className='flex flex-col p-6'>
-              <div className={"flex items-end justify-between"}>
-                <TitleH2 className={"bg-primary-gradient bg-clip-text text-transparent"}>Position Details</TitleH2>
-                {categoryIndex >= 0 && (
-                  <span className={`inline-block text-white text-sm ml-3 px-4 py-2 rounded-lg ${ProductSpreads[categoryIndex].className}`}>
-                    {ProductSpreads[categoryIndex].label}
+              <div className={"flex flex-col xl:flex-row xl:justify-between"}>
+                <TitleH3 className={"bg-primary-gradient bg-clip-text text-transparent mb-3"}>Position Details</TitleH3>
+                <div>
+                  <span className={`inline-block text-white text-sm py-2 px-3 rounded-lg ${ProductStatus[product.status].className}`}>
+                    {ProductStatus[product.status].label}
                   </span>
-                )}
+                  {categoryIndex >= 0 && (
+                    <span className={`inline-block text-white text-sm ml-3 px-4 py-2 rounded-lg ${ProductSpreads[categoryIndex].className}`}>
+                      {ProductSpreads[categoryIndex].label}
+                    </span>
+                  )}
+                </div>
               </div>
               <div className={"flex justify-between items-end my-5"}>
                 <div className='flex flex-row'>
