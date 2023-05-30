@@ -70,7 +70,7 @@ const Portfolio = () => {
           )}
 
           {tab === 1 && (
-            <div className={"flex flex-col w-full mt-12"}>
+            <div className={"flex flex-col sm:items-center mt-12"}>
               <PortfolioListings />
             </div>
           )}
