@@ -19,7 +19,7 @@ const Portfolio = () => {
     <div className={"py-12 flex justify-center"}>
       <div className={`${tab === 0 ? "max-w-[650px]" : ""} w-full`}>
         <div className={"flex flex-col items-center w-full"}>
-          <SuperHedgeTabs labels={["OVERVIEW", "MY LISTING"]} tab={tab} setTab={(tab) => setTab(tab)} width={200} />
+          <SuperHedgeTabs labels={["OVERVIEW", "MY LISTING"]} tab={tab} className={"w-[180px]"} setTab={(tab) => setTab(tab)} />
 
           {tab === 0 && (
             <div className={"flex flex-col w-full space-y-[80px] mt-12"}>
@@ -57,10 +57,10 @@ const Portfolio = () => {
                   <TitleH3>Transaction History</TitleH3>
                   {address && (
                     <SuperHedgeTabs
-                      labels={["LATEST", "NEWEST"]}
+                      labels={["Latest", "Newest"]}
                       tab={historyOrder}
+                      className={"w-full"}
                       setTab={(tab) => setHistoryOrder(tab)}
-                      className={"w-[120px]"}
                     />
                   )}
                 </div>
