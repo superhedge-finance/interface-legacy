@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { useNetwork, useSigner } from "wagmi";
 import useToast from "../../../hooks/useToast";
-import { TitleH2, TitleH3 } from "../../../components/basic";
+import { TitleH2, TitleH3, SubtitleRegular16 } from "../../../components/basic";
 import { RecapCard } from "../../../components/commons/RecapCard";
 import Timeline from "../../../components/product/Timeline";
 import { MarketplaceItemFullType } from "../../../types";
@@ -73,9 +73,9 @@ const PortfolioNFTDetails = () => {
 
               <div className={"flex items-center space-x-3"}>
                 <Link href={`/portfolio/edit/${item.listingId}`}>
-                  <Image src={"/icons/edit.svg"} alt={"edit"} width={28} height={28} />
+                  <Image src={"/icons/edit.svg"} alt={"edit"} width={30} height={30} />
                 </Link>
-                <Image src={"/icons/delete.svg"} alt={"delete"} width={28} height={28} className={"cursor-pointer"} onClick={onDelete} />
+                <Image src={"/icons/delete.svg"} alt={"delete"} width={30} height={30} className={"cursor-pointer"} onClick={onDelete} />
               </div>
             </div>
 
@@ -86,8 +86,8 @@ const PortfolioNFTDetails = () => {
                   <Image src={currency2} className='rounded-full absolute left-[40px]' alt='Product Logo' width={60} height={60} />
                 </div>
                 <div className='flex flex-col justify-around ml-3'>
-                  <h5 className='text-[44px] text-black'>{item.underlying}</h5>
-                  <span className='text-[20px] font-light text-gray-700'>{item.name}</span>
+                  <TitleH3 className='text-black'>{item.underlying}</TitleH3>
+                  <SubtitleRegular16>{item.name}</SubtitleRegular16>
                 </div>
               </div>
               <div className={"flex flex-col items-center"}>
