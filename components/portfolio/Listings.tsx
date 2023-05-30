@@ -65,13 +65,20 @@ export const PortfolioListings = () => {
     })();
   }, [address, chainId]);
 
+  if (loading) {
+    return (
+      <div className={"col-span-2"}>
+        <SkeletonCard />
+      </div>
+    );
+  }
+
   return (
     <div className={`${items.length !== 0 ? "" : "self-center"}`}>
-      {loading && <SkeletonCard />}
       {!loading && hasNoPosition && <NoPositionCard />}
       {!loading && !hasNoPosition && items.length === 0 && <NoListedNFTCard />}
       {!loading && !hasNoPosition && items.length > 0 && (
-        <div className={"grid grid-cols-1 md:grid-cols-3 mt-12 gap-x-0 md:gap-x-5 gap-y-5 md:gap-y-8"}>
+        <div className={`flex flex-wrap justify-center sm:w-[500px] lg:w-[1000px] 2xl:w-[1500px] ${items.length > 2 ? "sm:justify-start" : ""}`}>
           {items.map((item, index) => (
             <PortfolioListingItem key={index} item={item} />
           ))}
