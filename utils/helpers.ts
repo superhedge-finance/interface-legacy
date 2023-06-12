@@ -31,6 +31,13 @@ export const formatDuration = (duration: number) => {
   return "0D : 0H";
 };
 
+export const formatDate = (dateString: Date) => {
+  const date = new Date(dateString);
+  const day = date.getDate();
+  const month = date.toLocaleString('default', { month: 'short' });
+  return `${day} ${month}`;
+};
+
 export const getTxErrorMessage = (error: any): string => {
   const errMessage = error?.data?.message || error?.message;
   if (error?.code === Logger.errors.ACTION_REJECTED) {
