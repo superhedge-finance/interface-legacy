@@ -6,7 +6,7 @@ import { ActionArea } from "../../components/product/ActionArea";
 import { ParaLight16, SkeletonCard, SubtitleRegular20, TitleH2, TitleH3 } from "../../components/basic";
 import { ReturnsChart } from "../../components/product/ReturnsChart";
 import { getProduct } from "../../service";
-import { IProduct, ProductSpreads, ProductStatus } from "../../types";
+import { ProductDetailType, ProductSpreads, ProductStatus } from "../../types";
 import { ActivityHeader, ActivityRow } from "../../components/commons/ActivityRow";
 import Timeline from "../../components/product/Timeline";
 import { getCurrencyIcon, formatStrikePrice, formatDuration } from "../../utils/helpers";
@@ -15,27 +15,6 @@ import { RecapCardMobile } from "../../components/commons/RecapCardMobile";
 import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
 import { DECIMAL, EXPLORER } from "../../utils/constants";
 import Countdown from "react-countdown";
-
-const activities = [
-  {
-    date: "22 Okt",
-    amount: 10320,
-    lots: 10,
-    contract: "0x3826539Cbd8d68DCF119e80B994557B4278CeC9f"
-  },
-  {
-    date: "21 Okt",
-    amount: 5320,
-    lots: 5,
-    contract: "0x3826539Cbd8d68DCF119e80B994557B4278CeC9f"
-  },
-  {
-    date: "19 Okt",
-    amount: 7520,
-    lots: 7,
-    contract: "0x3826539Cbd8d68DCF119e80B994557B4278CeC9f"
-  }
-];
 
 const issuance_date_renderer = ({
   days,
@@ -61,7 +40,7 @@ const ProductDetail = () => {
   const { address } = router.query;
 
   const [isLoading, setIsLoading] = useState(false);
-  const [product, setProduct] = useState<IProduct | undefined>(undefined);
+  const [product, setProduct] = useState<ProductDetailType | undefined>(undefined);
 
   const chainId = useMemo(() => {
     if (chain) return chain.id;
@@ -252,7 +231,7 @@ const ProductDetail = () => {
                 <TitleH3>Deposit Activity</TitleH3>
                 <div className={"bg-white py-[30px] px-5 rounded-lg"}>
                   <ActivityHeader />
-                  {activities.map((activity, index) => {
+                  {product.deposits.map((activity, index) => {
                     return (
                       <ActivityRow
                         key={index}
