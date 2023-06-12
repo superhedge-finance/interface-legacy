@@ -1,4 +1,5 @@
 import { MarketplaceItemType } from "./marketplace";
+import { Activity } from "./interface";
 
 export type OfferType = {
   id: number;
@@ -12,4 +13,5 @@ export type OfferType = {
 
 export type MarketplaceItemDetailType = MarketplaceItemType & {
   offers: OfferType[];
+  deposits: Activity[];
 };

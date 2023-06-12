@@ -29,6 +29,10 @@ export interface IProduct {
   counterparties: string;
 }
 
+export type ProductDetailType = IProduct & {
+  deposits: Activity[]
+}
+
 export type History = {
   address: string;
   type: HISTORY_TYPE;
@@ -40,8 +44,8 @@ export type History = {
 };
 
 export type Activity = {
-  date: string;
+  date: Date;
   amount: number;
   lots: number;
-  contract: string;
+  txhash: string;
 };
