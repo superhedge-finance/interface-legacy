@@ -35,27 +35,6 @@ const issuance_date_renderer = ({
   }
 };
 
-const activities = [
-  {
-    date: "22 Okt",
-    amount: 10320,
-    lots: 10,
-    contract: "0x3826539Cbd8d68DCF119e80B994557B4278CeC9f"
-  },
-  {
-    date: "21 Okt",
-    amount: 5320,
-    lots: 5,
-    contract: "0x3826539Cbd8d68DCF119e80B994557B4278CeC9f"
-  },
-  {
-    date: "19 Okt",
-    amount: 7520,
-    lots: 7,
-    contract: "0x3826539Cbd8d68DCF119e80B994557B4278CeC9f"
-  }
-];
-
 const MarketplaceDetail = () => {
   const router = useRouter();
   const { chain } = useNetwork();
@@ -222,7 +201,7 @@ const MarketplaceDetail = () => {
               <TitleH3>Deposit Activity</TitleH3>
               <div className={"bg-white py-[30px] px-5 rounded-lg"}>
                 <ActivityHeader />
-                {activities.map((activity, index) => {
+                {item.deposits.map((activity, index) => {
                   return (
                     <ActivityRow
                       key={index}
