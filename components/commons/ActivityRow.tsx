@@ -19,7 +19,9 @@ export const ActivityRow = ({ activity, className, blockExplorer }: { activity: 
       <div className={"flex items-center space-x-2"}>
         <span className={"text-grey-70 text-[12px] leading-[16px]"}>{formatDate(activity.date)}</span>
       </div>
-      <span className={"text-[12px] leading-[16px] text-grey-70"}>{activity.amount.toLocaleString()} USDC</span>
+      <span className={"text-[12px] leading-[16px] text-grey-70"}>
+        {((Number(activity.amount)).toLocaleString("en-US", {maximumFractionDigits: 6}))} USDC
+      </span>
       <span className={"text-[12px] leading-[16px] text-grey-70"}>{activity.lots}</span>
       <span className={"text-[12px] leading-[16px] text-blacknew-100"}>
         <a href={`${blockExplorer}/tx/${activity.txhash}`} target={"_blank"} rel={"noreferrer"}>
