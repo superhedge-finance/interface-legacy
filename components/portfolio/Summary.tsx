@@ -25,23 +25,27 @@ export const PortfolioSummary = () => {
           // One month before
           startTime = (new Date(now.getFullYear(), now.getMonth() - 1, now.getDate())).toISOString();
         } else {
-          startTime = '2023-01-01T00:00:00.000Z';
+          startTime = '2023-04-01T00:00:00.000Z';
         }
         startTime = startTime.replace('Z', '').replace('T', ' ');
         // fetch summary info
-        const summaries = await getSummary('0x1454dEC9200087Bd515dDc4d33Ea255D1Deaa858', startTime, endTime, chain.id);
+        const summaries = await getSummary(address, startTime, endTime, chain.id);
         setLabels(summaries.map((summary:any) => formatDate(summary.dates)));
-        const data = summaries.map((summary:any) => Number(summary.totalBalance));
+        const data = summaries.map((summary:any) => summary.totalBalance);
+        
         let j = 0; // an index of the latest non-zero balance
         for (let i = data.length - 1; i >= 0; i--) {
-          if(data[i] != 0) {
+          if(data[i] != null) {
             j = i;
             break;
           }
         }
-        for (let i = j + 1; i <= data.length - 1; i++) {
-          data[i] = data[j];
+        
+        for (let i = 0; i <= data.length - 1; i++) {
+          if (i < j) data[i] = Number(data[i]);
+          else data[i] = Number(data[j]);
         }
+        
         setChartData(data);
       }
     })();
