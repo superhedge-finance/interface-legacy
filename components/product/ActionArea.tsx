@@ -264,8 +264,8 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
           <div className={"flex flex-col justify-between w-full"}>
             <div className={"bg-[#EBEBEB] p-5 rounded-[6px] flex flex-col items-center mt-[17px]"}>
               <span className={"text-[#677079] text-[16px] leading-[16px]"}>Total Balance</span>
-              <span className={"text-[#161717] text-[22px] leading-[22px] font-medium mt-3"}>
-                {(principalBalance + optionBalance + couponBalance).toLocaleString()} USDC ({lotsCount.toFixed(6)} lots)
+              <span className={"text-[#161717] text-[22px] leading-[22px] mt-3"}>
+                {(principalBalance + optionBalance + couponBalance).toLocaleString()} USDC ({lotsCount.toFixed(3)} lots)
               </span>
             </div>
             { principalBalance > 0 && (
@@ -396,7 +396,7 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
               <div className={"bg-[#EBEBEB] p-5 rounded-[6px] flex flex-col items-center mt-[17px]"}>
                 <span className={"text-[#677079] text-[16px] leading-[16px]"}>Total Balance</span>
                 <span className={"text-[#161717] text-[22px] leading-[22px] mt-3"}>
-                  {(principalBalance + optionBalance + couponBalance).toLocaleString()} USDC ({lotsCount} lots)
+                  {(principalBalance + optionBalance + couponBalance).toLocaleString()} USDC ({lotsCount.toFixed(3)} lots)
                 </span>
               </div>
 
