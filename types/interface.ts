@@ -27,6 +27,7 @@ export interface IProduct {
   risk: string;
   fees: string;
   counterparties: string;
+  estimatedApy: string;
 }
 
 export type ProductDetailType = IProduct & {
