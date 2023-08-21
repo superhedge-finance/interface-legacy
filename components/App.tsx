@@ -1,6 +1,6 @@
 import React from "react";
 import { Toaster } from "react-hot-toast";
-import { RainbowKitProvider, getDefaultWallets } from "@rainbow-me/rainbowkit";
+import { Chain, RainbowKitProvider, getDefaultWallets } from "@rainbow-me/rainbowkit";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
 import { goerli, moonbaseAlpha, arbitrumGoerli } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
@@ -11,8 +11,34 @@ import { ToastProvider } from "./providers/ToastProvider";
 
 ChartJS.register(Title, Tooltip, Legend, Filler, LineElement, CategoryScale, LinearScale, PointElement);
 
+const mantleTestnet: Chain = {
+  id: 5_001,
+  name: 'Mantle Testnet',
+  network: 'mantleTestnet',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'Mantle Token',
+    symbol: 'MNT',
+  },
+  rpcUrls: {
+    public: { http: ['https://rpc.testnet.mantle.xyz/'] },
+    default: { http: ['https://rpc.testnet.mantle.xyz/'] },
+  },
+  blockExplorers: {
+    default: { name: 'Mantle Explorer', url: 'https://explorer.testnet.mantle.xyz/' },
+    etherscan: { name: 'Mantle Explorer', url: 'https://explorer.testnet.mantle.xyz/' },
+  },
+  contracts: {
+    multicall3: {
+      address: '0x4Af866539734dd29E921105fb1EbA521e77e8Eb4',
+      blockCreated: 3_501_011,
+    },
+  },
+  testnet: true,
+};
+
 const { chains, provider, webSocketProvider } = configureChains(
-  [...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS == "true" ? [goerli, moonbaseAlpha, arbitrumGoerli] : [])],
+  [...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS == "true" ? [goerli, moonbaseAlpha, arbitrumGoerli, mantleTestnet] : [])],
   [
     alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY_GOERLI || "" }),
     alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY_ARBITRUM_GOERLI || "" }),
@@ -22,6 +48,7 @@ const { chains, provider, webSocketProvider } = configureChains(
 
 const { connectors } = getDefaultWallets({
   appName: "Superhedge demo",
+  projectId: "0f25c8492be6871ba255feddab3b75e3",
   chains
 });
 
