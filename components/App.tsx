@@ -15,6 +15,7 @@ const mantleTestnet: Chain = {
   id: 5_001,
   name: 'Mantle Testnet',
   network: 'mantleTestnet',
+  iconUrl: 'https://i.imgur.com/Q3oIdip.png',
   nativeCurrency: {
     decimals: 18,
     name: 'Mantle Token',
