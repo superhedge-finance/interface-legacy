@@ -11,7 +11,7 @@ import { SubtitleRegular16, TitleH3 } from "../basic";
 import Countdown from "react-countdown";
 import { useNetwork } from "wagmi";
 import { SUPPORT_CHAIN_IDS } from "../../utils/enums";
-import { DECIMAL } from "../../utils/constants";
+import { DECIMAL, YIELD_SOURCE } from "../../utils/constants";
 
 export default function Product({ product }: { product: IProduct }) {
 
@@ -175,6 +175,16 @@ export default function Product({ product }: { product: IProduct }) {
         }></RecapCardMobile>
         <RecapCardMobile label={"Investment Duration"} value={investment_duration}></RecapCardMobile>
         <RecapCardMobile label={"Principal Protection"} value={"100%"}></RecapCardMobile>
+      </div>
+
+      <div className={"flex-row flex space-x-2 items-center justify-center mt-3"}>
+        <div className={"flex items-center w-[24px] md:w-[30px] h-[28px] md:h-[36px]"}>
+          <img src={"/products/" + YIELD_SOURCE[chainId].toLowerCase() + "_logo.svg"} alt={"social logo"} width={"100%"} height={"100%"} />
+        </div>
+        <div>
+          <span className="text-sm font-normal text-gray-700 dark:text-gray-400">Principal-Protected by</span>&nbsp;
+          <span className="text-sm font-bold">{YIELD_SOURCE[chainId]}</span>
+        </div>
       </div>
     </div>
   );
