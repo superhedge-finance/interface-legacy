@@ -13,3 +13,10 @@ export const EXPLORER: { [chainId: number]: string } = {
   [SUPPORT_CHAIN_IDS.ARBITRUM_GOERLI]: "https://goerli.arbiscan.io",
   [SUPPORT_CHAIN_IDS.MANTLE_TESTNET]: "https://explorer.testnet.mantle.xyz/"
 };
+
+export const YIELD_SOURCE: { [chainId: number]: string } = {
+  [SUPPORT_CHAIN_IDS.GOERLI]: "Compound",
+  [SUPPORT_CHAIN_IDS.MOONBEAM_ALPHA]: "Moonwell",
+  [SUPPORT_CHAIN_IDS.ARBITRUM_GOERLI]: "Aave",
+  [SUPPORT_CHAIN_IDS.MANTLE_TESTNET]: "Lendle"
+};
