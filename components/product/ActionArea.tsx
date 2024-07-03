@@ -14,7 +14,7 @@ import { EXPLORER } from "../../utils/constants";
 import toast from "react-hot-toast";
 import axios from "../../service/axios";
 
-const pricePerLot = 1000;
+const pricePerLot = 1;
 
 export const ActionArea = ({ productAddress, product }: { productAddress: string; product: IProduct }) => {
   const { address } = useAccount();

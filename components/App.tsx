@@ -2,7 +2,7 @@ import React from "react";
 import { Toaster } from "react-hot-toast";
 import { Chain, RainbowKitProvider, getDefaultWallets } from "@rainbow-me/rainbowkit";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
-import { goerli, moonbaseAlpha, arbitrumGoerli } from "wagmi/chains";
+import { goerli, moonbaseAlpha, arbitrumGoerli,arbitrum } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import { Chart as ChartJS, Title, Tooltip, Legend, Filler, LineElement, CategoryScale, LinearScale, PointElement } from "chart.js";
@@ -39,10 +39,11 @@ const mantleTestnet: Chain = {
 };
 
 const { chains, provider, webSocketProvider } = configureChains(
-  [...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS == "true" ? [goerli, moonbaseAlpha, arbitrumGoerli, mantleTestnet] : [])],
+  [...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS == "true" ? [goerli, moonbaseAlpha, arbitrumGoerli, mantleTestnet,arbitrum] : [])],
   [
     alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY_GOERLI || "" }),
     alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY_ARBITRUM_GOERLI || "" }),
+    alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY_ARBITRUM || "" }),
     publicProvider()
   ]
 );
