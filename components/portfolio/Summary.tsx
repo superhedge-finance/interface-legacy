@@ -1,45 +1,65 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
+import { useAccount, useNetwork } from "wagmi";
+import { getSummary } from "../../service";
+import { formatDate } from "../../utils/helpers";
 
 export const PortfolioSummary = () => {
+  const { address } = useAccount();
+  const { chain } = useNetwork();
   const [tab, setTab] = useState(0);
+
+  const [labels, setLabels] = useState<string[]>([]);
+  const [chartData, setChartData] = useState<number[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      if (address && chain) {
+        const now = new Date();
+        const endTime = now.toISOString().replace('Z', '').replace('T', ' ');
+        let startTime;
+        if (tab == 0) {
+          // One week before
+          startTime = (new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7)).toISOString();
+        } else if (tab == 1) {
+          // One month before
+          startTime = (new Date(now.getFullYear(), now.getMonth() - 1, now.getDate())).toISOString();
+        } else {
+          startTime = '2023-04-01T00:00:00.000Z';
+        }
+        startTime = startTime.replace('Z', '').replace('T', ' ');
+        // fetch summary info
+        const summaries = await getSummary(address, startTime, endTime, chain.id);
+        setLabels(summaries.map((summary:any) => formatDate(summary.dates)));
+        const data = summaries.map((summary:any) => summary.totalBalance);
+        
+        let j = 0; // an index of the latest non-zero balance
+        for (let i = data.length - 1; i >= 0; i--) {
+          if(data[i] != null) {
+            j = i;
+            break;
+          }
+        }
+        
+        for (let i = 0; i <= data.length - 1; i++) {
+          if (i < j) data[i] = Number(data[i]);
+          else data[i] = Number(data[j]);
+        }
+        
+        setChartData(data);
+      }
+    })();
+  }, [address, chain, tab]);
 
   return (
     <div className={"bg-white w-full rounded-lg p-5"}>
       <div>
         <Line
           data={{
-            labels: [
-              "",
-              "8 Jan 2023",
-              "",
-              "",
-              "22 Jan 2023",
-              "",
-              "",
-              "5 Feb 2023",
-              "",
-              "",
-              "19 Feb 2023",
-              "",
-              "",
-              "5 Mar 2023",
-              "",
-              "",
-              "19 Mar 2023",
-              "",
-              "",
-              "2 Apr 2023",
-              "",
-              "",
-              "16 Apr 2023"
-            ],
+            labels: labels,
             datasets: [
               {
-                data: [
-                  1000, 1010, 1020, 1030, 1040, 1040, 1045, 1050, 1055, 1160, 1000, 1000, 1005, 1010, 1015, 1320, 2000, 2000, 2015, 2030,
-                  2045, 2060, 0
-                ],
+                data: chartData,
                 borderColor: "#11CB79",
                 fill: false,
                 label: "",

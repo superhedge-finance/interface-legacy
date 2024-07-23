@@ -30,3 +30,13 @@ export const getUserInfo = async (address: string) => {
     return [];
   }
 };
+
+export const getSummary = async (address: string, startTime: string, endTime: string, chainId?: number | null) => {
+  try {
+    const { data } = await axios.get(`/users/portfolio/${address}?startTime=${startTime}&endTime=${endTime}&chainId=${chainId}`);
+    return data;
+  } catch (e) {
+    console.error(e);
+    return [];
+  }
+};

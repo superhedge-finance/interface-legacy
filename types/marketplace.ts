@@ -13,6 +13,7 @@ export type MarketplaceItemType = {
   risk: string;
   fees: string;
   counterparties: string;
+  estimatedApy: string;
 };
 
 export type MarketplaceItemFullType = MarketplaceItemType & {
