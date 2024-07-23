@@ -36,9 +36,7 @@ export const TransactionCard = ({ history, className, blockExplorer }: { history
       <span className={"text-[12px] leading-[16px] text-blacknew-100"}>
         {history.type === HISTORY_TYPE.DEPOSIT ? "Deposited" : "Withdrawed"}
       </span>
-      <span className={"text-[12px] leading-[16px] text-blacknew-100"}>
-        {((Number(history.amountInDecimal)).toLocaleString())} USDC
-      </span>
+      <span className={"text-[12px] leading-[16px] text-blacknew-100"}>{history.amountInDecimal.toLocaleString()} USD</span>
     </div>
   );
 };
