@@ -178,7 +178,10 @@ export default function Product({ product }: { product: IProduct }) {
       </div>
 
       <div className={"flex-row flex space-x-2 items-center justify-center mt-3"}>
-        <div className={"flex items-center w-[24px] md:w-[30px] h-[28px] md:h-[36px]"}>
+        <div className={"flex items-center w-[24px] md:w-[30px] h-[28px] md:h-[36px]"}>   
+          <img src={"/products/" + 'aUSDC' + "_logo.svg"} alt={"social logo"} width={"100%"} height={"100%"} />
+        </div>
+        <div className={"flex items-center w-[24px] md:w-[30px] h-[28px] md:h-[36px]"}>   
           <img src={"/products/" + YIELD_SOURCE?.[chainId]?.toLowerCase() + "_logo.svg"} alt={"social logo"} width={"100%"} height={"100%"} />
         </div>
         <div>
