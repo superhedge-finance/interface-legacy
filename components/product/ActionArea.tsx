@@ -4,9 +4,10 @@ import { useAccount, useSigner, useNetwork } from "wagmi"
 import Image from "next/image"
 import { Dialog, Transition, Switch } from "@headlessui/react"
 import { ParaRegular18, PrimaryButton, SecondaryButton, SubtitleRegular16 } from "../basic"
-import { ethers } from "ethers"
+import { BigNumber, ethers } from "ethers"
 import ProductABI from "../../utils/abis/SHProduct.json"
 import ERC20ABI from "../../utils/abis/ERC20.json"
+import PTTokenABI from "..//../utils/abis/PTToken.json"
 import { DEPOSIT_STATUS, IProduct, WITHDRAW_STATUS } from "../../types"
 import { truncateAddress, getTxErrorMessage } from "../../utils/helpers"
 import { SUPPORT_CHAIN_IDS } from "../../utils/enums"
@@ -141,11 +142,10 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
               await setWithdrawStatus(WITHDRAW_STATUS.APPROVING)
               await tx.wait()
             }
-            await setWithdrawStatus(WITHDRAW_STATUS.WITHDRAW)
-
             // withdraw
-            const tx = await productInstance.withdrawPrincipal()
-            await tx.wait()
+            await setWithdrawStatus(WITHDRAW_STATUS.WITHDRAW)
+            const withdrawTx = await productInstance.withdrawPrincipal()
+            await withdrawTx.wait()
           }
           if (optionBalance > 0) {
             const tx1 = await productInstance.withdrawOption()
@@ -248,10 +248,50 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
           setCurrencyInstance(_currencyInstance)
           const _decimals = await _currencyInstance.decimals()
 
+          // SH Token
           const _tokenAddress = await _productInstance.tokenAddress()
           const _tokenAddressInstance = new ethers.Contract(_tokenAddress, ERC20ABI, signer)
           setTokenAddressInstance(_tokenAddressInstance)
-          const _tokenDecimals = await _tokenAddressInstance.decimals()
+          // const _tokenDecimals = await _tokenAddressInstance.decimals()
+          const _tokenBalance = await _tokenAddressInstance.balanceOf(address)
+          console.log(Number(ethers.utils.formatUnits(_tokenBalance,0)))
+
+          // PT Token
+          const _ptAddress = await _productInstance.PT()
+          const _ptAddressInstance = new ethers.Contract(_ptAddress, PTTokenABI, signer)
+          const _ptBalance = await _ptAddressInstance.balanceOf(productAddress)
+          console.log(Number(ethers.utils.formatUnits(_ptBalance,0)))
+
+          // totalCurrentSupply
+          const _totalCurrentSupply = await _productInstance.totalCurrentSupply()
+          console.log(Number(ethers.utils.formatUnits(_totalCurrentSupply,0)))
+
+          const _amountOutMin = Number(ethers.utils.formatUnits(_ptBalance,0)) * (Number(ethers.utils.formatUnits(_tokenBalance,0))/Number(ethers.utils.formatUnits(_totalCurrentSupply,0)))
+          console.log(_amountOutMin)
+
+          const _marketAddrress = await _productInstance.market()
+          const url = `https://api-v2.pendle.finance/sdk/api/v1/swapExactPtForToken?chainId=42161&receiverAddr=${address}&marketAddr=${_marketAddrress}&amountPtIn=${_amountOutMin}&tokenOutAddr=${_currency}&slippage=0.002`;
+          const response = await fetch(url);
+          const params = await response.json();
+          console.log('amountTokenOut')
+          console.log(params.data.amountTokenOut)
+
+          // try {
+          //   const response = await fetch(url);
+            
+          //   // Check if the response is ok (status in the range 200-299)
+          //   if (!response.ok) {
+          //       throw new Error(`HTTP error! status: ${response.status}`);
+          //   }
+            
+          //     const params = await response.json();
+          //     console.log('amountTokenOut')
+          //     console.log(params.data.amountTokenOut)
+          //     return params;
+          //   } catch (error) {
+          //       console.error('Error fetching data:', error);
+          //       throw error; // Rethrow the error for further handling if needed
+          //   }
 
           const _couponBalance = await _productInstance.couponBalance(address)
           setCouponBalance(Number(ethers.utils.formatUnits(_couponBalance, _decimals)))
@@ -267,6 +307,7 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
           // wallet balance
           const currencyBalance = await _currencyInstance.balanceOf(address)
           setWalletBalance(Number(ethers.utils.formatUnits(currencyBalance, _decimals)))
+          
         } catch (e) {
           console.error(e)
         }
@@ -278,7 +319,7 @@ export const ActionArea = ({ productAddress, product }: { productAddress: string
     (async () => {
       if (product) {
         try {
-          const { data } = await axios.get(product.issuanceCycle.url)
+          const { data } = await axios.get(product.issuanceCycle.apy)
           setImageURL(data.image)
         } catch (e) {
           console.log(e)
